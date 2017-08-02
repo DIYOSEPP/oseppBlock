@@ -1,0 +1,497 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>oseppBlock</title>
+    <link rel="icon" href="media/osepp.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="prettify/arduino.css">
+    <script src="prettify/prettify.js"></script>
+    <!--free 
+    <script src="scratch-blocks/blockly_compressed_vertical.js"></script>
+    <script src="scratch-blocks/blocks_compressed.js"></script>
+    <script src="scratch-blocks/blocks_compressed_vertical.js"></script>
+    <script src="scratch-blocks/arduino_compressed.js"></script>
+    free-->
+    <!--delete-->
+    <script src="scratch-blocks/blockly_uncompressed_vertical.js"></script>
+    <script src="scratch-blocks/blocks_common/colour.js"></script>
+    <script src="scratch-blocks/blocks_common/math.js"></script>
+    <script src="scratch-blocks/blocks_common/text.js"></script>
+    <script src="scratch-blocks/blocks_vertical/control.js"></script>
+    <script src="scratch-blocks/blocks_vertical/operators.js"></script>
+    <script src="scratch-blocks/blocks_vertical/InputOutput.js"></script>
+    <script src="scratch-blocks/blocks_vertical/InstancesNumber.js"></script>
+    <script src="scratch-blocks/blocks_vertical/arduinoModules.js"></script>
+    <script src="scratch-blocks/blocks_vertical/procedures.js"></script>
+
+    <script src="scratch-blocks/generators/arduino.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_common.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_control.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_operators.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_inputoutput.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_instance.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_modules.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_procedure.js"></script>
+    <!--delete-->
+
+    <script src="scratch-blocks/msg/messages.js"></script>
+    <script src="genToolboxXml.js"></script>
+    <script src="blocklytoolbox.js"></script>
+    <script src="serial.js"></script>
+    <script src="display.js"></script>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        /*---------top-mid(main)-foot----------------*/
+        .top, .main, .foot {
+            width: 100%;
+            position: absolute;
+            overflow: hidden;
+        }
+
+        .top {
+            height: 40px;
+            top: 0;
+        }
+
+        .main {
+            top: 40px;
+            bottom: 40px;
+            height: auto;
+        }
+
+        .foot {
+            bottom: 0;
+            height: 40px;
+        }
+        /*block[hardware||block]---file[new||save||load|undo||undo]---code[send2ard||verify||upload]*/
+        .top * {
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .top a {
+            cursor: pointer;
+            line-height: 35px;
+            display: inline-block;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-bottom: 5px;
+            margin-top: 0px;
+            border: 1px solid;
+            border-color: #1a807e;
+            /*border-radius: 5px;
+            -moz-border-radius: 5px; 
+            box-shadow: 5px 5px 5px #17a1a5;
+            text-shadow: 2px 2px 3px #17a1a5;*/
+            transition: background-color 0.5s;
+            -moz-transition: background-color 0.5s; /* Firefox 4 */
+            -webkit-transition: background-color 0.5s; /* Safari 和 Chrome */
+            -o-transition: background-color 0.5s; /* Opera */
+        }
+
+        .top ul {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .top li {
+            display: inline;
+        }
+
+        .top span {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        ul.block {
+            float: left;
+        }
+
+            ul.block li a {
+                width: 113px;
+                color: #fff;
+                text-align: center;
+                background-color: #006468;
+            }
+
+                ul.block li a:hover {
+                    background-color: #0095bb;
+                }
+
+        ul.file {
+            text-align: center;
+            margin-right: 400px auto;
+        }
+
+            ul.file li a {
+                color: #000000;
+                background-color: aquamarine;
+                text-align: center;
+            }
+
+                ul.file li a:hover {
+                    background-color: #0095bb;
+                }
+
+        ul.code {
+            float: right;
+            text-align: right;
+        }
+
+            ul.code li a {
+                color: #fff;
+                background-color: blue;
+                text-align: right;
+            }
+
+                ul.code li a:hover {
+                    background-color: #0095bb;
+                }
+
+        .top input {
+            height: 30px;
+            width: 30px;
+            vertical-align: bottom;
+            text-align: center;
+            border: none;
+            padding: 4px;
+        }
+        /*----blocklyArea||codeView-----------------*/
+        #codediv {
+            float: right;
+            height: 100%;
+        }
+
+        #silderdiv {
+            float: left;
+            background-color: dimgrey;
+            width: 10px !important;
+            height: 100%;
+            cursor: w-resize;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #side_code {
+            margin-left: 10px;
+            height: 100%;
+        }
+
+        #code_area {
+            padding: 0;
+            border: none;
+            height: 100%;
+            overflow: auto;
+        }
+        /*------Serial_msg_box-----*/
+        #serial_upload_msg {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            background-color: cadetblue;
+            z-index: 100;
+            transition: height 0.5s;
+            -moz-transition: height 0.5s;
+            -webkit-transition: height 0.5s;
+            -o-transition: height 0.5s;
+        }
+
+        .serial_upload_msg_open {
+            height: 300px;
+        }
+
+        .serial_upload_msg_close {
+            height: 40px;
+        }
+
+        #msgBar * {
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #msgBar ul {
+            display: inline;
+        }
+
+        #toggle_serial_box {
+            cursor: pointer;
+        }
+
+        #msgBar li {
+            display: inline;
+            line-height: 40px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+            #msgBar li > * {
+                display: inline-block;
+            }
+
+        .svg_icon {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            transition: fill-opacity 0.5s;
+            -moz-transition: fill-opacity 0.5s; /* Firefox 4 */
+            -webkit-transition: fill-opacity 0.5s; /* Safari 和 Chrome */
+            -o-transition: fill-opacity 0.5s; /* Opera */
+            vertical-align: middle;
+            fill: #006461;
+            fill-opacity: 0.7;
+        }
+
+            .svg_icon:hover {
+                fill-opacity: 1;
+            }
+
+
+        /*------Effect-----*/
+
+        @keyframes acting {
+            0% {
+                fill: #006461;
+            }
+
+            25% {
+                fill: yellow;
+            }
+
+            50% {
+                fill: blue;
+            }
+
+            75% {
+                fill: green;
+            }
+
+            100% {
+                fill: #006461;
+            }
+        }
+
+        .svg_disable {
+            fill: grey !important;
+            fill-opacity: 1 !important;
+        }
+
+        .svg_hide {
+            display: none !important;
+        }
+
+        .svg_acting {
+            animation: acting 2s infinite !important;
+        }
+
+        @media screen and (max-width: 800px) {
+            .hideifsmallscreen {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body onload="initWorkspace()">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none">
+        <symbol id="svg_arraw" viewBox="0 0 25 20">
+            <path d="M0 10 v5 h15 v5 l10 -10 l-10 -10 v5 h-15z"></path>
+        </symbol>
+        <symbol id="svg_undo" viewBox="0 0 512 512">
+            <path d="M380.931 512c56.863-103.016 66.444-260.153-156.931-254.912v126.912l-192-192 192-192v124.186c267.481-6.971 297.285 236.107 156.931 387.814z"></path>
+        </symbol>
+        <symbol id="svg_redo" viewBox="0 0 512 512">
+            <path d="M288 124.186v-124.186l192 192-192 192v-126.912c-223.375-5.241-213.794 151.896-156.93 254.912-140.356-151.707-110.55-394.785 156.93-387.814z"></path>
+        </symbol>
+        <symbol id="svg_verify" viewBox="0 0 512 512">
+            <path d="M448 0h-384c-35.2 0-64 28.8-64 64v384c0 35.2 28.8 64 64 64h384c35.2 0 64-28.8 64-64v-384c0-35.2-28.8-64-64-64zM224 397.255l-118.627-118.628 45.255-45.254 73.372 73.372 153.373-153.373 45.254 45.255-198.627 198.628z"></path>
+        </symbol>
+        <symbol id="svg_upload" viewBox="0 0 512 512">
+            <g transform="translate(0,215)">
+                <path d="M 136.00001,-129.57142 420.28579,41.000019 136.00001,211.57142 Z m 312,-85.42858 H 64.000002 C 28.800001,-215 0,-186.2 0,-150.99998 V 233.00001 C 0,268.2 28.800001,297 64.000002,297 H 448.00001 C 483.20004,297 512,268.2 512,233.00001 V -150.99998 C 512,-186.2 483.20004,-215 448.00001,-215 Z"></path>
+            </g>
+        </symbol>
+        <symbol id="svg_sendtoarduino" viewBox="0 0 512 512">
+            <path
+                d="M 448.00001,-4e-6 H 64 c -35.2,0 -64,28.8 -64,64.00002 V 448.00001 C 0,483.2 28.8,512 64,512 H 448.00001 C 483.20004,512 512,483.2 512,448.00001 V 64.000016 C 512,28.799996 483.20004,-4e-6 448.00001,-4e-6 Z">
+            </path>
+            <path
+                style="fill: #ffffff; fill-opacity: 1;"
+                d="M 57.057408,45.413589 H 268.31369 V 71.820624 H 57.057408 Z m 0,39.610553 H 189.09258 V 111.43118 H 57.057408 Z m 0,79.221108 H 189.09258 v 26.40703 H 57.057408 Z m 0,-39.61056 H 268.31369 v 26.40704 H 57.057408 Z m 0,79.22111 H 268.31369 v 26.40703 H 57.057408 Z m 329.740102,57.50933 82.21231,-82.21231 H 419.68243 V 91.459687 H 353.91258 V 179.15282 H 304.5852 Z M 357.9955,470.54072 c -24.039,0 -46.6395,-9.36 -63.6375,-26.358 L 256,405.82697 217.6465,444.17822 c -16.9995,17.001 -39.6,26.3625 -63.63975,26.3625 -24.04425,0 -46.64625,-9.3615 -63.64575,-26.3625 C 73.3615,427.17722 64,404.57672 64,380.53622 c 0,-24.0405 9.3615,-46.6425 26.361,-63.64275 17.00025,-16.9995 39.603,-26.361 63.64275,-26.361 24.0405,0 46.6425,9.3615 63.642,26.361 L 256,355.24697 l 38.3535,-38.3535 c 16.9995,-16.9995 39.6015,-26.36175 63.642,-26.36175 24.042,0 46.644,9.36225 63.64125,26.36175 C 438.6385,333.89372 448,356.49572 448,380.53622 c 0,24.042 -9.3615,46.64325 -26.3625,63.64125 -16.99725,17.001 -39.59925,26.36325 -63.642,26.36325 z m -38.3505,-51.6465 c 10.24575,10.24125 23.865,15.88275 38.3505,15.882 14.48775,0 28.10925,-5.6415 38.3535,-15.88575 10.2435,-10.24575 15.8865,-23.8665 15.8865,-38.35425 0,-14.48775 -5.64225,-28.1085 -15.8865,-38.35275 -10.245,-10.24425 -23.865,-15.8865 -38.3535,-15.8865 -14.487,0 -28.1085,5.6415 -38.35425,15.8865 l -38.3505,38.35275 z M 154.0045,326.29697 c -14.48775,0 -28.1085,5.6415 -38.35275,15.8865 -10.245,10.24425 -15.8865,23.865 -15.8865,38.35275 0,14.487 5.6415,28.10775 15.8865,38.3535 10.245,10.2435 23.86575,15.8865 38.35275,15.8865 14.48775,0 28.1085,-5.6415 38.352,-15.88575 L 230.71,380.53622 192.3565,342.18347 c -10.24425,-10.245 -23.865,-15.88725 -38.352,-15.8865 z m -33.80938,46.73925 v 15 c 0,1.38063 1.11937,2.5 2.5,2.5 h 75 c 1.38063,0 2.5,-1.11937 2.5,-2.5 v -15 c 0,-1.38062 -1.11937,-2.5 -2.5,-2.5 h -75 c -1.38063,0 -2.5,1.11938 -2.5,2.5 z m 274.23171,-2.5 h -27.5 v -27.5 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 h -15 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 27.5 h -27.5 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 15 c 0,1.38062 1.11938,2.5 2.5,2.5 h 27.5 v 27.5 c 0,1.38062 1.11938,2.5 2.5,2.5 h 15 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -27.5 h 27.5 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -15 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 z">
+            </path>
+        </symbol>
+        <symbol id="svg_sendtext" viewBox="0 0 512 512">
+            <path d="M224 387.814v124.186l-192-192 192-192v126.912c223.375 5.24 213.794-151.896 156.931-254.912 140.355 151.707 110.55 394.785-156.931 387.814z"></path>
+        </symbol>
+        <symbol id="svg_connect" viewBox="0 0 512 512">
+            <path d="M64 160h320v96l128-128-128-128v96h-384v192h64zM448 352h-320v-96l-128 128 128 128v-96h384v-192h-64z"></path>
+        </symbol>
+        <symbol id="svg_resetuno" viewBox="0 0 512 512">
+            <path d="M444.84 83.16c-46.804-51.108-114.077-83.16-188.84-83.16-141.385 0-256 114.615-256 256h48c0-114.875 93.125-208 208-208 61.51 0 116.771 26.709 154.848 69.153l-74.848 74.847h176v-176l-67.16 67.16z"></path>
+            <path d="M464 256c0 114.875-93.125 208-208 208-61.51 0-116.771-26.709-154.847-69.153l74.847-74.847h-176v176l67.16-67.16c46.804 51.108 114.077 83.16 188.84 83.16 141.385 0 256-114.615 256-256h-48z"></path>
+        </symbol>
+        <symbol id="svg_newfile" viewBox="0 0 128 160">
+            <path d="M 96.000002,90 C 74.361447,89.9322 52.707993,90.13552 31.078744,89.89842 24.859049,88.42667 27.475567,78.35577 33.639201,80 54.731384,80.0678 75.838465,79.86447 96.921342,80.10157 102.1911,81.25512 101.50824,89.95603 96.000002,90 Z m 0,20.00001 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z m 0,20 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z M 121.97229,35.79312 C 112.94044,23.14256 102.42517,11.11087 89.409879,2.44518 83.483942,-1.45849 76.229325,0.45655 69.581916,0 49.809107,0.0427 30.031564,-0.0857 10.261732,0.0647 2.914412,0.80668 -0.86131375,8.66043 5.4953571e-7,15.3686 0.03936055,59.83736 -0.07875374,104.30976 0.05911484,148.77624 c 0.33425714,6.9418 7.02164586,12.26769 13.82825716,11.22377 34.616372,-0.043 69.23751,0.0861 103.850898,-0.0646 7.34732,-0.74203 11.12304,-8.59578 10.26173,-15.30395 -0.0249,-31.85117 0.0498,-63.70437 -0.0374,-95.55429 -0.56602,-4.91761 -3.37591,-9.21583 -5.99032,-13.284 z m -18.91886,-8.50781 c 2.51125,3.5879 10.47968,10.31554 9.13917,12.71469 -6.92134,0 -13.842684,0 -20.764027,0 0,-8.01802 0,-16.03605 0,-24.05407 4.130172,3.50613 7.966563,7.34732 11.624857,11.33938 z m 15.80372,120.2147 c -0.71257,3.9884 -5.57736,2.03483 -8.43272,2.5 -32.99862,0 -65.997237,0 -98.995858,0 -3.7234542,-1.03983 -1.8136856,-5.76177 -2.2857142,-8.647 0,-42.951 0,-85.90201 0,-128.85301 3.8536712,-5.57618 13.9436262,-0.9703 20.1646002,-2.50007 17.659418,10e-6 35.318838,-2.1e-4 52.978258,7e-5 0.06156,12.00113 -0.123363,24.0136 0.09287,36.00762 0.961628,5.20669 6.805474,3.82501 10.62556,3.99238 8.617664,0 17.235334,0 25.853004,0 0,32.5 0,65.00001 0,97.50001 z M 67.941842,37.66937 c -5.350341,0 -10.700683,0 -16.051024,0 -0.07561,-6.05558 0.151786,-12.1389 -0.114677,-18.17701 -1.911891,-1.96526 -5.335965,-0.54111 -7.901306,-0.97478 -3.639991,-1.0664 -4.070811,2.57 -3.657485,5.28418 0,4.62254 0,9.24507 0,13.86761 -5.534849,0.0859 -11.107032,-0.17039 -16.618981,0.12542 -1.791182,2.08902 -0.498008,5.40676 -0.891222,8.02736 -0.806,3.13885 1.008654,5.54792 4.327783,4.61507 4.39414,0 8.78828,0 13.18242,0 0.0756,6.05559 -0.151786,12.1389 0.114677,18.17701 1.911894,1.96526 5.335966,0.5411 7.901306,0.97478 3.639988,1.0664 4.070811,-2.57 3.657485,-5.28418 0,-4.62254 0,-9.24507 0,-13.86761 5.534852,-0.0859 11.107035,0.17039 16.618984,-0.12543 1.791182,-2.08901 0.498008,-5.40675 0.891222,-8.02735 -0.2388,-1.50669 0.791038,-4.31581 -1.459182,-4.61507 z"></path>
+        </symbol>
+        <symbol id="svg_savefile" viewBox="0 0 128 160">
+            <path d="M 44.862244,74.037373 73.248446,46.018364 H 56.216725 V 16.131421 H 33.507763 V 46.018364 H 16.476042 Z M 96.000002,90 C 74.361447,89.9322 52.707993,90.13552 31.078744,89.89842 24.85905,88.42667 27.475567,78.35577 33.639201,80 54.731383,80.0678 75.838465,79.864469 96.921342,80.10157 102.1911,81.255121 101.50824,89.95603 96.000002,90 Z m 0,20.00001 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092182,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z m 0,20 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092182,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z M 121.97229,35.793119 C 112.94044,23.14256 102.42517,11.11087 89.409879,2.4451801 83.483942,-1.4584901 76.229325,0.45654961 69.581916,-2.951024e-7 49.809107,0.04269951 30.031564,-0.08569994 10.261732,0.06470027 2.9144115,0.80667981 -0.86131402,8.66043 2.204544e-7,15.3686 0.03936005,59.83736 -0.07875375,104.30976 0.05911449,148.77625 c 0.33425698,6.94179 7.02164631,12.26767 13.82825751,11.22376 34.616372,-0.043 69.23751,0.0861 103.850898,-0.0646 7.34732,-0.74204 11.12304,-8.59578 10.26173,-15.30395 -0.0249,-31.85117 0.0498,-63.70437 -0.0374,-95.55429 -0.56602,-4.91761 -3.37591,-9.215831 -5.99032,-13.284 z M 103.05343,27.28531 C 105.56468,30.87321 113.53311,37.60085 112.1926,40 H 91.428573 V 15.94593 c 4.130172,3.50613 7.966563,7.34732 11.624857,11.33938 z m 15.80372,120.2147 c -0.71257,3.98841 -5.57736,2.03483 -8.43272,2.5 H 11.428572 c -3.7234543,-1.03983 -1.8136851,-5.76177 -2.2857145,-8.647 V 12.5 C 12.996529,6.92382 23.086484,11.5297 29.307458,9.99993 c 17.659418,10e-6 35.318838,-2.101e-4 52.978258,7e-5 0.06156,12.00113 -0.123363,24.0136 0.09287,36.00762 0.961628,5.20669 6.805475,3.82501 10.625559,3.99238 h 25.853005 z"></path>
+        </symbol>
+        <symbol id="svg_loadfile" viewBox="0 0 128 160">
+            <path d="M 44.862244,16.131429 16.476042,44.150438 H 33.507763 V 74.037381 H 56.216725 V 44.150438 h 17.031721 z m 51.137758,73.86857 C 74.361447,89.9322 52.707993,90.13552 31.078744,89.89842 24.859049,88.42667 27.475567,78.35577 33.639201,80 c 21.092183,0.0678 42.199264,-0.13553 63.282141,0.10157 5.269758,1.15355 4.586898,9.854459 -0.92134,9.898429 z m 0,20.000011 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z m 0,20 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z M 121.97229,35.79312 C 112.94044,23.14256 102.42517,11.11087 89.409879,2.4451804 83.483942,-1.4584898 76.229324,0.45654991 69.581916,1.2686698e-8 49.809107,0.04269981 30.031564,-0.08569963 10.261732,0.06470057 2.914412,0.80668012 -0.86131394,8.6604305 3.004544e-7,15.3686 0.03936013,59.83736 -0.07875367,104.30976 0.05911457,148.77624 c 0.33425698,6.9418 7.02164623,12.26769 13.82825743,11.22377 34.616372,-0.043 69.23751,0.0861 103.850898,-0.0646 7.34732,-0.74203 11.12304,-8.59578 10.26173,-15.30395 -0.0249,-31.85117 0.0498,-63.70437 -0.0374,-95.55429 -0.56602,-4.91761 -3.37591,-9.21583 -5.99032,-13.284 z M 103.05343,27.28531 C 105.56468,30.87321 113.53311,37.60085 112.1926,40 H 91.428573 V 15.94593 c 4.130172,3.50613 7.966563,7.34732 11.624857,11.33938 z m 15.80372,120.2147 c -0.71257,3.9884 -5.57736,2.03483 -8.43272,2.5 H 11.428572 c -3.7234543,-1.03983 -1.8136856,-5.76177 -2.2857142,-8.647 V 12.5 C 12.996529,6.9238205 23.086484,11.5297 29.307458,9.9999306 c 17.659418,9.3e-6 35.318839,-2.335e-4 52.978258,6.88e-5 0.06156,12.0011306 -0.123363,24.0136006 0.09287,36.0076206 0.961627,5.206689 6.805473,3.82501 10.62556,3.992379 h 25.853004 z"></path>
+        </symbol>
+    </svg>
+    <div class="top">
+        <ul class="block">
+            <li><a id="hardware">hardware</a><a id="block">block</a></li>
+            <li></li>
+        </ul>
+        <ul id="code_menu" class="code" style="display: none;">
+            <li title="send code to arduino ide">
+                <svg class="svg_icon" id="send_to_arduino_ide">
+                    <use xlink:href="#svg_sendtoarduino" width="35px" height="35px"></use>
+                </svg></li>
+            <li title="verify">
+                <svg class="svg_icon" id="verify">
+                    <use xlink:href="#svg_verify" width="35px" height="35px"></use>
+                </svg>
+            </li>
+            <li title="upload">
+                <svg class="svg_icon" id="upload">
+                    <use xlink:href="#svg_upload" width="35px" height="35px"></use>
+                </svg>
+            </li>
+        </ul>
+        <ul class="file">
+            <li title="new workspace">
+                <svg class="svg_icon" id="new">
+                    <use xlink:href="#svg_newfile" width="35px" height="35px"></use>
+                </svg>
+            </li>
+            <li title="save blocks to file">
+                <svg class="svg_icon" id="save">
+                    <use xlink:href="#svg_savefile" width="35px" height="35px"></use>
+                </svg>
+            </li>
+            <li title="load blocks from file">
+                <svg class="svg_icon" id="load">
+                    <use xlink:href="#svg_loadfile" width="35px" height="35px"></use>
+                </svg>
+            </li>
+            <li><span></span></li>
+            <li id="undo" title="undo">
+                <svg class="svg_icon">
+                    <use xlink:href="#svg_undo" width="35px" height="35px"></use>
+                </svg>
+            </li>
+            <li id="redo" title="redo">
+                <svg class="svg_icon">
+                    <use xlink:href="#svg_redo" width="35px" height="35px"></use>
+                </svg>
+            </li>
+        </ul>
+    </div>
+    <div id="blocklyarea" class="main" style="bottom: 0">
+        <div id="codediv" style="width: 300px;">
+            <div id="silderdiv">
+            </div>
+            <div id="side_code">
+                <pre id="code_area" class="prettyprint"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="foot">
+    </div>
+
+    <div id="blockly_div" style="position: absolute"></div>
+
+    <div id="serial_upload_msg" class="serial_upload_msg_close" style="display: none;">
+        <div id="msgBar" style="width: 100%">
+            <ul>
+                <li id="toggle_serial_box" title="toggle serial message box open/close">
+                    <svg class="svg_icon">
+                        <use xlink:href="#svg_arraw" transform="rotate(90,20,20) translate(13,17)" width="25px" height="20px"></use>
+                        <use xlink:href="#svg_arraw" transform="rotate(270,20,20) translate(13,17)" width="25px" height="20px"></use>
+                    </svg>
+                </li>
+                <li class="hideifsmallscreen"><span>Arduino Uno on</span></li>
+                <li>
+                    <span>
+                        <select id="SelectComPort">
+                            <option>select com port</option>
+                        </select>
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        <select id="SelectBandrate">
+                            <option>300</option>
+                            <option>1200</option>
+                            <option>2400</option>
+                            <option>4800</option>
+                            <option>9600</option>
+                            <option>14400</option>
+                            <option>19200</option>
+                            <option>28800</option>
+                            <option>38400</option>
+                            <option>57600</option>
+                            <option>74880</option>
+                            <option selected="selected">115200</option>
+                            <option>128000</option>
+                            <option>230400</option>
+                            <option>250000</option>
+                            <option>1000000</option>
+                            <option>2000000</option>
+                        </select>
+                    </span>
+                </li>
+                <li title="connect serial port">
+                    <svg id="connect" class="svg_icon svg_disable">
+                        <use xlink:href="#svg_connect" width="30px" height="30px" transform="translate(0,5)"></use>
+                    </svg>
+                </li>
+                <li title="reset uno">
+                    <svg class="svg_icon svg_hide" id="reset">
+                        <use xlink:href="#svg_resetuno" width="26px" height="26px" transform="translate(0,7)"></use>
+                    </svg>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <input id="sendtext" type="text" class="svg_hide" />
+                </li>
+                <li>
+                    <select id="line_ending" class="svg_hide">
+                        <option>No line ending</option>
+                        <option>Newline</option>
+                        <option>Carriage return</option>
+                        <option>Both NL&CR</option>
+                    </select>
+                </li>
+                <li title="send text to uno">
+                    <svg id="send" class="svg_icon svg_hide">
+                        <use xlink:href="#svg_sendtext" width="30px" height="30px" transform="translate(0,5)"></use>
+                    </svg>
+                </li>
+            </ul>
+        </div>
+        <div id="msgTextArea" style="background-color: ghostwhite; width: 100%; height: auto; color: black; overflow: auto; position: absolute; top: 40px; bottom: 0;">
+        </div>
+    </div>
+</body>
+</html>

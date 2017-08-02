@@ -1,0 +1,22 @@
+{
+    "name": "oseppBlock",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "dependencies": {
+        "pretty-bytes": "^2.0.1",
+        "serialport": "^4.0.7"
+    },
+    "devDependencies": {
+        "electron": "^1.6.10"
+    },
+    "author": "",
+    "license": "ISC",
+    "scripts": {
+        "package-mac": "electron-packager . --overwrite --electron-version=1.6.10 --platform=darwin --arch=x64 --asar=true --icon=media/osepp.icns --prune=true --out=../release-builds",
+        "package-win": "electron-packager . --overwrite --electron-version=1.6.10 --platform=win32 --arch=all --asar=true  --icon=media/osepp.ico --prune=true --out=../release-builds",
+        "package-linux": "electron-packager . --overwrite --electron-version=1.6.10 --platform=linux --arch=x64 --icon=media/osepp.png --prune=true --out=../release-builds",
+        "package-arm": "electron-packager . --overwrite --electron-version=1.6.10 --platform=linux --arch=armv7l --icon=media/osepp.png --prune=true --out=../release-builds"
+    }
+
+}
