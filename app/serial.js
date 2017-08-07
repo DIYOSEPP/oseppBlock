@@ -363,6 +363,30 @@ function getArduinoPath() {
     return arduinoPath;
 }
 
+function loadOBPFileFromCLI()
+{
+    var text = null;
+    try {
+        const remote = require('electron').remote;
+        const fs = require('fs');
+        const path = require('path');
+        var args = remote.process.argv.slice(1);
+        for (var fname, i = 0; fname = args[i]; i++) {
+            if (path.extname(fname).toLowerCase() != ".obp") continue;
+            if (!fs.existsSync(fname)) continue;
+            text = fs.readFileSync(fname, 'utf-8');
+            break;
+        }
+    }
+    catch (e) {
+        text = null;
+    }
+    return text;
+}
+
+
+
+
 var initSerialUI=function()
 {
     try {

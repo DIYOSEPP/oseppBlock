@@ -91,12 +91,22 @@ function saveBlockWorkspaceToLocalStorage(workspace) {
     }
 }
 function loadBlockWorkspaceFromLocalStorage(workspace) {
+    var text = null;
     try {
-        var text = window.localStorage.blocks;
+        text = loadOBPFileFromCLI();
+    }
+    catch (e) {
+        text = null;
+    }
+
+    try {
+        if (text == null) {
+            text = window.localStorage.blocks;
+        }
     } catch (e) {
         // Firefox sometimes throws a SecurityError when accessing sessionStorage.
         // Restarting Firefox fixes this, so it looks like a bug.
-        var text = null;
+        text = null;
     }
     if (text) {
         try {
@@ -374,9 +384,40 @@ function initWorkspace() {
     document.getElementById("redo").onclick = function () {
         Blockly.getMainWorkspace().undo(1);
     }
-    if (initSerialUI!==undefined) {
+    if (initSerialUI !== undefined) {
         initSerialUI();
         resizeWorkspaceDiv();
+    }
+
+    document.ondragover = function (e) {
+        e.preventDefault();
+        //return false;
+    }
+    document.ondrop = function (e) {
+        e.preventDefault();
+        //return false;
+        var list = e.dataTransfer.files;
+        for (var i = 0; i < list.length; i++) {
+            var f = list[i];
+            if (!f.name.toLowerCase().endsWith(".obp")) continue;
+            console.log(f);         
+            var reader = new FileReader();
+            reader.onload = function () {
+                try {
+                    var text = reader.result;
+                    var xml = Blockly.Xml.textToDom(text);
+                    Blockly.Events.setGroup(true);
+                    blockWorkspace.clear();
+                    Blockly.Xml.domToWorkspace(xml, blockWorkspace);
+                    blockWorkspace.scrollCenter();
+                    Blockly.Events.setGroup(false);
+                } catch (e) {
+                    newWorkspace();
+                }
+            }
+            reader.readAsText(f);
+            break;
+        }
     }
 }
 
