@@ -73,7 +73,7 @@ Blockly.Blocks['module_set_rgb'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('');
+        this.setTooltip('CLICK A COLOR TO CHANGE RGB LED COLOR');
         this.setHelpUrl('');
     }
 };
@@ -96,7 +96,7 @@ Blockly.Blocks['rgbtocolor'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('CHOOSE INDIVIDUAL (RED, GREEN, BLUE)RGB LED LEADS ');
         this.setHelpUrl('');
     }
 };
@@ -134,7 +134,7 @@ Blockly.Blocks['module_set_led'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Normally, HIGH causes LED to be bright, and LOW causes LED to burn out');
+        this.setTooltip('SET AN LED HIGH OR LOW (ON OR OFF)');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/68-led-modules');
     }
 };
@@ -170,7 +170,7 @@ Blockly.Blocks['module_read_button'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('Normally, "LOW" means the button is pressed');
+        this.setTooltip('DETECT IF BUTTON IS PRESSED');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/76-push-button-module');
     }
 };
@@ -230,7 +230,7 @@ Blockly.Blocks['module_lcd_print'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Prints text to the LCD.');
+        this.setTooltip('DISPLAYS TO THE LCD DISPLAY');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/LiquidCrystalPrint');
     }
 };
@@ -247,7 +247,7 @@ Blockly.Blocks['module_lcd_clear'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Clears the LCD screen and positions the cursor in the upper-left corner.');
+        this.setTooltip('REFRESH (CLEAR) THE LCD DISPLAY');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/LiquidCrystalClear');
     }
 };
@@ -270,7 +270,7 @@ Blockly.Blocks['module_lcd_goto'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Position the LCD cursor; that is, set the location at which subsequent text written to the LCD will be displayed');
+        this.setTooltip('SET THE ROW AND COLUMN OF THE LCD DISPLAY');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/LiquidCrystalSetCursor');
     }
 };
@@ -309,7 +309,7 @@ Blockly.Blocks['module_set_buzzer'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Normally, HIGH makes BUZZER sound');
+        this.setTooltip('TURN THE BUZZER HIGH OR LOW (ON OR OFF)');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/72-piezo-sensor-module');
     }
 };
@@ -346,7 +346,7 @@ Blockly.Blocks['module_buzzer_playtone'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Generates a square wave of the specified frequency (and 50% duty cycle) on a pin');
+        this.setTooltip('PLAY A NOTE FROM THE SPEAKER');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Tone');
     }
 };
@@ -363,7 +363,7 @@ Blockly.Blocks['module_buzzer_notone'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('tops the generation of a square wave triggered.');
+        this.setTooltip('STOP THE SPEAKER');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/NoTone');
     }
 };
@@ -413,7 +413,7 @@ Blockly.Blocks['module_set_fanmotor'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('');
+        this.setTooltip('CHOOSE THE SPEED AND DIRECTION OF FAN MOTOR');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module');
     },
     onchange: function (event) {
@@ -501,7 +501,7 @@ Blockly.Blocks['module_servo_write'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Writes a value to the servo, controlling the shaft accordingly. On a standard servo, this will set the angle of the shaft (in degrees), moving the shaft to that orientation. On a continuous rotation servo, this will set the speed of the servo (with 0 being full-speed in one direction, 180 being full speed in the other, and a value near 90 being no movement).');
+        this.setTooltip('WRITE A SPECIFIC ANGLE FOR THE SERVO MOTOR');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/ServoWrite');
     }
 };
@@ -611,7 +611,7 @@ Blockly.Blocks['module_stepper_move'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Turns the motor a specific number of steps');
+        this.setTooltip('INPUT THE STEPPER MOTORS STEP AMOUNT');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/StepperStep');
     }
 };
@@ -630,7 +630,7 @@ Blockly.Blocks['module_stepper_speed'] = {
             Blockly.Colours.cInstanceStatement.primary,
             Blockly.Colours.cInstanceStatement.secondary,
             Blockly.Colours.cInstanceStatement.tertiary);
-        this.setTooltip('Sets the motor speed in rotations per minute (RPMs). This function doesn\'t make the motor turn, just sets the speed.');
+        this.setTooltip('SET THE SPEED OF THE STEPPER MOTOR');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/StepperSetSpeed');
     }
 };
@@ -667,7 +667,7 @@ Blockly.Blocks['module_pir_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('');
+        this.setTooltip('DETECT IF THE PIR SENSOR WAS TRIGGERED');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/73-passive-infrared-sensor-pir-module');
     }
 };
@@ -704,7 +704,7 @@ Blockly.Blocks['module_potentiometer_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE KNOB (POTENTIOMETER) VALUE(0-1023)');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/74-potentiometer-module');
     }
 };
@@ -741,7 +741,7 @@ Blockly.Blocks['module_slider_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE SLIDER VALUE(0-1023)');
         this.setHelpUrl('');
     }
 };
@@ -778,7 +778,7 @@ Blockly.Blocks['module_lightsensor_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE LIGHT VALUE(0-1023) FROM THE LIGHT SENSOR');
         this.setHelpUrl('');
     }
 };
@@ -815,7 +815,7 @@ Blockly.Blocks['module_lm35_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE TEMPERATURE IN CELSIUS FROM THE TEMPERATURE SENSOR');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/79-lm35-temperature-sensor-module');
     }
 };
@@ -854,7 +854,7 @@ Blockly.Blocks['module_soundsensor_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE SOUND VOLUME(0-1023) FROM THE SOUND SENSOR');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/78-sound-sensor-module');
     }
 };
@@ -895,7 +895,7 @@ Blockly.Blocks['module_ultrasonic_get'] = {
             Blockly.Colours.cModuleInput.secondary,
             Blockly.Colours.cModuleInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
+        this.setTooltip('READ THE DISTANCE IN MILLIMETERS OF THE ULTRASONIC SENSOR');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/62-osepp-ultrasonic-sensor-module');
     }
 };

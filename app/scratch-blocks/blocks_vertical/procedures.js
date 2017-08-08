@@ -38,7 +38,7 @@ Blockly.Blocks['instance_procedure'] = {
             .setCheck(null);
         this.setInputsInline(true);
         this.setColour('#1f9999', '#2a8c8c', '#287373');
-        this.setTooltip('procedure is a sequence of program instructions that perform a specific task');
+        this.setTooltip('PROCEDURE IS A SEQUENCE OF PROGRAM INSTRUCTIONS THAT PERFORM A SPECIFIC TASK');
         this.setHelpUrl('https://en.wikipedia.org/wiki/Subroutine');
     }
 };
@@ -52,7 +52,7 @@ Blockly.Blocks['instance_procedure_call'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour('#2a8c8c', '#2a8c8c', '#287373');
-        this.setTooltip('jump to subroutine instruction');
+        this.setTooltip('Execute a sequence of instructions');
         this.setHelpUrl('https://en.wikipedia.org/wiki/Subroutine');
     }
 };

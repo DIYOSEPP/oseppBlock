@@ -39,7 +39,7 @@ Blockly.Blocks['control_if'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cLoop.primary, Blockly.Colours.cLoop.secondary, Blockly.Colours.cLoop.tertiary);
-        this.setTooltip('if a value is true or non-zero,then do some statements');
+        this.setTooltip('IF A VALUE IS TRUE TO A CONDITION, DO SOMETHING. ELSE IS EXCEPTION');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/If');
 
         this.setMutator(new Blockly.Mutator(['controls_if_elseif',
@@ -264,7 +264,7 @@ Blockly.Blocks['control_forloop'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cLoop.primary, Blockly.Colours.cLoop.secondary, Blockly.Colours.cLoop.tertiary);
-        this.setTooltip('The for statement is used to repeat a block of statements enclosed in curly braces');
+        this.setTooltip('THE "FOR" STATEMENT IS USED TO REPEAT AN ACTION WITHIN THIS BLOCK IF SET CONDITIONS ARE TRUE.s');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/For');
     },
     onchange: function (event) {
@@ -345,7 +345,7 @@ Blockly.Blocks['control_while'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cLoop.primary, Blockly.Colours.cLoop.secondary, Blockly.Colours.cLoop.tertiary);
-        this.setTooltip('while a value is true,do some statements');
+        this.setTooltip('WHILE A VALUE IS TRUE, THEN A LOOP OCCURS');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/While');
     }
 };
@@ -358,7 +358,7 @@ Blockly.Blocks['control_break'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cLoop.primary, Blockly.Colours.cLoop.secondary, Blockly.Colours.cLoop.tertiary);
-        this.setTooltip('break is used to exit from a do, for, or while loop, bypassing the normal loop condition.');
+        this.setTooltip('BREAK IS USED TO EXIT FROM LOOPS');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Break');
     }
 };
@@ -373,7 +373,7 @@ Blockly.Blocks['control_delay'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cArduinoStatement.primary, Blockly.Colours.cArduinoStatement.secondary, Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Pauses the program for the amount of time (in miliseconds)');
+        this.setTooltip('PAUSE THE PROGRAM FOR THE AMOUNT OF TIME (IN MILLISECONDS)');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Delay');
     }
 };
@@ -386,7 +386,7 @@ Blockly.Blocks['control_delaymicroseconds'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cArduinoStatement.primary, Blockly.Colours.cArduinoStatement.secondary, Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Pauses the program for the amount of time (in microseconds)');
+        this.setTooltip('PAUSE THE PROGRAM FOR THE AMOUNT OF TIME (1000 Microseconds = 1 sec)');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/DelayMicroseconds');
     }
 };
@@ -399,7 +399,7 @@ Blockly.Blocks['control_millis'] = {
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Returns the number of milliseconds since the Arduino board began running the current program');
+        this.setTooltip('RETURNS THE NUMBER OF MILLISECONDS (1 sec = 1000 milliseconds) SINCE THE ARDUINO BOARD BEGAN RUNNING THE CURRENT PROGRAM');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Millis');
     }
 };
@@ -411,7 +411,7 @@ Blockly.Blocks['control_micros'] = {
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Returns the number of microseconds since the Arduino board began running the current program');
+        this.setTooltip('RETURNS THE NUMBER OF MICROSECONDS (1 sec = 1,000,000 microseconds) SINCE THE ARDUINO BOARD BEGAN RUNNING THE CURRENT PROGRAM');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Micros');
     }
 };

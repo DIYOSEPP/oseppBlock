@@ -58,7 +58,7 @@ Blockly.Blocks['io_readdigitalpin'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('Reads the value from a specified digital pin, either HIGH or LOW');
+        this.setTooltip('READ THE VALUES FROM A SPECIFIC DIGITAL PIN, EITHER HIGH OR LOW');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/DigitalRead');
     }
 };
@@ -75,7 +75,7 @@ Blockly.Blocks['io_readanalogpin'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Reads the value from the specified analog pin');
+        this.setTooltip('READ THE VALUES(0-1023) FROM SPECIFIED ANALOG PIN');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/AnalogRead');
     }
 };
@@ -95,7 +95,7 @@ Blockly.Blocks['io_writedigitalpin'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Write a HIGH or a LOW value to a digital pin');
+        this.setTooltip('WRITE A HIGH OR LOW VALUE TO A DIGITAL PIN');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/DigitalWrite');
     }
 };
@@ -114,7 +114,7 @@ Blockly.Blocks['io_writeanalogpin'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Writes an analog value (PWM wave) to a pin');
+        this.setTooltip('WRITE AS AN ANALOG VALUE(0-255) TO A PIN.');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/AnalogWrite');
     }
 };
@@ -134,7 +134,7 @@ Blockly.Blocks['io_pinmode'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Configures the specified pin to behave either as an input or an output');
+        this.setTooltip('CONFIGURES THE SPECIFIC PIN TO BEHAVE EITHER AS AN INPUT OR OUTPUT');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/PinMode');
     }
 };
@@ -217,7 +217,7 @@ Blockly.Blocks['io_tone'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Generates a square wave of the specified frequency (and 50% duty cycle) on a pin');
+        this.setTooltip('GENERATES A SPECIFIC TONE SOUND');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Tone');
     }
 };
@@ -250,7 +250,7 @@ Blockly.Blocks['io_notone'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Stops the generation of a square wave triggered by tone(). Has no effect if no tone is being generated.');
+        this.setTooltip('STOPS THE TONE() SOUND');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/NoTone');
     }
 };
@@ -272,7 +272,7 @@ Blockly.Blocks['io_pulsein'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Reads a pulse (either HIGH or LOW) on a pin');
+        this.setTooltip('READS A PULSE (EITHER HIGH OR LOW) ON A PIN');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/PulseIn');
     }
 };
@@ -289,7 +289,7 @@ Blockly.Blocks['instance_serial'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('Sets the data rate in bits per second (baud) for serial data transmission');
+        this.setTooltip('SETS THE DATA RATE IN BITS PER SECOND (BAUD) FOR SERIAL DATA TRANSMISSION');
         this.setHelpUrl('https://www.arduino.cc/en/Serial/Begin');
     }
 };
@@ -307,8 +307,8 @@ Blockly.Blocks['serial_print'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip('PRINT A VARIABLE TO THE SERIAL PORT');
+        this.setHelpUrl('https://www.arduino.cc/en/Serial/Print');
     }
 };
 Blockly.Blocks['serial_available'] = {
@@ -322,7 +322,7 @@ Blockly.Blocks['serial_available'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Get the number of bytes (characters) available for reading from the serial port');
+        this.setTooltip('GET THE NUMBER OF BYTES (CHARACTERS) AVAILABLE FOR READING FROM THE SERIAL PORT');
         this.setHelpUrl('https://www.arduino.cc/en/Serial/Available');
     }
 };
@@ -338,7 +338,7 @@ Blockly.Blocks['serial_read'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Reads incoming serial data');
+        this.setTooltip('READS INCOMING SERIAL DATA');
         this.setHelpUrl('https://www.arduino.cc/en/Serial/Read');
     }
 };
