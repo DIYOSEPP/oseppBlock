@@ -8,6 +8,7 @@
 
     <script src="../blockly_uncompressed_vertical.js"></script>
     <script src="../msg/messages.js"></script>
+    <script src="../blocks_vertical/vertical_extensions.js"></script>
     <script src="../blocks_common/math.js"></script>
     <script src="../blocks_common/text.js"></script>
     <script src="../blocks_common/colour.js"></script>
@@ -208,7 +209,11 @@
 
       function sprinkles(n) {
         var prototypes = [];
-        var toolbox = getToolboxElement();
+        var toolbox = workspace.options.languageTree;
+        if (!toolbox) {
+          console.error('Toolbox not found; add a toolbox element to the DOM.');
+          return;
+        }
         var blocks = toolbox.getElementsByTagName('block');
         for (var i = 0; i < n; i++) {
           var blockXML = blocks[Math.floor(Math.random() * blocks.length)];

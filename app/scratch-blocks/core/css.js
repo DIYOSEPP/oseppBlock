@@ -152,6 +152,7 @@ Blockly.Css.CONTENT = [
     'height: 100%;',
     'position: relative;',
     'overflow: hidden;', /* So blocks in drag surface disappear at edges */
+    'touch-action: none',
   '}',
 
   '.blocklyNonSelectable {',
@@ -358,8 +359,8 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklySelected>.blocklyPath {',
-     //'stroke: #fc3;',
-     'stroke-width: 3px;',
+    // 'stroke: #fc3;',
+    // 'stroke-width: 3px;',
   '}',
 
   '.blocklySelected>.blocklyPathLight {',
@@ -411,8 +412,8 @@ Blockly.Css.CONTENT = [
 
   '.blocklyDragging>.blocklyPath,',
   '.blocklyDragging>.blocklyPathLight {',
-    'fill-opacity: .8;',
-    'stroke-opacity: .8;',
+    'fill-opacity: 1.0;',
+    'stroke-opacity: 1.0;',
   '}',
 
   '.blocklyDragging>.blocklyPath {',
@@ -500,7 +501,7 @@ Blockly.Css.CONTENT = [
     Don't allow users to select text.  It gets annoying when trying to
     drag a block and selected text moves instead.
   */
-  '.blocklySvg text, .blocklyBlockDragSurface text {',
+  '.blocklySvg text, .blocklyBlockDragSurface text, .blocklyFlyout text, .blocklyToolboxDiv text {',
     'user-select: none;',
     '-moz-user-select: none;',
     '-webkit-user-select: none;',
@@ -668,8 +669,8 @@ Blockly.Css.CONTENT = [
   '.blocklyToolboxDiv {',
     'background-color: $colour_toolbox;',
     'color: $colour_toolboxText;',
-    'overflow-x: hidden;', //'overflow-x: visible;',
-    'overflow-y: hidden;', //'overflow-y: auto;',
+    'overflow-x: visible;',
+    'overflow-y: auto;',
     'position: absolute;',
     'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'z-index: 40;', /* so blocks go over toolbox when dragging */
@@ -764,6 +765,10 @@ Blockly.Css.CONTENT = [
     'font-size: 16px;',
     'padding: 0 3px;',
     'vertical-align: middle;',
+  '}',
+
+  '.blocklyToolboxDelete .blocklyTreeLabel {',
+    'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
   '}',
 
   '.blocklyTreeSelected .blocklyTreeLabel {',

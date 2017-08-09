@@ -116,7 +116,6 @@ Blockly.Toolbox.prototype.init = function() {
   // Clicking on toolbox closes popups.
   Blockly.bindEventWithChecks_(this.HtmlDiv, 'mousedown', this,
       function(e) {
-        Blockly.DropDownDiv.hide();
         if (Blockly.utils.isRightButton(e) || e.target == this.HtmlDiv) {
           // Close flyout.
           Blockly.hideChaff(false);
@@ -517,6 +516,7 @@ Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
       case 'SHADOW':
       case 'LABEL':
       case 'BUTTON':
+      case 'SEP':
       case 'TEXT':
         this.contents_.push(child);
         break;
@@ -549,7 +549,7 @@ Blockly.Toolbox.Category.prototype.setColour = function(node) {
     } else {
       this.colour_ = Blockly.hueToRgb(colour);
     }
-    if (secondaryColour&&secondaryColour.match(/^#[0-9a-fA-F]{6}$/)) {
+    if (secondaryColour.match(/^#[0-9a-fA-F]{6}$/)) {
       this.secondaryColour_ = secondaryColour;
     } else {
       this.secondaryColour_ = Blockly.hueToRgb(secondaryColour);

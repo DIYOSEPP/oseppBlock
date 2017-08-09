@@ -69,7 +69,7 @@ Blockly.FieldCheckbox.prototype.init = function() {
   // The checkbox doesn't use the inherited text element.
   // Instead it uses a custom checkmark element that is either visible or not.
   this.checkElement_ = Blockly.utils.createSvgElement('text',
-      {'class': 'blocklyText blocklyCheckbox', 'x': -3, 'y': 20},
+      {'class': 'blocklyText blocklyCheckbox', 'x': -3, 'y': 14},
       this.fieldGroup_);
   var textNode = document.createTextNode(Blockly.FieldCheckbox.CHECK_CHAR);
   this.checkElement_.appendChild(textNode);
@@ -94,7 +94,7 @@ Blockly.FieldCheckbox.prototype.setValue = function(newBool) {
       (newBool.toUpperCase() == 'TRUE') : !!newBool;
   if (this.state_ !== newState) {
     if (this.sourceBlock_ && Blockly.Events.isEnabled()) {
-      Blockly.Events.fire(new Blockly.Events.Change(
+      Blockly.Events.fire(new Blockly.Events.BlockChange(
           this.sourceBlock_, 'field', this.name, this.state_, newState));
     }
     this.state_ = newState;

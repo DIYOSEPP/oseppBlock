@@ -75,61 +75,13 @@ Blockly.Colours = {
     "secondary": "#FF4D6A",
     "tertiary": "#FF3355"
   },
-    //my colours
-  "cMathOperation": {
-      "primary": "#EC9C13",
-      "secondary": "#EC9C13",
-      "tertiary": "#CF8B17"
-  },
-  "cVariableOperation": {
-      "primary": "#CF63CF",
-      "secondary": "#C94FC9",
-      "tertiary": "#BD42BD"
-  },
-  "cModuleInput": {
-      "primary": "#855CD6",
-      "secondary": "#855CD6",
-      "tertiary": "#774DCB"
-  },
-  "cArduinoStatement": {
-      "primary": "#4C97FF",
-      "secondary": "#4280D7",
-      "tertiary": "#3373CC"
-  },
-  "cInstanceStatement": {
-      "primary": "#9966FF",
-      "secondary": "#855CD6",
-      "tertiary": "#774DCB"
-  },
-  "cArduinoInput": {
-      "primary": "#4280D7",
-      "secondary": "#4280D7",
-      "tertiary": "#3373CC"
-  },
-  "cInstanceDefine": {
-      "primary": "#0fBD8C",
-      "secondary": "#0DA57A",
-      "tertiary": "#0B8E69"
-  },
-  "cVariableDefine": {
-      "primary": "#59C059",
-      "secondary": "#46B946",
-      "tertiary": "#389438"
-  },
-  "cLoop": {
-      "primary": "#FFAB19",
-      "secondary": "#EC9C13",
-      "tertiary": "#CF8B17"
-  },
-
-
   "text": "#575E75",
   "workspace": "#F9F9F9",
   "toolboxHover": "#4C97FF",
-  "toolboxSelected": "#005053",//"toolboxSelected": "#e9eef2",
-  "toolboxText": "#112222",//"toolboxText": "#575E75",
-  "toolbox": "#006468",//"toolbox": "#FFFFFF",
-  "flyout": "#006468",//"flyout": "#F9F9F9",
+  "toolboxSelected": "#e9eef2",
+  "toolboxText": "#575E75",
+  "toolbox": "#FFFFFF",
+  "flyout": "#F9F9F9",
   "scrollbar": "#CECDCE",
   "scrollbarHover": '#CECDCE',
   "textField": "#FFFFFF",

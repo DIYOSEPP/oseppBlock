@@ -142,6 +142,8 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
   this.category_ = null;
 
   /**
+   * The block's position in workspace units.  (0, 0) is at the workspace's
+   * origin; scale does not change this value.
    * @type {!goog.math.Coordinate}
    * @private
    */
@@ -180,7 +182,7 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
   /** @type {boolean|undefined} */
   this.inputsInlineDefault = this.inputsInline;
   if (Blockly.Events.isEnabled()) {
-    Blockly.Events.fire(new Blockly.Events.Create(this));
+    Blockly.Events.fire(new Blockly.Events.BlockCreate(this));
   }
   // Bind an onchange function, if it exists.
   if (goog.isFunction(this.onchange)) {
@@ -233,7 +235,7 @@ Blockly.Block.prototype.dispose = function(healStack) {
   }
   this.unplug(healStack);
   if (Blockly.Events.isEnabled()) {
-    Blockly.Events.fire(new Blockly.Events.Delete(this));
+    Blockly.Events.fire(new Blockly.Events.BlockDelete(this));
   }
   Blockly.Events.disable();
 
@@ -339,7 +341,7 @@ Blockly.Block.prototype.getConnections_ = function() {
 /**
  * Walks down a stack of blocks and finds the last next connection on the stack.
  * @return {Blockly.Connection} The last next connection on the stack, or null.
- * @private
+ * @package
  */
 Blockly.Block.prototype.lastConnectionInStack = function() {
   var nextConnection = this.nextConnection;
@@ -360,7 +362,6 @@ Blockly.Block.prototype.lastConnectionInStack = function() {
  * connected should not coincidentally line up on screen.
  * @private
  */
-// TODO: Refactor to return early in headless mode.
 Blockly.Block.prototype.bumpNeighbours_ = function() {
   console.warn('Not expected to reach this bumpNeighbours_ function. The ' +
     'BlockSvg function for bumpNeighbours_ was expected to be called instead.');
@@ -429,6 +430,14 @@ Blockly.Block.prototype.getSurroundParent = function() {
  */
 Blockly.Block.prototype.getNextBlock = function() {
   return this.nextConnection && this.nextConnection.targetBlock();
+};
+
+/**
+ * Return the previous statement block directly connected to this block.
+ * @return {Blockly.Block} The previous statement block or null.
+ */
+Blockly.Block.prototype.getPreviousBlock = function() {
+  return this.previousConnection && this.previousConnection.targetBlock();
 };
 
 /**
@@ -948,7 +957,7 @@ Blockly.Block.prototype.setOutput = function(newBoolean, opt_check) {
  */
 Blockly.Block.prototype.setInputsInline = function(newBoolean) {
   if (this.inputsInline != newBoolean) {
-    Blockly.Events.fire(new Blockly.Events.Change(
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
         this, 'inline', null, this.inputsInline, newBoolean));
     this.inputsInline = newBoolean;
   }
@@ -987,7 +996,7 @@ Blockly.Block.prototype.getInputsInline = function() {
  */
 Blockly.Block.prototype.setDisabled = function(disabled) {
   if (this.disabled != disabled) {
-    Blockly.Events.fire(new Blockly.Events.Change(
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
         this, 'disabled', null, this.disabled, disabled));
     this.disabled = disabled;
   }
@@ -1024,7 +1033,7 @@ Blockly.Block.prototype.isCollapsed = function() {
  */
 Blockly.Block.prototype.setCollapsed = function(collapsed) {
   if (this.collapsed_ != collapsed) {
-    Blockly.Events.fire(new Blockly.Events.Change(
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
         this, 'collapsed', null, this.collapsed_, collapsed));
     this.collapsed_ = collapsed;
   }
@@ -1115,18 +1124,7 @@ Blockly.Block.prototype.jsonInit = function(json) {
 
   // Set basic properties of block.
   if (json['colour'] !== undefined) {
-    // TODO: Consider a helper function here.
-    var rawValue = json['colour'];
-    var primary = goog.isString(rawValue) ?
-        Blockly.utils.replaceMessageReferences(rawValue) : rawValue;
-    rawValue = json['colourSecondary'];
-    var secondary = goog.isString(rawValue) ?
-        Blockly.utils.replaceMessageReferences(rawValue) : rawValue;
-    rawValue = json['colourTertiary'];
-    var tertiary = goog.isString(rawValue) ?
-        Blockly.utils.replaceMessageReferences(rawValue) : rawValue;
-
-    this.setColour(primary, secondary, tertiary);
+    this.setColourFromJson_(json);
   }
 
   // Interpolate the message blocks.
@@ -1222,6 +1220,39 @@ Blockly.Block.prototype.mixin = function(mixinObj, opt_disableCheck) {
 };
 
 /**
+ * Set the colour of the block from strings or string table references.
+ * @param {string|?} primary Primary colour, which may be a string that contains
+ *     string table references.
+ * @param {string|?} secondary Secondary colour, which may be a string that
+ *     contains string table references.
+ * @param {string|?} tertiary Tertiary colour, which may be a string that
+ *     contains string table references.
+ * @private
+ */
+Blockly.Block.prototype.setColourFromRawValues_ = function(primary, secondary,
+    tertiary) {
+  primary = goog.isString(primary) ?
+      Blockly.utils.replaceMessageReferences(primary) : primary;
+  secondary = goog.isString(secondary) ?
+      Blockly.utils.replaceMessageReferences(secondary) : secondary;
+  tertiary = goog.isString(tertiary) ?
+      Blockly.utils.replaceMessageReferences(tertiary) : tertiary;
+
+  this.setColour(primary, secondary, tertiary);
+};
+
+/**
+ * Set the colour of the block from JSON, replacing message references as
+ * needed.
+ * @param {!Object} json Structured data describing the block.
+ * @private
+ */
+Blockly.Block.prototype.setColourFromJson_ = function(json) {
+  this.setColourFromRawValues_(json['colour'], json['colourSecondary'],
+      json['colourTertiary']);
+};
+
+/**
  * Interpolate a message description onto the block.
  * @param {string} message Text contains interpolation tokens (%1, %2, ...)
  *     that match with fields or inputs defined in the args array.
@@ -1239,10 +1270,14 @@ Blockly.Block.prototype.interpolate_ = function(message, args, lastDummyAlign) {
   for (var i = 0; i < tokens.length; i++) {
     var token = tokens[i];
     if (typeof token == 'number') {
-      goog.asserts.assert(token > 0 && token <= args.length,
-          'Message index %%s out of range.', token);
-      goog.asserts.assert(!indexDup[token],
-          'Message index %%s duplicated.', token);
+      if (token <= 0 || token > args.length) {
+        throw new Error('Block \"' + this.type + '\": ' +
+            'Message index %' + token + ' out of range.');
+      }
+      if (indexDup[token]) {
+        throw new Error('Block \"' + this.type + '\": ' +
+            'Message index %' + token + ' duplicated.');
+      }
       indexDup[token] = true;
       indexCount++;
       elements.push(args[token - 1]);
@@ -1253,8 +1288,10 @@ Blockly.Block.prototype.interpolate_ = function(message, args, lastDummyAlign) {
       }
     }
   }
-  goog.asserts.assert(indexCount == args.length,
-      'block "%s": Message does not reference all %s arg(s).', this.type, args.length);
+  if(indexCount != args.length) {
+    throw new Error('Block \"' + this.type + '\": ' +
+        'Message does not reference all ' + args.length + ' arg(s).');
+  }
   // Add last dummy input if needed.
   if (elements.length && (typeof elements[elements.length - 1] == 'string' ||
       goog.string.startsWith(elements[elements.length - 1]['type'],
@@ -1592,7 +1629,7 @@ Blockly.Block.prototype.getCommentText = function() {
  */
 Blockly.Block.prototype.setCommentText = function(text) {
   if (this.comment != text) {
-    Blockly.Events.fire(new Blockly.Events.Change(
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
         this, 'comment', null, this.comment, text || ''));
     this.comment = text;
   }
@@ -1682,7 +1719,7 @@ Blockly.Block.prototype.getRelativeToSurfaceXY = function() {
  */
 Blockly.Block.prototype.moveBy = function(dx, dy) {
   goog.asserts.assert(!this.parentBlock_, 'Block has parent.');
-  var event = new Blockly.Events.Move(this);
+  var event = new Blockly.Events.BlockMove(this);
   this.xy_.translate(dx, dy);
   event.recordNew();
   Blockly.Events.fire(event);

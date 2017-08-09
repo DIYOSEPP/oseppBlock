@@ -39,7 +39,7 @@ if sys.version_info[0] != 2:
   raise Exception("Blockly build only compatible with Python 2.x.\n"
                   "You are using: " + sys.version)
 
-import errno, glob, httplib, json, os, re, subprocess, threading, urllib
+import errno, glob, httplib, json, os, re, subprocess, threading, urllib,urllib2
 
 
 def import_path(fullpath):
@@ -170,22 +170,15 @@ class Gen_compressed(threading.Thread):
   Uses the Closure Compiler's online API.
   Runs in a separate thread.
   """
-  def __init__(self, search_paths_vertical, search_paths_horizontal):
+  def __init__(self, search_paths_vertical):
     threading.Thread.__init__(self)
     self.search_paths_vertical = search_paths_vertical
-    self.search_paths_horizontal = search_paths_horizontal
 
   def run(self):
     self.gen_core(True)
-    self.gen_core(False)
-    self.gen_blocks("horizontal")
     self.gen_blocks("vertical")
     self.gen_blocks("common")
-    self.gen_generator("javascript")
-    self.gen_generator("python")
-    self.gen_generator("php")
-    self.gen_generator("dart")
-    self.gen_generator("lua")
+    self.gen_generator("arduino")
 
   def gen_core(self, vertical):
     if vertical:
@@ -284,9 +277,9 @@ class Gen_compressed(threading.Thread):
   def do_compile(self, params, target_filename, filenames, remove):
     # Send the request to Google.
     headers = {"Content-type": "application/x-www-form-urlencoded"}
-    conn = httplib.HTTPConnection("closure-compiler.appspot.com")
-    conn.request("POST", "/compile", urllib.urlencode(params), headers)
-    response = conn.getresponse()
+    conn = httplib.HTTPConnection("127.0.0.1","1080")
+    conn.request("POST", "http://closure-compiler.appspot.com/compile", urllib.urlencode(params), headers)
+    response = conn.getresponse()   
     json_str = response.read()
     conn.close()
 
@@ -494,10 +487,10 @@ developers.google.com/blockly/guides/modify/web/closure""")
   # Vertical:
   Gen_uncompressed(search_paths_vertical, True).start()
   # Horizontal:
-  Gen_uncompressed(search_paths_horizontal, False).start()
+  #Gen_uncompressed(search_paths_horizontal, False).start()
 
-  # Compressed forms of vertical and horizontal.
-  Gen_compressed(search_paths_vertical, search_paths_horizontal).start()
+  # Compressed forms of vertical.
+  Gen_compressed(search_paths_vertical).start()
 
   # This is run locally in a separate thread.
   Gen_langfiles().start()

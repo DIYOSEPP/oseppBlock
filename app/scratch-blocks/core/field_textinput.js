@@ -144,7 +144,7 @@ Blockly.FieldTextInput.prototype.setText = function(newText) {
     return;
   }
   if (this.sourceBlock_ && Blockly.Events.isEnabled()) {
-    Blockly.Events.fire(new Blockly.Events.Change(
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
         this.sourceBlock_, 'field', this.name, this.text_, newText));
   }
   Blockly.Field.prototype.setText.call(this, newText);
@@ -286,11 +286,14 @@ Blockly.FieldTextInput.prototype.onHtmlInputKeyDown_ = function(e) {
   var tabKey = 9, enterKey = 13, escKey = 27;
   if (e.keyCode == enterKey) {
     Blockly.WidgetDiv.hide();
+    Blockly.DropDownDiv.hideWithoutAnimation();
   } else if (e.keyCode == escKey) {
     htmlInput.value = htmlInput.defaultValue;
     Blockly.WidgetDiv.hide();
+    Blockly.DropDownDiv.hideWithoutAnimation();
   } else if (e.keyCode == tabKey) {
     Blockly.WidgetDiv.hide();
+    Blockly.DropDownDiv.hideWithoutAnimation();
     this.sourceBlock_.tab(this, !e.shiftKey);
     e.preventDefault();
   }
@@ -398,12 +401,8 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
     textWidth *= scale;
     width = textWidth;
   } else {
-      // Set width to (truncated) block size.
-      if (this.sourceBlock_.isShadow()) {
-          width = this.sourceBlock_.getHeightWidth().width * scale;
-      } else {
-          width = this.renderWidth * scale;
-      }
+    // Set width to (truncated) block size.
+    width = this.sourceBlock_.getHeightWidth().width * scale;
   }
   // The width must be at least FIELD_WIDTH and at most FIELD_WIDTH_MAX_EDIT
   width = Math.max(width, Blockly.BlockSvg.FIELD_WIDTH_MIN_EDIT * scale);
@@ -416,11 +415,11 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
   // Use margin-left to animate repositioning of the box (value is unscaled).
   // This is the difference between the default position and the positioning
   // after growing the box.
-  //var fieldWidth = this.sourceBlock_.getHeightWidth().width;
-  //var initialWidth = fieldWidth * scale;
-  //var finalWidth = width;
-  //div.style.marginLeft = -0.5 * (finalWidth - initialWidth) + 'px';
-  div.style.marginLeft = 0 + 'px';
+  var fieldWidth = this.sourceBlock_.getHeightWidth().width;
+  var initialWidth = fieldWidth * scale;
+  var finalWidth = width;
+  div.style.marginLeft = -0.5 * (finalWidth - initialWidth) + 'px';
+
   // Add 0.5px to account for slight difference between SVG and CSS border
   var borderRadius = this.getBorderRadius() + 0.5;
   div.style.borderRadius = borderRadius + 'px';
@@ -428,6 +427,7 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
   // Pull stroke colour from the existing shadow block
   var strokeColour = this.sourceBlock_.getColourTertiary();
   div.style.borderColor = strokeColour;
+
   var xy = this.getAbsoluteXY_();
   // Account for border width, post-scale
   xy.x -= scale / 2;
@@ -492,8 +492,7 @@ Blockly.FieldTextInput.prototype.widgetDispose_ = function() {
       }
     }
     thisField.setText(text);
-    // Rerender the field now that the text has changed.
-    thisField.sourceBlock_.rendered && thisField.render_();
+    thisField.sourceBlock_.rendered && thisField.sourceBlock_.render();
     Blockly.unbindEvent_(htmlInput.onKeyDownWrapper_);
     Blockly.unbindEvent_(htmlInput.onKeyUpWrapper_);
     Blockly.unbindEvent_(htmlInput.onKeyPressWrapper_);
@@ -506,15 +505,15 @@ Blockly.FieldTextInput.prototype.widgetDispose_ = function() {
     Blockly.Events.setGroup(false);
 
     // Animation of disposal
-    //htmlInput.style.fontSize = Blockly.BlockSvg.FIELD_TEXTINPUT_FONTSIZE_INITIAL + 'pt';
-    //div.style.boxShadow = '';
-    //// Resize to actual size of final source block.
-    //if (thisField.sourceBlock_) {
-    //  var size = thisField.sourceBlock_.getHeightWidth();
-    //  div.style.width = (size.width + 1) + 'px';
-    //  div.style.height = (size.height + 1) + 'px';
-    //}
-    //div.style.marginLeft = 0;
+    htmlInput.style.fontSize = Blockly.BlockSvg.FIELD_TEXTINPUT_FONTSIZE_INITIAL + 'pt';
+    div.style.boxShadow = '';
+    // Resize to actual size of final source block.
+    if (thisField.sourceBlock_) {
+      var size = thisField.sourceBlock_.getHeightWidth();
+      div.style.width = (size.width + 1) + 'px';
+      div.style.height = (size.height + 1) + 'px';
+    }
+    div.style.marginLeft = 0;
   };
 };
 

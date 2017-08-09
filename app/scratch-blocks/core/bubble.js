@@ -223,7 +223,7 @@ Blockly.Bubble.prototype.createDom_ = function(content, hasResize) {
   */
   this.bubbleGroup_ = Blockly.utils.createSvgElement('g', {}, null);
   var filter =
-      { 'filter': 'url(#' + 'blocklyBubleFilter' + ')' };
+      {'filter': 'url(#' + this.workspace_.options.embossFilterId + ')'};
   if (goog.userAgent.getUserAgentString().indexOf('JavaFX') != -1) {
     // Multiple reports that JavaFX can't handle filters.  UserAgent:
     // Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.44
