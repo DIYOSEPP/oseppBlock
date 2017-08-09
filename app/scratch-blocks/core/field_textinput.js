@@ -402,7 +402,11 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
     width = textWidth;
   } else {
     // Set width to (truncated) block size.
-    width = this.sourceBlock_.getHeightWidth().width * scale;
+      if (this.sourceBlock_.isShadow()) {
+          width = this.sourceBlock_.getHeightWidth().width * scale;
+      } else {
+          width = this.renderWidth * scale;
+      }
   }
   // The width must be at least FIELD_WIDTH and at most FIELD_WIDTH_MAX_EDIT
   width = Math.max(width, Blockly.BlockSvg.FIELD_WIDTH_MIN_EDIT * scale);
@@ -415,11 +419,11 @@ Blockly.FieldTextInput.prototype.resizeEditor_ = function() {
   // Use margin-left to animate repositioning of the box (value is unscaled).
   // This is the difference between the default position and the positioning
   // after growing the box.
-  var fieldWidth = this.sourceBlock_.getHeightWidth().width;
-  var initialWidth = fieldWidth * scale;
-  var finalWidth = width;
-  div.style.marginLeft = -0.5 * (finalWidth - initialWidth) + 'px';
-
+  //var fieldWidth = this.sourceBlock_.getHeightWidth().width;
+  //var initialWidth = fieldWidth * scale;
+  //var finalWidth = width;
+  //div.style.marginLeft = -0.5 * (finalWidth - initialWidth) + 'px';
+  div.style.marginLeft = 0 + 'px';
   // Add 0.5px to account for slight difference between SVG and CSS border
   var borderRadius = this.getBorderRadius() + 0.5;
   div.style.borderRadius = borderRadius + 'px';
@@ -505,15 +509,15 @@ Blockly.FieldTextInput.prototype.widgetDispose_ = function() {
     Blockly.Events.setGroup(false);
 
     // Animation of disposal
-    htmlInput.style.fontSize = Blockly.BlockSvg.FIELD_TEXTINPUT_FONTSIZE_INITIAL + 'pt';
-    div.style.boxShadow = '';
+    //htmlInput.style.fontSize = Blockly.BlockSvg.FIELD_TEXTINPUT_FONTSIZE_INITIAL + 'pt';
+    //div.style.boxShadow = '';
     // Resize to actual size of final source block.
-    if (thisField.sourceBlock_) {
-      var size = thisField.sourceBlock_.getHeightWidth();
-      div.style.width = (size.width + 1) + 'px';
-      div.style.height = (size.height + 1) + 'px';
-    }
-    div.style.marginLeft = 0;
+    //if (thisField.sourceBlock_) {
+    //  var size = thisField.sourceBlock_.getHeightWidth();
+    //  div.style.width = (size.width + 1) + 'px';
+    //  div.style.height = (size.height + 1) + 'px';
+    //}
+    //div.style.marginLeft = 0;
   };
 };
 

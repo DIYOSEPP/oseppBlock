@@ -549,7 +549,7 @@ Blockly.Toolbox.Category.prototype.setColour = function(node) {
     } else {
       this.colour_ = Blockly.hueToRgb(colour);
     }
-    if (secondaryColour.match(/^#[0-9a-fA-F]{6}$/)) {
+    if (secondaryColour&&secondaryColour.match(/^#[0-9a-fA-F]{6}$/)) {
       this.secondaryColour_ = secondaryColour;
     } else {
       this.secondaryColour_ = Blockly.hueToRgb(secondaryColour);

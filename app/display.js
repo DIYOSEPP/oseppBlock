@@ -254,7 +254,7 @@ function getCode() {
 
 function updateCode() {
     if (!codeChanged) return;
-    if (Blockly.dragMode_ != Blockly.DRAG_NONE) return;
+    if (Blockly.getMainWorkspace().isDragging()) return;
     var allcode = getCode() || '';
     allcode = allcode.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     document.getElementById('code_area').innerHTML = prettyPrintOne(allcode, 'cpp', false);

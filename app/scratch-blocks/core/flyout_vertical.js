@@ -152,7 +152,7 @@ Blockly.VerticalFlyout.prototype.createDom = function(tagName) {
   */
   this.defs_ = Blockly.utils.createSvgElement('defs', {}, this.svgGroup_);
   var clipPath = Blockly.utils.createSvgElement('clipPath',
-      {'id':'blocklyBlockMenuClipPath'}, this.defs_);
+      { 'id': 'blocklyBlockMenuClipPath' + tagName }, this.defs_);
   this.clipRect_ = Blockly.utils.createSvgElement('rect',
       {'id': 'blocklyBlockMenuClipRect',
         'height': '0',
@@ -162,7 +162,7 @@ Blockly.VerticalFlyout.prototype.createDom = function(tagName) {
       },
       clipPath);
   this.workspace_.svgGroup_.setAttribute('clip-path',
-      'url(#blocklyBlockMenuClipPath)');
+      'url(#blocklyBlockMenuClipPath'+tagName+')');
 
   return this.svgGroup_;
 };
@@ -237,7 +237,7 @@ Blockly.VerticalFlyout.prototype.setMetrics_ = function(xyRatio) {
   this.workspace_.translate(this.workspace_.scrollX + metrics.absoluteLeft,
       this.workspace_.scrollY + metrics.absoluteTop);
 
-  this.clipRect_.setAttribute('height', metrics.viewHeight + 'px');
+  this.clipRect_.setAttribute('height', Math.max(0, metrics.viewHeight) + 'px');
   this.clipRect_.setAttribute('width', metrics.viewWidth + 'px');
 };
 

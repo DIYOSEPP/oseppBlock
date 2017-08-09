@@ -673,16 +673,16 @@ Blockly.Connection.prototype.setCheck = function(check) {
  */
 Blockly.Connection.prototype.getOutputShape = function() {
   if (!this.check_) return Blockly.OUTPUT_SHAPE_ROUND;
-  if (this.check_.indexOf('Boolean') !== -1) {
-    return Blockly.OUTPUT_SHAPE_HEXAGONAL;
+  for (var i = 0, check; check = this.check_[i]; i++) {
+      switch (check) {
+          case 'Boolean': return Blockly.OUTPUT_SHAPE_HEXAGONAL;
+          case 'Number': return Blockly.OUTPUT_SHAPE_ROUND;
+          case 'String': return Blockly.OUTPUT_SHAPE_SQUARE;
+          case 'NumberInstanceDefine': return Blockly.OUTPUT_SHAPE_SQUARE;
+          case 'NumberInstance': return Blockly.OUTPUT_SHAPE_ROUND;
+      }
   }
-  if (this.check_.indexOf('Number') !== -1) {
-    return Blockly.OUTPUT_SHAPE_ROUND;
-  }
-  if (this.check_.indexOf('String') !== -1) {
-    return Blockly.OUTPUT_SHAPE_SQUARE;
-  }
-  return Blockly.OUTPUT_SHAPE_ROUND;
+  return Blockly.OUTPUT_SHAPE_SQUARE;
 };
 
 /**

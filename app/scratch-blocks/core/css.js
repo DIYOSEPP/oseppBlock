@@ -669,8 +669,8 @@ Blockly.Css.CONTENT = [
   '.blocklyToolboxDiv {',
     'background-color: $colour_toolbox;',
     'color: $colour_toolboxText;',
-    'overflow-x: visible;',
-    'overflow-y: auto;',
+    'overflow-x: hidden;',
+    'overflow-y: hidden;',
     'position: absolute;',
     'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'z-index: 40;', /* so blocks go over toolbox when dragging */
