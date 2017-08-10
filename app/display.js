@@ -39,12 +39,12 @@ var slider_drogStart = function (e) {
 
     ev = ev.type == "touchstart" ? ev.targetTouches[0] : ev;
 
-    var disX =ev.clientX;
+    var disX = ev.clientX;
     var codediv = document.getElementById("codediv");
     var width = codediv.style.width;
     width = parseInt(width);
 
-    var slidermove = function (e) {        
+    var slidermove = function (e) {
         var ev = e || event;
         if (ev.preventDefault) {
             ev.preventDefault();
@@ -57,7 +57,7 @@ var slider_drogStart = function (e) {
         resizeWorkspaceDiv();
         return false;
     };
-    document.addEventListener('mousemove', slidermove,false);
+    document.addEventListener('mousemove', slidermove, false);
     document.addEventListener('touchmove', slidermove, false);
     var sliderup = function (e) {
         var ev = e || event;
@@ -123,7 +123,8 @@ function loadBlockWorkspaceFromLocalStorage(workspace) {
 }
 var newWorkspace = function () {
     var blocks = blockWorkspace.getAllBlocks();
-    Blockly.Events.setGroup(true);
+    var eventGroup = Blockly.utils.genUid();
+    Blockly.Events.setGroup(eventGroup);
     blockWorkspace.clear();
     var block = blockWorkspace.newBlock('controlsetuploop');
     block.initSvg();
@@ -170,11 +171,10 @@ var loadWorkspace = function () {
             try {
                 var text = reader.result;
                 var xml = Blockly.Xml.textToDom(text);
-                Blockly.Events.setGroup(true);
                 blockWorkspace.clear();
                 Blockly.Xml.domToWorkspace(xml, blockWorkspace);
                 blockWorkspace.scrollCenter();
-                Blockly.Events.setGroup(false);
+                blockWorkspace.clearUndo();
             } catch (e) {
                 newWorkspace();
             }
@@ -192,25 +192,25 @@ var loadWorkspace = function () {
 
 function createBlockWorkspace() {
     blockWorkspace = Blockly.inject(document.getElementById("blockly_div"),
-    {
-        comments: true,
-        disable: false,
-        collapse: false,
-        media: 'scratch-blocks/media/',
-        readOnly: false,
-        scrollbars: true,
-        toolbox: Blockly.Xml.textToDom(blockToolboxXml),
-        toolboxPosition: 'start',
-        sounds: 'true',
-        zoom: {
-            controls: true,
-            wheel: true,
-            startScale: 0.75,
-            maxScale: 4,
-            minScale: 0.25,
-            scaleSpeed: 1.1
-        }
-    });
+        {
+            comments: true,
+            disable: false,
+            collapse: false,
+            media: 'scratch-blocks/media/',
+            readOnly: false,
+            scrollbars: true,
+            toolbox: Blockly.Xml.textToDom(blockToolboxXml),
+            toolboxPosition: 'start',
+            sounds: 'true',
+            zoom: {
+                controls: true,
+                wheel: true,
+                startScale: 0.75,
+                maxScale: 4,
+                minScale: 0.25,
+                scaleSpeed: 1.1
+            }
+        });
     if (!loadBlockWorkspaceFromLocalStorage(blockWorkspace)) {
         var block = blockWorkspace.newBlock('controlsetuploop');
         block.initSvg();
@@ -277,7 +277,7 @@ var savePortName = function () {
 function initSelectPort() {
     var select = document.getElementById("SelectComPort");
     select.options.length = 0;
-    select.addEventListener('mousedown', fillPortList,false);
+    select.addEventListener('mousedown', fillPortList, false);
     select.onmousedown = fillPortList;
     try {
         if (!!window.localStorage) {
@@ -320,9 +320,6 @@ function initSelectBaud() {
     }
     select.onchange = saveBaudrate;
 }
-
-
-
 
 var uploadClick = function () {
     function lockUI() {
@@ -400,17 +397,15 @@ function initWorkspace() {
         for (var i = 0; i < list.length; i++) {
             var f = list[i];
             if (!f.name.toLowerCase().endsWith(".obp")) continue;
-            console.log(f);         
+            console.log(f);
             var reader = new FileReader();
             reader.onload = function () {
                 try {
                     var text = reader.result;
                     var xml = Blockly.Xml.textToDom(text);
-                    Blockly.Events.setGroup(true);
                     blockWorkspace.clear();
                     Blockly.Xml.domToWorkspace(xml, blockWorkspace);
                     blockWorkspace.scrollCenter();
-                    Blockly.Events.setGroup(false);
                 } catch (e) {
                     newWorkspace();
                 }

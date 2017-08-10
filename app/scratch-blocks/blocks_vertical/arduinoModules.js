@@ -900,3 +900,54 @@ Blockly.Blocks['module_ultrasonic_get'] = {
     }
 };
 
+Blockly.Blocks['instance_4dtouch'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/1-100/LS00010_web-81-300-225-80.jpg", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('TOUCH4D', 'Touch1', 'Touch'), "NAME");
+        this.appendValueInput("OUT1")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("OUT1");
+        this.appendValueInput("OUT2")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("OUT2");
+        this.appendValueInput("OUT3")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("OUT3");
+        this.appendValueInput("OUT4")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("OUT4");
+        this.setInputsInline(false);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('Capacitive touch Module');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/53-4-digit-touch-sensor-module');
+    },
+    provideBlocks: ['module_4dtouch_get']
+};
+
+Blockly.Blocks['module_4dtouch_get'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceDropdown("TOUCH4D"), "NAME")
+            .appendField(" ");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["OUT1", "OUT1"], ["OUT2", "OUT2"], ["OUT3", "OUT3"], ["OUT4", "OUT4"]]), "CHANNEL")
+            .appendField("Pressed");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
+        this.setTooltip('DETECT IF TOUCH SENSOR IS PRESSED');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/53-4-digit-touch-sensor-module');
+    }
+};

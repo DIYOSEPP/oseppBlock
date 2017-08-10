@@ -35,9 +35,8 @@ Blockly.Arduino['booleanoperators'] = function (block) {
     var dropdown_operators = block.getFieldValue('Operators');
     var order = (dropdown_operators === '||') ?
         Blockly.Arduino.ORDER_LOGICAL_OR : Blockly.Arduino.ORDER_LOGICAL_AND;
-    var value_num1 = Blockly.Arduino.valueToCode(block, 'NUM1', order);
-
-    var value_num2 = Blockly.Arduino.valueToCode(block, 'NUM2', order);
+    var value_num1 = Blockly.Arduino.valueToCode(block, 'NUM1', order) || 'false';
+    var value_num2 = Blockly.Arduino.valueToCode(block, 'NUM2', order) || 'false';
     // TODO: Assemble Arduino into code variable.
     var code = value_num1 + dropdown_operators + value_num2;
     // TODO: Change ORDER_NONE to the correct strength.
@@ -45,7 +44,7 @@ Blockly.Arduino['booleanoperators'] = function (block) {
 };
 
 Blockly.Arduino['notoperators'] = function (block) {
-    var value_num2 = Blockly.Arduino.valueToCode(block, 'NUM2', Blockly.Arduino.ORDER_UNARY_PREFIX);
+    var value_num2 = Blockly.Arduino.valueToCode(block, 'NUM2', Blockly.Arduino.ORDER_UNARY_PREFIX) || 'true';
     // TODO: Assemble Arduino into code variable.
     var code = '!' + value_num2;
     // TODO: Change ORDER_NONE to the correct strength.

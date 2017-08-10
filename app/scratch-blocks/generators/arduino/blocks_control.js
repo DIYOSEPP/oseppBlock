@@ -58,7 +58,7 @@ Blockly.Arduino['control_forloop'] = function (block) {
 };
 
 Blockly.Arduino['control_while'] = function (block) {
-    var value_condition = Blockly.Arduino.valueToCode(block, 'CONDITION', Blockly.Arduino.ORDER_NONE);
+    var value_condition = Blockly.Arduino.valueToCode(block, 'CONDITION', Blockly.Arduino.ORDER_NONE)||'false';
     var statements_substack = Blockly.Arduino.statementToCode(block, 'SUBSTACK');
     // TODO: Assemble Arduino into code variable.
     var code = 'while ('+value_condition + ') {\n' + statements_substack + '}\n';

@@ -7,7 +7,7 @@ goog.require('Blockly.Arduino');
 Blockly.Arduino['instance_create_number'] = function (block) {
     var dropdown_type = block.getFieldValue('TYPE');
     var text_name = block.getFieldValue('NAME');
-    var number_initvalue = block.getFieldValue('INITVALUE');
+    var number_initvalue = block.getFieldValue('INITVALUE')||'0';
     // TODO: Assemble Arduino into code variable.
     Blockly.Arduino.addDeclaration(text_name, dropdown_type + ' ' + text_name + '=' + number_initvalue + ';');
     return [text_name, Blockly.Arduino.ORDER_ATOMIC];

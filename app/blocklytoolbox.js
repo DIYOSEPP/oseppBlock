@@ -285,7 +285,7 @@ var blockToolboxXml=
 '        </value>'+
 '        <value name="FH">'+
 '          <shadow type="math_number">'+
-'            <field name="NUM">1024</field>'+
+'            <field name="NUM">1023</field>'+
 '          </shadow>'+
 '        </value>'+
 '        <value name="TL">'+
@@ -425,6 +425,24 @@ var hardwareToolboxXml=
 '        <value name="echoPin">'+
 '          <shadow type="io_arduino_uno_pin_usable_menu">'+
 '            <data>digital</data>'+
+'          </shadow>'+
+'        </value>'+
+'      </block>'+
+'      <block type="instance_4dtouch">'+
+'        <value name="OUT1">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
+'          </shadow>'+
+'        </value>'+
+'        <value name="OUT2">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
+'          </shadow>'+
+'        </value>'+
+'        <value name="OUT3">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
+'          </shadow>'+
+'        </value>'+
+'        <value name="OUT4">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
 '          </shadow>'+
 '        </value>'+
 '      </block>'+
@@ -595,6 +613,8 @@ var ModuleToolboxXml=
 '    <block type="module_soundsensor_get">'+
 '    </block>'+
 '    <block type="module_ultrasonic_get">'+
+'    </block>'+
+'    <block type="module_4dtouch_get">'+
 '    </block>'+
 '  </xml>'+
 ''

@@ -16,7 +16,7 @@ function addCommandTextToSetup(block, field) {
 function onePinInstanceDefine(block, pinState) {
     var text_name = block.getFieldValue('NAME');
     var value_pin = Blockly.Arduino.valueToCode(block, 'Pin', Blockly.Arduino.ORDER_ATOMIC);
-
+    if (!Blockly.Arduino.isUnoPin(value_pin)) return;
     addCommandTextToSetup(block, 'NAME');
     Blockly.Arduino.addSetup(text_name + '_Pin', 'pinMode(' + value_pin + ',' + pinState + ');', true);
     Blockly.Arduino.reservePin(block, value_pin, pinState, text_name);
@@ -129,7 +129,7 @@ Blockly.Arduino['module_set_led'] = function (block) {
     var led = requireInstance(block, dropdown_name);
     if (!led) return '\n';
     var pin = Blockly.Arduino.valueToCode(led, 'Pin', Blockly.Arduino.ORDER_NONE);
-
+    //if (!Blockly.Arduino.isDigitalPin(pin)) return '\n';---Users should see the errors
     if (valueNumber && Blockly.Arduino.isPWMPin(pin)) {
         var code = 'analogWrite(' + pin + ',' + value_state + ');\n';
     } else {
@@ -161,6 +161,14 @@ Blockly.Arduino['instance_lcd1602'] = function (block) {
     var value_d6 = Blockly.Arduino.valueToCode(block, 'D6', Blockly.Arduino.ORDER_NONE);
     var value_d7 = Blockly.Arduino.valueToCode(block, 'D7', Blockly.Arduino.ORDER_NONE);
     // TODO: Assemble Arduino into code variable.
+    if ((Blockly.Arduino.isDigitalPin(value_rs) &&
+        Blockly.Arduino.isDigitalPin(value_en) &&
+        Blockly.Arduino.isDigitalPin(value_d4) &&
+        Blockly.Arduino.isDigitalPin(value_d5) &&
+        Blockly.Arduino.isDigitalPin(value_d6) &&
+        Blockly.Arduino.isDigitalPin(value_d7)
+        )!= true) return '';
+
     Blockly.Arduino.addInclude('LiquidCrystal', '#include <LiquidCrystal.h>');
     Blockly.Arduino.addDeclaration(text_name, 'LiquidCrystal ' + text_name + '(' +
         value_rs + ',' +
@@ -257,11 +265,19 @@ Blockly.Arduino['instance_fanmotor'] = function (block) {
     var value_ina = Blockly.Arduino.valueToCode(block, 'INA', Blockly.Arduino.ORDER_ATOMIC);
     var value_inb = Blockly.Arduino.valueToCode(block, 'INB', Blockly.Arduino.ORDER_ATOMIC);
     // TODO: Assemble Arduino into code variable.
-    addCommandTextToSetup(block, 'NAME');
-    Blockly.Arduino.addSetup(text_name + '_INA', 'pinMode(' + value_ina + ',OUTPUT);', true);
-    Blockly.Arduino.addSetup(text_name + '_INB', 'pinMode(' + value_inb + ',OUTPUT);', true);
-    Blockly.Arduino.reservePin(block, value_ina, 'PWM', text_name + '-INA');
-    Blockly.Arduino.reservePin(block, value_inb, 'PWM', text_name + '-INB');
+
+    if (Blockly.Arduino.isDigitalPin(value_ina) || Blockly.Arduino.isDigitalPin(value_inb)) {
+        addCommandTextToSetup(block, 'NAME');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_ina)) {
+        Blockly.Arduino.addSetup(text_name + '_INA', 'pinMode(' + value_ina + ',OUTPUT);', true);
+        Blockly.Arduino.reservePin(block, value_ina, 'PWM', text_name + '-INA');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_inb)) {
+        Blockly.Arduino.addSetup(text_name + '_INB', 'pinMode(' + value_inb + ',OUTPUT);', true);
+        Blockly.Arduino.reservePin(block, value_inb, 'PWM', text_name + '-INB');
+    }
+
     return '';
 };
 
@@ -481,5 +497,53 @@ Blockly.Arduino['module_ultrasonic_get'] = function (block) {
     var echo = Blockly.Arduino.valueToCode(defineBlock, 'echoPin', Blockly.Arduino.ORDER_NONE);
 
     var code = 'get_distance_mm_of_ultrasonic(' + trig + ',' + echo + ')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['instance_4dtouch'] = function (block) {
+    var text_name = block.getFieldValue('NAME');
+    var value_out1 = Blockly.Arduino.valueToCode(block, 'OUT1', Blockly.Arduino.ORDER_NONE);
+    var value_out2 = Blockly.Arduino.valueToCode(block, 'OUT2', Blockly.Arduino.ORDER_NONE);
+    var value_out3 = Blockly.Arduino.valueToCode(block, 'OUT3', Blockly.Arduino.ORDER_NONE);
+    var value_out4 = Blockly.Arduino.valueToCode(block, 'OUT4', Blockly.Arduino.ORDER_NONE);
+    // TODO: Assemble Arduino into code variable.
+
+    if (Blockly.Arduino.isDigitalPin(value_out1) ||
+        Blockly.Arduino.isDigitalPin(value_out2) ||
+        Blockly.Arduino.isDigitalPin(value_out3) ||
+        Blockly.Arduino.isDigitalPin(value_out4)) {
+        addCommandTextToSetup(block, 'NAME');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_out1)) {
+        Blockly.Arduino.addSetup(text_name + '_OUT1', 'pinMode(' + value_out1 + ',INPUT);', true);
+        Blockly.Arduino.reservePin(block, value_out1, 'INPUT', text_name + '-OUT1');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_out2)) {
+        Blockly.Arduino.addSetup(text_name + '_OUT2', 'pinMode(' + value_out2 + ',INPUT);', true);
+        Blockly.Arduino.reservePin(block, value_out2, 'INPUT', text_name + '-OUT2');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_out3)) {
+        Blockly.Arduino.addSetup(text_name + '_OUT3', 'pinMode(' + value_out3 + ',INPUT);', true);
+        Blockly.Arduino.reservePin(block, value_out3, 'INPUT', text_name + '-OUT3');
+    }
+    if (Blockly.Arduino.isDigitalPin(value_out4)) {
+        Blockly.Arduino.addSetup(text_name + '_OUT4', 'pinMode(' + value_out4 + ',INPUT);', true);
+        Blockly.Arduino.reservePin(block, value_out4, 'INPUT', text_name + '-OUT4');
+    }
+
+    return '';
+};
+
+Blockly.Arduino['module_4dtouch_get'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+
+    var defineBlock = requireInstance(block, dropdown_name);
+    if (!defineBlock) return '\n';
+
+    var dropdown_channel = block.getFieldValue('CHANNEL');
+
+    var pin = Blockly.Arduino.valueToCode(defineBlock, dropdown_channel, Blockly.Arduino.ORDER_NONE);
+    var code = 'digitalRead(' + pin + ')';
+
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
