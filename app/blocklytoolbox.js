@@ -446,6 +446,20 @@ var hardwareToolboxXml=
 '          </shadow>'+
 '        </value>'+
 '      </block>'+
+'      <block type="instance_flame">'+
+'        <value name="Pin">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
+'            <data>analog</data>'+
+'          </shadow>'+
+'        </value>'+
+'      </block>'+
+'      <block type="instance_irdetector">'+
+'        <value name="Pin">'+
+'          <shadow type="io_arduino_uno_pin_usable_menu">'+
+'            <data>digital</data>'+
+'          </shadow>'+
+'        </value>'+
+'      </block>'+
 '    </category>'+
 '    <category name="OUTPUT" colour="#FFBF00" secondaryColour="#CC9900">'+
 '      <block type="instance_buzzer">'+
@@ -615,6 +629,10 @@ var ModuleToolboxXml=
 '    <block type="module_ultrasonic_get">'+
 '    </block>'+
 '    <block type="module_4dtouch_get">'+
+'    </block>'+
+'    <block type="module_read_flame">'+
+'    </block>'+
+'    <block type="module_read_irdetector">'+
 '    </block>'+
 '  </xml>'+
 ''

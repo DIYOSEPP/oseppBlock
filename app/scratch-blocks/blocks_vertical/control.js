@@ -43,7 +43,7 @@ Blockly.Blocks['control_if'] = {
         this.setHelpUrl('https://www.arduino.cc/en/Reference/If');
 
         this.setMutator(new Blockly.Mutator(['controls_if_elseif',
-                                     'controls_if_else']));
+            'controls_if_else']));
         this.elseifCount_ = 0;
         this.elseCount_ = 0;
     },
@@ -219,7 +219,7 @@ Blockly.Blocks['controls_if_if'] = {
 function addShadowNumberToInput(input) {
     var targetBlock = input.connection.targetBlock();
     if (targetBlock) return;
-    var blockChild = input.sourceBlock_.workspace.newBlock('math_number');  
+    var blockChild = input.sourceBlock_.workspace.newBlock('math_number');
     blockChild.setShadow(true);
     blockChild.getField('NUM').setText('1');
     blockChild.initSvg();
@@ -244,7 +244,7 @@ Blockly.Blocks['control_forloop'] = {
             appendField(";").
             setCheck("NumberInstance");
 
-        var dropdown = new Blockly.FieldDropdown([["++", "++"], ["- -", "--"], ["=", "="]],
+        var dropdown = new Blockly.FieldDropdown([["++", "++"], ["- -", "--"], ["+=", "+="], ["- =", "-="], ["=", "="]],
             function (option) {
                 this.sourceBlock_.updateStepShape(option);
             });
@@ -267,19 +267,19 @@ Blockly.Blocks['control_forloop'] = {
         this.setTooltip('THE "FOR" STATEMENT IS USED TO REPEAT AN ACTION WITHIN THIS BLOCK IF SET CONDITIONS ARE TRUE.s');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/For');
     },
+    afterCreateBeforRender: function () {
+        this.updateInitShape();
+        this.updateStepShape(this.getFieldValue("step"));
+    },
     onchange: function (event) {
-        if (!this.workspace || event.type == Blockly.Events.UI) return;
+        if ((!this.workspace) || (event.type == Blockly.Events.UI)) return;
         if (event.type == Blockly.Events.MOVE) {
-            if ((event.oldParentId != this.id) && (event.newParentId != this.id)) return;
+            if ((event.oldParentId != this.id) &&(event.newParentId != this.id)) return;
             if ((event.newInputName == "init") || (event.oldInputName == "init")) {
                 this.updateInitShape();
+                this.render();
             }
-        } else if (event.type == Blockly.Events.CREATE) {
-            if (event.ids.indexOf(this.id)>=0) {
-                this.updateStepShape(this.getFieldValue("step"));
-                this.updateInitShape();
-            }
-        }
+        } 
     },
     updateInitShape: function () {
         var initInput = this.getInput('init');
@@ -291,7 +291,7 @@ Blockly.Blocks['control_forloop'] = {
             var input = this.getInput('initNumber');
             initType = target.type;
         }
-        
+
         if ((initType != 'instance_number_getter') && (initType != 'instance_array_getter')) {
             var targetBlock = initNumberInput.connection.targetBlock();
             if (targetBlock && !targetBlock.isShadow()) {
@@ -307,13 +307,11 @@ Blockly.Blocks['control_forloop'] = {
             if (shadowBlock) {
                 shadowBlock.render();
             }
-            
         }
-        this.render();
     },
     updateStepShape: function (option) {
         var input = this.getInput('stepNumber');
-        if (option == '=') {
+        if ((option == '=') || (option == '+=') || (option == '-=')) {
             input.hide = false;
             input.setVisible(true);
             addShadowNumberToInput(input);
@@ -322,7 +320,6 @@ Blockly.Blocks['control_forloop'] = {
                 shadowBlock.render();
             }
         } else {
-            
             var targetBlock = input.connection.targetBlock();
             if (targetBlock && !targetBlock.isShadow()) {
                 targetBlock.unplug(true);
@@ -330,7 +327,6 @@ Blockly.Blocks['control_forloop'] = {
             input.setVisible(false);
             input.hide = true;
         }
-        this.render();
     }
 };
 

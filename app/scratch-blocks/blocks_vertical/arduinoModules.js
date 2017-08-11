@@ -397,7 +397,7 @@ Blockly.Blocks['module_set_fanmotor'] = {
     init: function () {
         var dropdown = new Blockly.FieldDropdown([["forward", "f"], ["backward", "b"], ["stop", "s"]],
             function (option) {
-                this.sourceBlock_.updateStepShape(option);
+                this.sourceBlock_.updateStepShape(option,true);
             });
 
         this.appendDummyInput()
@@ -416,17 +416,12 @@ Blockly.Blocks['module_set_fanmotor'] = {
         this.setTooltip('CHOOSE THE SPEED AND DIRECTION OF FAN MOTOR');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module');
     },
-    onchange: function (event) {
-        if (!this.workspace || event.type == Blockly.Events.UI) return;
-        if (event.type == Blockly.Events.CREATE) {
-            if (event.ids.indexOf(this.id) >= 0) {
-                this.updateStepShape(this.getFieldValue("dir"));
-            }
-        }
+    afterCreateBeforRender: function () {
+        this.updateStepShape(this.getFieldValue("dir"),false);
     },
-    updateStepShape: function (option) {
+    updateStepShape: function (option,reRender) {
         var input = this.getInput('pwm');
-        var oldVisible = input.isVisible();
+        var oldVisible = !(input.hide||false);
         var newVisible;;
         if (option == 's') {
             newVisible = false;
@@ -436,14 +431,14 @@ Blockly.Blocks['module_set_fanmotor'] = {
         if (oldVisible != newVisible) {
             input.setVisible(newVisible);
             input.hide = !newVisible;
-            if (newVisible) {
+            if (newVisible && reRender) {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
                     shadowBlock.render();
                 }
             }
-            this.render();
         }
+        if (reRender) this.render();
     }
 };
 
@@ -516,7 +511,7 @@ Blockly.Blocks['instance_stepper'] = {
 
         var dropdown = new Blockly.FieldDropdown([["FourPin", "F"], ["TwoPin", "T"]],
             function (option) {
-                this.sourceBlock_.updateShape(option);
+                this.sourceBlock_.updateShape(option,true);
             });
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -554,15 +549,10 @@ Blockly.Blocks['instance_stepper'] = {
         this.setTooltip('');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Stepper');
     },
-    onchange: function (event) {
-        if (!this.workspace || event.type == Blockly.Events.UI) return;
-        if (event.type == Blockly.Events.CREATE) {
-            if (event.ids.indexOf(this.id) >= 0) {
-                this.updateShape(this.getFieldValue("pinNumber"));
-            }
-        }
+    afterCreateBeforRender: function () {
+        this.updateShape(this.getFieldValue("pinNumber"),false);
     },
-    updateShape: function (option) {
+    updateShape: function (option,reRender) {
         var pin3 = this.getInput('Pin3');
         var oldVisible = pin3.isVisible();
         var newVisible;;
@@ -578,7 +568,7 @@ Blockly.Blocks['instance_stepper'] = {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
                     if (visilbe) {
-                        shadowBlock.render();                      
+                        if (reRender)shadowBlock.render();                      
                     } else {
                         //free the pin
                         if (shadowBlock.isShadow()) {
@@ -591,7 +581,7 @@ Blockly.Blocks['instance_stepper'] = {
             }
             visableinput(pin3, newVisible);
             visableinput(this.getInput('Pin4'), newVisible);
-            this.render();
+            if (reRender)this.render();
         }
     },
     provideBlocks: ['module_stepper_move', 'module_stepper_speed']
@@ -867,7 +857,7 @@ Blockly.Blocks['instance_ultrasonic'] = {
         this.appendValueInput("trigPin")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("trip pin");
+            .appendField("trig pin");
         this.appendValueInput("echoPin")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -941,7 +931,7 @@ Blockly.Blocks['module_4dtouch_get'] = {
             .appendField(new Blockly.FieldDropdown([["OUT1", "OUT1"], ["OUT2", "OUT2"], ["OUT3", "OUT3"], ["OUT4", "OUT4"]]), "CHANNEL")
             .appendField("Pressed");
         this.setInputsInline(true);
-        this.setOutput(true, "Number");
+        this.setOutput(true, "Boolean");
         this.setColour(
             Blockly.Colours.cModuleInput.primary,
             Blockly.Colours.cModuleInput.secondary,
@@ -949,5 +939,77 @@ Blockly.Blocks['module_4dtouch_get'] = {
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
         this.setTooltip('DETECT IF TOUCH SENSOR IS PRESSED');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/53-4-digit-touch-sensor-module');
+    }
+};
+
+Blockly.Blocks['instance_flame'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/1-100/Flame_Sensor_Module-92-800-600-80.jpg", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('FLAME', 'Flame1', 'Flame'), "NAME")
+            .appendField("on Pin");
+        this.appendValueInput("Pin")
+            .setCheck("Pin");
+        this.setInputsInline(true);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('detect variations in light wavelength (such as fire flame detection) in the range of 760nm ¨C 1100 nm');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module');
+    },
+    provideBlocks: ['module_read_flame']
+};
+
+Blockly.Blocks['module_read_flame'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceDropdown("FLAME"), "NAME")
+            .appendField("Value")
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setTooltip('DETECT VALUE OF FLAME SENSOR');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module');
+    }
+};
+
+Blockly.Blocks['instance_irdetector'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/101-200/IR_DETECTOR_IRDET_01-101-300-225-80.jpg", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('IRDETECTOR', 'detector1', 'detector'), "NAME")
+            .appendField("on Pin");
+        this.appendValueInput("Pin")
+            .setCheck("Pin");
+        this.setInputsInline(true);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('Obstacle avoidance module');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/64-ir-detector');
+    },
+    provideBlocks: ['module_read_irdetector']
+};
+
+Blockly.Blocks['module_read_irdetector'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceDropdown("IRDETECTOR"), "NAME")
+            .appendField("Trigged")
+        this.setInputsInline(true);
+        this.setOutput(true, "Boolean");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
+        this.setTooltip('Detects when objects are within the calibrated range');
+        this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/64-ir-detector');
     }
 };

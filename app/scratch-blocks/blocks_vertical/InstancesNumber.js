@@ -96,7 +96,7 @@ Blockly.Blocks['instance_set_number'] = {
     init: function () {
         var dropdown = new Blockly.FieldDropdown([["=", "="], ["++", "++"], ["- -", "--"], ["+=", "+="], ["- =", "-="], ["*=", "*="], ["/=", "/="], ["%=", "%="]],
                 function (option) {
-                    this.sourceBlock_.updateShape(option);
+                    this.sourceBlock_.updateShape(option,true);
                 });
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("NumberInstance"), "instance_name")
@@ -113,15 +113,11 @@ Blockly.Blocks['instance_set_number'] = {
         this.setTooltip('Stores the value to the right of the equal sign in the variable to the left of the equal sign');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Assignment');
     },
-    onchange: function (event) {
-        if (!this.workspace || event.type == Blockly.Events.UI) return;
-
-        if ((event.blockId == this.id)||(event.ids && (event.ids.indexOf(this.id) >= 0))) {
-            this.updateShape(this.getFieldValue("op"));
-        }
-
+    afterCreateBeforRender: function () {
+        var option = this.getFieldValue("op");
+        this.updateShape(option, false);
     },
-    updateShape: function (option) {
+    updateShape: function (option, reRender) {
         var input = this.getInput('VALUE');
         if (!option) return;
         if (option.indexOf('=') >= 0) {
@@ -129,7 +125,7 @@ Blockly.Blocks['instance_set_number'] = {
             input.setVisible(true);
             addShadowNumberToInput(input);
             var shadowBlock = input.connection.targetBlock();
-            if (shadowBlock) {
+            if (shadowBlock && reRender) {
                 shadowBlock.render();
             }
         } else {
@@ -140,7 +136,7 @@ Blockly.Blocks['instance_set_number'] = {
             input.setVisible(false);
             input.hide = true;
         }
-        this.render();
+        if (reRender)this.render();
     }
 };
 

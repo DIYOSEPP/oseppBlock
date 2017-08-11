@@ -465,6 +465,9 @@ Blockly.Xml.domToBlock = function(xmlBlock, workspace) {
         blocks[i].initSvg();
       }
       for (var i = blocks.length - 1; i >= 0; i--) {
+          if (goog.isFunction(blocks[i].afterCreateBeforRender)) {
+              blocks[i].afterCreateBeforRender();
+          }
         blocks[i].render(false);
       }
       // Populating the connection database may be deferred until after the

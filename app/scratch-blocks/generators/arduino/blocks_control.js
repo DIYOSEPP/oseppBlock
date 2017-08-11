@@ -25,12 +25,12 @@ Blockly.Arduino['control_if'] = function (block) {
 
 
 Blockly.Arduino['control_forloop'] = function (block) {
-    var code='for(';
+    var code = 'for(';
     var blockInit = block.getInput('init').connection.targetBlock();
     Blockly.Arduino.valueToCode(block, 'init', Blockly.Arduino.ORDER_NONE);
-    if (blockInit){
-        if (blockInit.type == 'instance_create_number') {          
-            code+= blockInit.getFieldValue('NAME') + '=' + blockInit.getFieldValue('INITVALUE');
+    if (blockInit) {
+        if (blockInit.type == 'instance_create_number') {
+            code += blockInit.getFieldValue('NAME') + '=' + blockInit.getFieldValue('INITVALUE');
         } else if ((blockInit.type == 'instance_number_getter') || (blockInit.type == 'instance_array_getter')) {
             var varName = blockInit.getFieldValue('NAME');
             if (varName) code += varName + '=' + (Blockly.Arduino.valueToCode(block, 'initNumber', Blockly.Arduino.ORDER_ASSIGNMENT) || '0');
@@ -40,13 +40,13 @@ Blockly.Arduino['control_forloop'] = function (block) {
     code += Blockly.Arduino.valueToCode(block, 'CONDITION', Blockly.Arduino.ORDER_NONE);
     code += ';';
     var value_name = Blockly.Arduino.valueToCode(block, 'NAME', Blockly.Arduino.ORDER_ATOMIC);
-    if (value_name){
+    if (value_name) {
         var dropdown_step = block.getFieldValue('step');
-        if (dropdown_step == '=') {
-            code += value_name + dropdown_step + (Blockly.Arduino.valueToCode(block, 'stepNumber', Blockly.Arduino.ORDER_ASSIGNMENT)||'1');
+        if ((dropdown_step == '=') || (dropdown_step == '+=') || (dropdown_step == '-=')) {
+            code += value_name + dropdown_step + (Blockly.Arduino.valueToCode(block, 'stepNumber', Blockly.Arduino.ORDER_ASSIGNMENT) || '1');
         } else {
             code += value_name + dropdown_step;
-        }       
+        }
     }
     code += '){\n';
     var statements_substack = Blockly.Arduino.statementToCode(block, 'SUBSTACK');
@@ -58,10 +58,10 @@ Blockly.Arduino['control_forloop'] = function (block) {
 };
 
 Blockly.Arduino['control_while'] = function (block) {
-    var value_condition = Blockly.Arduino.valueToCode(block, 'CONDITION', Blockly.Arduino.ORDER_NONE)||'false';
+    var value_condition = Blockly.Arduino.valueToCode(block, 'CONDITION', Blockly.Arduino.ORDER_NONE) || 'false';
     var statements_substack = Blockly.Arduino.statementToCode(block, 'SUBSTACK');
     // TODO: Assemble Arduino into code variable.
-    var code = 'while ('+value_condition + ') {\n' + statements_substack + '}\n';
+    var code = 'while (' + value_condition + ') {\n' + statements_substack + '}\n';
     return code;
 };
 

@@ -31,7 +31,7 @@ Blockly.Arduino['instance_rgb'] = function (block) {
     if (Blockly.Arduino.isPWMPin(value_r) ||
         Blockly.Arduino.isPWMPin(value_g) ||
         Blockly.Arduino.isPWMPin(value_b)
-        ) addCommandTextToSetup(block, 'NAME');
+    ) addCommandTextToSetup(block, 'NAME');
 
     if (Blockly.Arduino.isPWMPin(value_r)) {
         Blockly.Arduino.addSetup(dropdown_name + '_RPin', 'pinMode(' + value_r + ',OUTPUT);', true);
@@ -167,7 +167,7 @@ Blockly.Arduino['instance_lcd1602'] = function (block) {
         Blockly.Arduino.isDigitalPin(value_d5) &&
         Blockly.Arduino.isDigitalPin(value_d6) &&
         Blockly.Arduino.isDigitalPin(value_d7)
-        )!= true) return '';
+    ) != true) return '';
 
     Blockly.Arduino.addInclude('LiquidCrystal', '#include <LiquidCrystal.h>');
     Blockly.Arduino.addDeclaration(text_name, 'LiquidCrystal ' + text_name + '(' +
@@ -343,16 +343,16 @@ Blockly.Arduino['instance_stepper'] = function (block) {
 
     if (dropdown_pinnumber == 'F') {
         var declText = 'Stepper ' + text_name + '(' +
-                number_spv + ',' +
-                value_pin1 + ',' + value_pin3 + ',' +
-                value_pin2 + ',' + value_pin4 + ');';
+            number_spv + ',' +
+            value_pin1 + ',' + value_pin3 + ',' +
+            value_pin2 + ',' + value_pin4 + ');';
         Blockly.Arduino.reservePin(block, value_pin3, 'OUTPUT', text_name + '-Pin3');
         Blockly.Arduino.reservePin(block, value_pin4, 'OUTPUT', text_name + '-Pin4');
     } else {
         var declText = 'Stepper ' + text_name + '(' +
-                number_spv + ',' +
-                value_pin1 + ',' +
-                value_pin2 + ');';
+            number_spv + ',' +
+            value_pin1 + ',' +
+            value_pin2 + ');';
     }
 
     Blockly.Arduino.addDeclaration(text_name, declText);
@@ -484,7 +484,7 @@ Blockly.Arduino['instance_ultrasonic'] = function (block) {
         'float get_distance_mm_of_ultrasonic(int trig,int echo){\n' +
         Blockly.Arduino.prefixLines((funcode.join('\n')), Blockly.Arduino.INDENT) +
         '\n}\n'
-        );
+    );
 
     return '';
 };
@@ -545,5 +545,33 @@ Blockly.Arduino['module_4dtouch_get'] = function (block) {
     var pin = Blockly.Arduino.valueToCode(defineBlock, dropdown_channel, Blockly.Arduino.ORDER_NONE);
     var code = 'digitalRead(' + pin + ')';
 
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['instance_flame'] = function (block) {
+    onePinInstanceDefine(block, 'INPUT');
+    return '';
+};
+
+Blockly.Arduino['module_read_flame'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+    var defineBlock = requireInstance(block, dropdown_name);
+    if (!defineBlock) return '\n';
+    var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
+    var code = 'analogRead(' + pin + ')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['instance_irdetector'] = function (block) {
+    onePinInstanceDefine(block, 'INPUT');
+    return '';
+};
+
+Blockly.Arduino['module_read_irdetector'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+    var defineBlock = requireInstance(block, dropdown_name);
+    if (!defineBlock) return '\n';
+    var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
+    var code = 'digitalRead(' + pin + ')';
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };

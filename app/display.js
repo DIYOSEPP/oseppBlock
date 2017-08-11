@@ -397,7 +397,6 @@ function initWorkspace() {
         for (var i = 0; i < list.length; i++) {
             var f = list[i];
             if (!f.name.toLowerCase().endsWith(".obp")) continue;
-            console.log(f);
             var reader = new FileReader();
             reader.onload = function () {
                 try {
