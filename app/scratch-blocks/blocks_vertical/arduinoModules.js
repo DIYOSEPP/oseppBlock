@@ -419,7 +419,7 @@ Blockly.Blocks['module_set_fanmotor'] = {
     afterCreateBeforRender: function () {
         this.updateStepShape(this.getFieldValue("dir"));
     },
-    updateStepShape: function (option,reRender) {
+    updateStepShape: function (option) {
         var input = this.getInput('pwm');
         var oldVisible = !(input.hide||false);
         var newVisible;;
@@ -551,7 +551,7 @@ Blockly.Blocks['instance_stepper'] = {
     afterCreateBeforRender: function () {
         this.updateShape(this.getFieldValue("pinNumber"));
     },
-    updateShape: function (option,reRender) {
+    updateShape: function (option) {
         var pin3 = this.getInput('Pin3');
         var oldVisible = pin3.isVisible();
         var newVisible;;
