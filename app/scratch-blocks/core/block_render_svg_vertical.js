@@ -627,6 +627,12 @@ Blockly.BlockSvg.prototype.renderFields_ =
             if (!root) {
                 continue;
             }
+            if (field.hide === true) {
+                root.setAttribute('display', 'none');
+                continue;
+            } else {
+                root.removeAttribute('display');
+            }
             // In blocks with a notch, non-label fields should be bumped to a min X,
             // to avoid overlapping with the notch.
             if (this.previousConnection && !(field instanceof Blockly.FieldLabel)) {
@@ -799,6 +805,7 @@ Blockly.BlockSvg.prototype.renderCompute_ = function (iconWidth) {
         }
         var previousFieldEditable = false;
         for (var j = 0, field; field = input.fieldRow[j]; j++) {
+            if (field.hide === true) continue;
             if (j != 0) {
                 input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
             }
@@ -1282,7 +1289,7 @@ Blockly.BlockSvg.prototype.renderInputShape_ = function (input, x, y) {
     }
     var inputShapeWidth = 0;
     // Input shapes are only visibly rendered on non-connected slots.
-    if (input.connection.targetConnection || (!input.isVisible())) {
+    if (input.connection.targetConnection || (!input.isVisible())||(input.hide==true)) {
         inputShape.setAttribute('style', 'visibility: hidden');
     } else {
         var inputShapeX = 0, inputShapeY = 0;

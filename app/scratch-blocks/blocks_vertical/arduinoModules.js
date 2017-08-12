@@ -511,7 +511,7 @@ Blockly.Blocks['instance_stepper'] = {
 
         var dropdown = new Blockly.FieldDropdown([["FourPin", "F"], ["TwoPin", "T"]],
             function (option) {
-                this.sourceBlock_.updateShape(option,true);
+                this.sourceBlock_.updateShape(option);
             });
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -550,7 +550,7 @@ Blockly.Blocks['instance_stepper'] = {
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Stepper');
     },
     afterCreateBeforRender: function () {
-        this.updateShape(this.getFieldValue("pinNumber"),false);
+        this.updateShape(this.getFieldValue("pinNumber"));
     },
     updateShape: function (option,reRender) {
         var pin3 = this.getInput('Pin3');
@@ -568,7 +568,7 @@ Blockly.Blocks['instance_stepper'] = {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
                     if (visilbe) {
-                        if (reRender)shadowBlock.render();                      
+                        shadowBlock.render(false);                      
                     } else {
                         //free the pin
                         if (shadowBlock.isShadow()) {
@@ -581,7 +581,6 @@ Blockly.Blocks['instance_stepper'] = {
             }
             visableinput(pin3, newVisible);
             visableinput(this.getInput('Pin4'), newVisible);
-            if (reRender)this.render();
         }
     },
     provideBlocks: ['module_stepper_move', 'module_stepper_speed']

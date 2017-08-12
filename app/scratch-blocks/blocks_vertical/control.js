@@ -218,13 +218,16 @@ Blockly.Blocks['controls_if_if'] = {
 
 function addShadowNumberToInput(input) {
     var targetBlock = input.connection.targetBlock();
-    if (targetBlock) return;
-    var blockChild = input.sourceBlock_.workspace.newBlock('math_number');
-    blockChild.setShadow(true);
-    blockChild.getField('NUM').setText('1');
-    blockChild.initSvg();
-    blockChild.render();
-    input.connection.connect(blockChild.outputConnection);
+    if (targetBlock) {
+        targetBlock.render(false);
+    } else {
+        var blockChild = input.sourceBlock_.workspace.newBlock('math_number');
+        blockChild.setShadow(true);
+        blockChild.getField('NUM').setText('1');
+        blockChild.initSvg();
+        blockChild.render(false);
+        input.connection.connect(blockChild.outputConnection);
+    }
 }
 Blockly.Blocks['control_forloop'] = {
     init: function () {
@@ -278,6 +281,11 @@ Blockly.Blocks['control_forloop'] = {
             if ((event.newInputName == "init") || (event.oldInputName == "init")) {
                 this.updateInitShape();
                 this.render();
+                this.bumpNeighbours_();
+            } else if ((event.newInputName == "NAME") || (event.oldInputName == "NAME")) {
+                this.updateStepShape(this.getFieldValue("step"));
+                this.render();
+                this.bumpNeighbours_();
             }
         } 
     },
@@ -293,37 +301,38 @@ Blockly.Blocks['control_forloop'] = {
         }
 
         if ((initType != 'instance_number_getter') && (initType != 'instance_array_getter')) {
-            var targetBlock = initNumberInput.connection.targetBlock();
-            if (targetBlock && !targetBlock.isShadow()) {
-                targetBlock.unplug(true);
-            }
+
             initNumberInput.setVisible(false);
             initNumberInput.hide = true;
         } else {
             initNumberInput.setVisible(true);
             initNumberInput.hide = false;
             addShadowNumberToInput(initNumberInput);
-            var shadowBlock = initNumberInput.connection.targetBlock();
-            if (shadowBlock) {
-                shadowBlock.render();
-            }
         }
     },
     updateStepShape: function (option) {
+        var stepInput = this.getInput("NAME");
         var input = this.getInput('stepNumber');
-        if ((option == '=') || (option == '+=') || (option == '-=')) {
+        var field = this.getField("step");
+        if (!stepInput.connection.targetBlock()) {
+            field.hide = true;
+            field.setVisible(false);
+        } else {
+            field.hide = false;
+            field.setVisible(true);
+        }
+        
+        if ((option.indexOf('=') >= 0) && (field.hide == false)) {
+            if (input.hide === false) return;
             input.hide = false;
             input.setVisible(true);
             addShadowNumberToInput(input);
             var shadowBlock = input.connection.targetBlock();
             if (shadowBlock) {
-                shadowBlock.render();
+                shadowBlock.render(false);
             }
         } else {
-            var targetBlock = input.connection.targetBlock();
-            if (targetBlock && !targetBlock.isShadow()) {
-                targetBlock.unplug(true);
-            }
+            if (input.hide === true) return;
             input.setVisible(false);
             input.hide = true;
         }

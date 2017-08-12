@@ -96,7 +96,7 @@ Blockly.Blocks['instance_set_number'] = {
     init: function () {
         var dropdown = new Blockly.FieldDropdown([["=", "="], ["++", "++"], ["- -", "--"], ["+=", "+="], ["- =", "-="], ["*=", "*="], ["/=", "/="], ["%=", "%="]],
                 function (option) {
-                    this.sourceBlock_.updateShape(option,true);
+                    this.sourceBlock_.updateShape(option);
                 });
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("NumberInstance"), "instance_name")
@@ -115,28 +115,21 @@ Blockly.Blocks['instance_set_number'] = {
     },
     afterCreateBeforRender: function () {
         var option = this.getFieldValue("op");
-        this.updateShape(option, false);
+        this.updateShape(option);
     },
-    updateShape: function (option, reRender) {
+    updateShape: function (option) {
         var input = this.getInput('VALUE');
         if (!option) return;
         if (option.indexOf('=') >= 0) {
+            if (input.hide===false) return;
             input.hide = false;
             input.setVisible(true);
             addShadowNumberToInput(input);
-            var shadowBlock = input.connection.targetBlock();
-            if (shadowBlock && reRender) {
-                shadowBlock.render();
-            }
         } else {
-            var targetBlock = input.connection.targetBlock();
-            if (targetBlock && !targetBlock.isShadow()) {
-                targetBlock.unplug(true);
-            }
+            if (input.hide===true) return;
             input.setVisible(false);
             input.hide = true;
         }
-        if (reRender)this.render();
     }
 };
 
