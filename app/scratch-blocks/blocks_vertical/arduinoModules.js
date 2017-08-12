@@ -397,7 +397,7 @@ Blockly.Blocks['module_set_fanmotor'] = {
     init: function () {
         var dropdown = new Blockly.FieldDropdown([["forward", "f"], ["backward", "b"], ["stop", "s"]],
             function (option) {
-                this.sourceBlock_.updateStepShape(option,true);
+                this.sourceBlock_.updateStepShape(option);
             });
 
         this.appendDummyInput()
@@ -417,7 +417,7 @@ Blockly.Blocks['module_set_fanmotor'] = {
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module');
     },
     afterCreateBeforRender: function () {
-        this.updateStepShape(this.getFieldValue("dir"),false);
+        this.updateStepShape(this.getFieldValue("dir"));
     },
     updateStepShape: function (option,reRender) {
         var input = this.getInput('pwm');
@@ -431,14 +431,13 @@ Blockly.Blocks['module_set_fanmotor'] = {
         if (oldVisible != newVisible) {
             input.setVisible(newVisible);
             input.hide = !newVisible;
-            if (newVisible && reRender) {
+            if (newVisible) {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
-                    shadowBlock.render();
+                    shadowBlock.render(false);
                 }
             }
         }
-        if (reRender) this.render();
     }
 };
 
@@ -511,7 +510,7 @@ Blockly.Blocks['instance_stepper'] = {
 
         var dropdown = new Blockly.FieldDropdown([["FourPin", "F"], ["TwoPin", "T"]],
             function (option) {
-                this.sourceBlock_.updateShape(option,true);
+                this.sourceBlock_.updateShape(option);
             });
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -550,7 +549,7 @@ Blockly.Blocks['instance_stepper'] = {
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Stepper');
     },
     afterCreateBeforRender: function () {
-        this.updateShape(this.getFieldValue("pinNumber"),false);
+        this.updateShape(this.getFieldValue("pinNumber"));
     },
     updateShape: function (option,reRender) {
         var pin3 = this.getInput('Pin3');
@@ -568,7 +567,7 @@ Blockly.Blocks['instance_stepper'] = {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
                     if (visilbe) {
-                        if (reRender)shadowBlock.render();                      
+                        shadowBlock.render(false);                      
                     } else {
                         //free the pin
                         if (shadowBlock.isShadow()) {
@@ -581,7 +580,6 @@ Blockly.Blocks['instance_stepper'] = {
             }
             visableinput(pin3, newVisible);
             visableinput(this.getInput('Pin4'), newVisible);
-            if (reRender)this.render();
         }
     },
     provideBlocks: ['module_stepper_move', 'module_stepper_speed']

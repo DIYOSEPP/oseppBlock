@@ -49,3 +49,5 @@ Temporary Items
 app/closure-library
 /FromExistingCode1.njsproj
 node_modules
+release
+app/build.py
