@@ -381,11 +381,13 @@ function initWorkspace() {
     document.getElementById("redo").onclick = function () {
         Blockly.getMainWorkspace().undo(1);
     }
-    if (initSerialUI !== undefined) {
-        initSerialUI();
-        resizeWorkspaceDiv();
+    try {
+        if (initSerialUI !== undefined) {
+            initSerialUI();
+            resizeWorkspaceDiv();
+        }
+    } catch (e) {
     }
-
     document.ondragover = function (e) {
         e.preventDefault();
         //return false;
