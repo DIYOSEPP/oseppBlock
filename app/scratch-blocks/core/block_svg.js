@@ -703,7 +703,7 @@ Blockly.BlockSvg.prototype.duplicateAndDragCallback_ = function () {
             // Place the new block as the same position as the old block.
             // TODO: Offset by the difference between the mouse position and the upper
             // left corner of the block.
-            newBlock.moveBy(oldBlockPosWs.x, oldBlockPosWs.y);
+            newBlock.moveBy(oldBlockPosWs.x-20, oldBlockPosWs.y-20);
 
             // The position of the old block in pixels relative to the main
             // workspace's origin.
