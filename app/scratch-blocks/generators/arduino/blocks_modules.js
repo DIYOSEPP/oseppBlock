@@ -477,7 +477,7 @@ Blockly.Arduino['instance_ultrasonic'] = function (block) {
     funcode.push('digitalWrite(trig, HIGH);');
     funcode.push('delayMicroseconds(10);');
     funcode.push('delayMicroseconds(2);');
-    funcode.push('float dist= pulseIn(echo, HIGH, 3000) / 5.8;');
+    funcode.push('float dist= pulseIn(echo, HIGH) / 5.8;');
     funcode.push('if (dist == 0)dist = 4000;');
     funcode.push('return dist;');
     Blockly.Arduino.addFunction('ULTRASONIC',

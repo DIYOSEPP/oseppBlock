@@ -23,6 +23,14 @@ function createWindow () {
     win.on('closed', () => {
         win = null;
     })
+    win.webContents.on('new-window', (event, url) => {
+        event.preventDefault()
+        const subwin = new BrowserWindow({ show: true })
+        subwin.setTitle("oseppBlock")
+        //subwin.once('ready-to-show', () => subwin.show())
+        subwin.loadURL(url)
+        event.newGuest = subwin
+    })
 }
 
 app.on('ready', createWindow);
@@ -39,3 +47,4 @@ app.on('activate', () => {
         createWindow();
     }
 })
+

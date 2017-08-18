@@ -331,7 +331,7 @@ function opendialog() {
             window.localStorage.arduinoPath = path.dirname(file);
         }
         document.getElementById("msgTextArea").innerHTML += '<br>You have set the path to Arduino:' + file;
-        document.getElementById("msgTextArea").innerHTML += '<br>Try upload again!';
+        document.getElementById("msgTextArea").innerHTML += '<br>Try upload again!<br>';
     }
 }
 function getArduinoPath() {
@@ -501,6 +501,7 @@ var initSerialUI=function()
 
         document.getElementById("serial_upload_msg").style.display = 'block';
         document.getElementById("code_menu").style.display = 'block';
+        document.getElementById("footView").style.display = 'block';
         document.getElementById("blocklyarea").style = '';
         
     } catch (e) {
