@@ -696,7 +696,10 @@ Blockly.BlockSvg.prototype.renderCompute_ = function (iconWidth) {
     for (var i = 0, input; input = inputList[i]; i++) {
         if ((!input.isVisible()) || (input.hide == true)) {
             var inputShape = this.inputShapes_[input.name];
-            if (inputShape) inputShape.setAttribute('style', 'visibility: hidden');
+            if (inputShape) {
+                inputShape.setAttribute('style', 'visibility: hidden');
+                inputShape.setAttribute('d', "");
+            }
             continue;
         }
         var row;
