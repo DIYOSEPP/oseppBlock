@@ -33,6 +33,8 @@ goog.require('Blockly.FieldTextInput');
 goog.require('Blockly.Toolbox');
 goog.require('Blockly.Workspace');
 
+var instances_cache = null;
+var instances_cache_ws = null;
 
 Blockly.FieldInstanceInput = function (instanceType, instanceName, instancePrefix, opt_validator) {
     var instanceNameRestrictor = /[\a-z0-9_]/i;
@@ -64,10 +66,12 @@ Blockly.FieldInstanceInput.prototype.init = function () {
         if (workspace.isFlyout) workspace = workspace.targetWorkspace;
         var oldName = this.getValue();
         this.value_ = null;
-        if (Blockly.FieldInstanceInput.getAllInstancesName(workspace).indexOf(oldName) >= 0)
+        if (Blockly.FieldInstanceInput.getAllInstancesName(workspace).indexOf(oldName) >= 0) {
             this.setValue(null);
-        else
+        } else {
             this.value_ = oldName;
+            instances_cache = null
+        }
     }
 };
 
@@ -112,7 +116,7 @@ Blockly.FieldInstanceInput.prototype.dispose = function () {
     if (!this.refWorkspace) return;
     var workspace = this.refWorkspace;
     if (workspace.isFlyout) return;
-
+    instances_cache = null;
     if ((workspace.toolbox_) && (workspace.toolbox_.selectedItem_)) {
         workspace.toolbox_.refreshSelection();
     }
@@ -128,9 +132,11 @@ Blockly.FieldInstanceInput.prototype.getInstanceDefined = function () {
 };
 
 Blockly.FieldInstanceInput.getAllInstanceDefined = function (workspace) {
-    var instances = [];
-    if (workspace === null) return instances;
+    if (workspace == null) return [];
     if (workspace.isFlyout) workspace = workspace.targetWorkspace;
+    if ((workspace === instances_cache_ws) && (instances_cache != null)) return instances_cache;   
+    instances_cache = [];
+    instances_cache_ws = workspace;
     var topBlocks = workspace.getAllBlocks(false);
     for (var x = 0, tb; tb = topBlocks[x]; x++) {
         if (tb.rendered !== true) continue;
@@ -138,12 +144,12 @@ Blockly.FieldInstanceInput.getAllInstanceDefined = function (workspace) {
             for (var j = 0, field; field = input.fieldRow[j]; j++) {
                 if (field instanceof Blockly.FieldInstanceInput) {
                     var ins_def = field.getInstanceDefined();
-                    if (ins_def != null) instances.push(ins_def);
+                    if (ins_def != null) instances_cache.push(ins_def);
                 }
             }
         }
     }
-    return instances;
+    return instances_cache;
 }
 Blockly.FieldInstanceInput.getAllInstancesName = function (workspace) {
     var instances = Blockly.FieldInstanceInput.getAllInstanceDefined(workspace);
@@ -162,25 +168,6 @@ Blockly.FieldInstanceInput.getAllInstancesNameOfType = function (workspace, type
         if (instance[0] === type) names.push(instance[1]);
     }
     return names;
-}
-
-Blockly.FieldInstanceInput.getBlockOfInstancesName = function (workspace, name) {
-    if (workspace === null) return null;
-    if (workspace.isFlyout) workspace = workspace.targetWorkspace;
-    var topBlocks = workspace.getAllBlocks(false);
-    for (var x = 0, tb; tb = topBlocks[x]; x++) {
-        for (var i = 0, input; input = tb.inputList[i]; i++) {
-            for (var j = 0, field; field = input.fieldRow[j]; j++) {
-                if (field instanceof Blockly.FieldInstanceInput) {
-                    var ins_def = field.getInstanceDefined();
-                    if (ins_def != null) {
-                        if (ins_def[1] == name) return tb;
-                    }
-                }
-            }
-        }
-    }
-    return null;
 }
 
 Blockly.FieldInstanceInput.renameBlockInstance = function (block, oldName, newName) {
@@ -227,7 +214,7 @@ Blockly.FieldInstanceInput.prototype.doRenameInstance = function (oldName, newNa
     this.value_ = newName;
     this.setText(newName);
     Blockly.Events.setGroup(false);
-
+    instances_cache = null;
     if ((workspace.toolbox_) && (workspace.toolbox_.selectedItem_)) {
         function refFlyout() {
             if (workspace.isDragging()) {

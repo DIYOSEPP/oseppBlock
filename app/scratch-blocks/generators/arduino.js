@@ -99,7 +99,25 @@ Blockly.Arduino.init = function (workspace) {
     } else {
         Blockly.Arduino.variableDB_.reset();
     }
-
+    Blockly.Arduino.instances_ = Object.create(null);
+    if (workspace != null) {
+        var topBlocks = workspace.getAllBlocks(false);
+        for (var x = 0, tb; tb = topBlocks[x]; x++) {
+            var ins_def = null;
+            for (var i = 0, input; input = tb.inputList[i]; i++) {
+                for (var j = 0, field; field = input.fieldRow[j]; j++) {
+                    if (field instanceof Blockly.FieldInstanceInput) {
+                        ins_def = field.getInstanceDefined();
+                        if (ins_def != null) {
+                            Blockly.Arduino.instances_[name] = tb;
+                            break;
+                        }
+                    }
+                }
+                if (ins_def != null) break;
+            }
+        }
+    }
 };
 
 /**
@@ -171,6 +189,7 @@ Blockly.Arduino.finish = function (code) {
     delete Blockly.Arduino.functionNames_;
     delete Blockly.Arduino.setups_;
     delete Blockly.Arduino.pins_;
+    delete Blockly.Arduino.instances_;
     Blockly.Arduino.variableDB_.reset();
     return allDefs + setup + loop;
 };
@@ -279,7 +298,7 @@ Blockly.Arduino.reservePin = function (block, pin, pinType, warningTag) {
 };
 
 function requireInstance(block, instanceName) {
-    var instance = Blockly.FieldInstanceInput.getBlockOfInstancesName(block.workspace, instanceName);
+    var instance = Blockly.Arduino.instances_[instanceName];
     if (!instance) {
         var war = instanceName + ' was not declared in this scope!';
         block.setWarningText(war, 'requireInstance');

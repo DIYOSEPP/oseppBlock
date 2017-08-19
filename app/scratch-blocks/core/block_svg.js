@@ -643,9 +643,11 @@ Blockly.BlockSvg.prototype.tab = function (start, forward) {
  * @private
  */
 Blockly.BlockSvg.prototype.onMouseDown_ = function (e) {
-    var gesture = this.workspace.getGesture(e);
-    if (gesture) {
-        gesture.handleBlockStart(e, this);
+    if (this.workspace) {
+        var gesture = this.workspace.getGesture(e);
+        if (gesture) {
+            gesture.handleBlockStart(e, this);
+        }
     }
 };
 
