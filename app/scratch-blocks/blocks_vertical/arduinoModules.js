@@ -953,7 +953,7 @@ Blockly.Blocks['instance_flame'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('detect variations in light wavelength (such as fire flame detection) in the range of 760nm ¨C 1100 nm');
+        this.setTooltip('detect variations in light wavelength (such as fire flame detection) in the range of 760nm-1100 nm');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module');
     },
     provideBlocks: ['module_read_flame']
