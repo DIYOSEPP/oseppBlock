@@ -81,6 +81,7 @@ var slider_drogStart = function (e) {
 
 
 function saveBlockWorkspaceToLocalStorage(workspace) {
+    if (Blockly.getMainWorkspace().isDragging()) return;
     try {
         if (!!window.localStorage) {
             var xml = Blockly.Xml.workspaceToDom(workspace);

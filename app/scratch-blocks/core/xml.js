@@ -476,23 +476,25 @@ Blockly.Xml.domToBlock = function(xmlBlock, workspace) {
         setTimeout(function() {
           if (topBlock.workspace) {  // Check that the block hasn't been deleted.
             topBlock.setConnectionsHidden(false);
+            //not in google blockly
             // Force a render on IE and Edge to get around the issue described in
             // Blockly.Field.getCachedWidth
-            if (goog.userAgent.IE || goog.userAgent.EDGE) {
-              topBlock.render();
-            }
+            //if (goog.userAgent.IE || goog.userAgent.EDGE) {
+            //  topBlock.render();
+            //}
           }
         }, 1);
       } else {
-        setTimeout(function() {
-          if (topBlock.workspace) {  // Check that the block hasn't been deleted.
-            // Force a render on IE and Edge to get around the issue described in
-            // Blockly.Field.getCachedWidth
-            if (goog.userAgent.IE || goog.userAgent.EDGE) {
-              topBlock.render();
-            }
-          }
-        }, 1);
+          //not in google blockly
+        //setTimeout(function() {
+        //  if (topBlock.workspace) {  // Check that the block hasn't been deleted.
+        //    // Force a render on IE and Edge to get around the issue described in
+        //    // Blockly.Field.getCachedWidth
+        //    if (goog.userAgent.IE || goog.userAgent.EDGE) {
+        //      topBlock.render();
+        //    }
+        //  }
+        //}, 1);
       }
       topBlock.updateDisabled();
       // Allow the scrollbars to resize and move based on the new contents.

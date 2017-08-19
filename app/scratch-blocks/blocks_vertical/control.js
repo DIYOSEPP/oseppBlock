@@ -301,7 +301,6 @@ Blockly.Blocks['control_forloop'] = {
         }
 
         if ((initType != 'instance_number_getter') && (initType != 'instance_array_getter')) {
-
             initNumberInput.setVisible(false);
             initNumberInput.hide = true;
         } else {
