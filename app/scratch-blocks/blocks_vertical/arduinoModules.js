@@ -647,7 +647,7 @@ Blockly.Blocks['module_pir_get'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("PIR"), "NAME")
-            .appendField("is trigged");
+            .appendField("Trigged");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(
