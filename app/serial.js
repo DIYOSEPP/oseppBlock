@@ -363,8 +363,7 @@ function getArduinoPath() {
     return arduinoPath;
 }
 
-function loadOBPFileFromCLI()
-{
+function loadOBPFileFromCLI() {
     var text = null;
     try {
         const remote = require('electron').remote;
@@ -387,8 +386,7 @@ function loadOBPFileFromCLI()
 
 
 
-var initSerialUI=function()
-{
+var initSerialUI = function () {
     try {
         require('serialport');//no serial,goto catch
         initSelectPort();
@@ -503,8 +501,30 @@ var initSerialUI=function()
         document.getElementById("code_menu").style.display = 'block';
         document.getElementById("footView").style.display = 'block';
         document.getElementById("blocklyarea").style = '';
-        
+
     } catch (e) {
 
     }
+}
+
+
+var getOnlineVersionNumber = function (callback) {
+    const {net} = require('electron').remote;
+    const request = net.request('http://www.osepp.com/block/package.json?d=' + Date());
+    request.on('response', (response) => {
+        if (response.statusCode == 200) {
+            response.on('data', (chunk) => {
+                var json = JSON.parse(chunk);
+                if (json.version) {
+                    if (callback) {
+                        callback(json.version);
+                    }
+                }
+            })
+        }
+    });
+    request.on('error', (error) => {
+        //console.log(error);
+    });
+    request.end();
 }

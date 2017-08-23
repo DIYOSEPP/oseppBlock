@@ -416,5 +416,20 @@ function initWorkspace() {
             break;
         }
     }
+    try {
+        getOnlineVersionNumber(function (version) {
+            var cv = document.title;
+            if (version) {
+                version = String(version).replace(/(^\s*)|(\s*$)/g, '');
+                if ((version != '') && (cv.indexOf(version) < 0)) {
+                    //show up msg div
+                    document.getElementById("serial_upload_msg").setAttribute('class', 'serial_upload_msg_open');
+                    document.getElementById("msgTextArea").innerHTML += '<br><a href="https://osepp.com/oseppblock-ide">new version oseppBlock ' + version +' available!</a><br>';
+                }  
+            }
+        });
+    } catch (e) {
+
+    }
 }
 
