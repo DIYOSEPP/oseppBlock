@@ -765,7 +765,9 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
         var duplicateOption = {
             text: Blockly.Msg.DUPLICATE_BLOCK,
             enabled: true,
-            callback: block.duplicateAndDragCallback_()
+            callback: function () {
+                Blockly.duplicate_(block);
+            }
         };
         menuOptions.push(duplicateOption);
 

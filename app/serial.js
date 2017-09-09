@@ -334,18 +334,55 @@ function opendialog() {
         document.getElementById("msgTextArea").innerHTML += '<br>Try upload again!<br>';
     }
 }
-function getArduinoPath() {
 
+
+function verifyArduinoPath(path) {
     const fs = require('fs');
+    var existBuilder = fs.existsSync(path + '/arduino-builder') ||
+        fs.existsSync(path + '/arduino-builder.exe');
+    var existAvrdude = fs.existsSync(path + '/hardware/tools/avr/bin/avrdude') ||
+        fs.existsSync(path + '/hardware/tools/avr/bin/avrdude.exe');
+    var ok = existAvrdude && existBuilder;
+    return ok;
+}
+
+
+function getArduinoPath() {
+    const fs = require('fs');
+    const path = require('path');
+
     var arduinoPath = window.localStorage.arduinoPath;
-    if (arduinoPath) {
-        var existBuilder = fs.existsSync(arduinoPath + '/arduino-builder') ||
-            fs.existsSync(arduinoPath + '/arduino-builder.exe');
-        var existAvrdude = fs.existsSync(arduinoPath + '/hardware/tools/avr/bin/avrdude') ||
-            fs.existsSync(arduinoPath + '/hardware/tools/avr/bin/avrdude.exe');
-        var ok = existAvrdude && existBuilder;
-        if (!ok) arduinoPath = '';
+    if (!verifyArduinoPath(arduinoPath)) {
+        arduinoPath = '';
+        try {
+            const {app} = require('electron').remote;
+            var curPath = path.resolve(app.getPath('exe'));
+            curPath = path.dirname(curPath);
+            if (process.platform == 'darwin') {
+                curPath = path.resolve(curPath, '..', '..', '..');
+            }
+            var files = fs.readdirSync(curPath);
+            for (var fn, i = 0; fn = files[i]; i++) {
+                if (fn.toLowerCase().indexOf('arduino') < 0) continue;
+                var fp = path.join(curPath, fn);
+                var st = fs.statSync(fp);
+                if (st.isDirectory()) {
+                    if (verifyArduinoPath(fp)) {
+                        arduinoPath = fp;
+                        window.localStorage.arduinoPath = arduinoPath;
+                        break;
+                    } else if (verifyArduinoPath(path.join(fp, 'Contents', 'Java'))){
+                        arduinoPath = path.join(fp, 'Contents', 'Java');
+                        window.localStorage.arduinoPath = arduinoPath;
+                        break;
+                    }
+                }
+            }
+        } catch (e) {
+            arduinoPath = '';
+        }
     }
+
     if (!arduinoPath) {
         var setArduinoPathMsg = function () {
             //show up msg div

@@ -421,11 +421,15 @@ function initWorkspace() {
             var cv = document.title;
             if (version) {
                 version = String(version).replace(/(^\s*)|(\s*$)/g, '');
-                if ((version != '') && (cv.indexOf(version) < 0)) {
-                    //show up msg div
-                    document.getElementById("serial_upload_msg").setAttribute('class', 'serial_upload_msg_open');
-                    document.getElementById("msgTextArea").innerHTML += '<br><a href="https://osepp.com/oseppblock-ide">new version oseppBlock ' + version +' available!</a><br>';
-                }  
+                if (version != '') {
+                    var nowv = cv.replace('oseppBlock', '').replace(/(^\s*)|(\s*$)/g, '').split('.');
+                    var webv = version.split('.');
+                    if ((parseInt(webv[0]) > parseInt(nowv[0])) || (parseInt(webv[1]) > parseInt(nowv[1])) || (parseInt(webv[2]) > parseInt(nowv[2]))) {
+                        //show up msg div
+                        document.getElementById("serial_upload_msg").setAttribute('class', 'serial_upload_msg_open');
+                        document.getElementById("msgTextArea").innerHTML += '<br><a href="https://osepp.com/oseppblock-ide">new version oseppBlock ' + version + ' available!</a><br>';
+                    }
+                }
             }
         });
     } catch (e) {
