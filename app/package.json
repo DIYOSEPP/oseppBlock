@@ -1,21 +1,22 @@
 {
-    "version": "1.1.21", 
-    "license": "ISC", 
-    "author": "", 
-    "description": "", 
-    "dependencies": {
-        "pretty-bytes": "^2.0.1", 
-        "serialport": "^4.0.7"
-    }, 
-    "scripts": {
-        "package-linux": "electron-packager . --overwrite --electron-version=1.6.10 --platform=linux --arch=x64 --icon=media/osepp.png --prune=true --out=../release-builds", 
-        "package-mac": "electron-packager . --overwrite --electron-version=1.6.10 --platform=darwin --arch=x64 --asar=true --icon=media/osepp.icns --prune=true --out=../release-builds", 
-        "package-arm": "electron-packager . --overwrite --electron-version=1.6.10 --platform=linux --arch=armv7l --icon=media/osepp.png --prune=true --out=../release-builds", 
-        "package-win": "electron-packager . --overwrite --electron-version=1.6.10 --platform=win32 --arch=all --asar=true  --icon=media/osepp.ico --prune=true --out=../release-builds"
-    }, 
-    "devDependencies": {
-        "electron": "^1.6.10"
-    }, 
-    "main": "main.js", 
-    "name": "oseppBlock"
+  "version": "1.2.1",
+  "license": "ISC",
+  "author": "",
+  "description": "",
+  "main": "main.js",
+  "name": "oseppBlock",
+  "devDependencies": {
+    "asar": "^0.14.3",
+    "electron": "^2.0.2",
+    "electron-packager": "^12.1.0",
+    "electron-rebuild": "^1.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DIYOSEPP/oseppBlock.git"
+  },
+  "dependencies": {
+    "mdns": "^2.4.0",
+    "serialport": "^6.2.0"
+  }
 }

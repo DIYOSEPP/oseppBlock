@@ -33,8 +33,8 @@ goog.require('Blockly.FieldTextInput');
 goog.require('Blockly.Toolbox');
 goog.require('Blockly.Workspace');
 
-Blockly.instances_cache = Blockly.instances_cache|| null;
-Blockly.instances_cache_ws = Blockly.instances_cache_ws|| null;
+Blockly.instances_cache = Blockly.instances_cache || null;
+Blockly.instances_cache_ws = Blockly.instances_cache_ws || null;
 
 Blockly.FieldInstanceInput = function (instanceType, instanceName, instancePrefix, opt_validator) {
     var instanceNameRestrictor = /[\a-z0-9_]/i;
@@ -110,6 +110,24 @@ Blockly.FieldInstanceInput.prototype.setValue = function (newValue) {
     }
 }
 
+Blockly.FieldInstanceInput.refWorkspaceToolbox = function (workspace) {
+    if (!workspace) return;
+    if (!workspace.toolbox_) return;
+    if (!workspace.toolbox_.selectedItem_) return;
+    var refid = Blockly.FieldInstanceInput.refwt_ID || 0;
+    refid += 1;
+    Blockly.FieldInstanceInput.refwt_ID = refid;
+    function refFlyout() {
+        if (Blockly.FieldInstanceInput.refwt_ID !== refid) return;
+        if (workspace.isDragging()) {
+            refToolbox_timmer = setTimeout(refFlyout, 50);
+        } else {
+            workspace.toolbox_.refreshSelection();
+        }
+
+    }
+    setTimeout(refFlyout, 50);
+}
 
 Blockly.FieldInstanceInput.prototype.dispose = function () {
     Blockly.FieldInstanceInput.superClass_.dispose.call(this);
@@ -117,9 +135,7 @@ Blockly.FieldInstanceInput.prototype.dispose = function () {
     var workspace = this.refWorkspace;
     if (workspace.isFlyout) return;
     Blockly.instances_cache = null;
-    if ((workspace.toolbox_) && (workspace.toolbox_.selectedItem_)) {
-        workspace.toolbox_.refreshSelection();
-    }
+    Blockly.FieldInstanceInput.refWorkspaceToolbox(workspace);
 };
 
 
@@ -134,7 +150,7 @@ Blockly.FieldInstanceInput.prototype.getInstanceDefined = function () {
 Blockly.FieldInstanceInput.getAllInstanceDefined = function (workspace) {
     if (workspace == null) return [];
     if (workspace.isFlyout) workspace = workspace.targetWorkspace;
-    if ((workspace === Blockly.instances_cache_ws) && (Blockly.instances_cache != null)) return Blockly.instances_cache;   
+    if ((workspace === Blockly.instances_cache_ws) && (Blockly.instances_cache != null)) return Blockly.instances_cache;
     Blockly.instances_cache = [];
     Blockly.instances_cache_ws = workspace;
     var topBlocks = workspace.getAllBlocks(false);
@@ -215,19 +231,7 @@ Blockly.FieldInstanceInput.prototype.doRenameInstance = function (oldName, newNa
     this.setText(newName);
     Blockly.Events.setGroup(false);
     Blockly.instances_cache = null;
-    if ((workspace.toolbox_) && (workspace.toolbox_.selectedItem_)) {
-        function refFlyout() {
-            if (workspace.isDragging()) {
-                refToolbox_timmer = setTimeout(refFlyout, 50);
-            } else {
-                workspace.toolbox_.refreshSelection();
-                refToolbox_timmer = null;
-            }
-        }
-        if (refToolbox_timmer == null) {
-            refToolbox_timmer = setTimeout(refFlyout, 50);
-        }
-    }
+    Blockly.FieldInstanceInput.refWorkspaceToolbox(workspace);
 };
 
 

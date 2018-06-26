@@ -9,6 +9,8 @@
       </block>
       <block type="control_while"></block>
       <block type="control_break"></block>
+    </category>
+    <category name="Arduino" colour="#4C97FF" secondaryColour="#3373CC">
       <block type="control_delay">
         <value name="ms">
           <shadow type="math_number">
@@ -23,12 +25,8 @@
           </shadow>
         </value>
       </block>
-      <block type="math_boolean_menu"></block>
       <block type="control_micros"></block>
       <block type="control_millis"></block>
-    </category>
-    <category name="Procedure" colour="#1f9999" secondaryColour="#2a8c8c" custom="PROCEDURE"></category>
-    <category name="Arduino IO" colour="#4C97FF" secondaryColour="#3373CC">
       <block type="io_pinmode">
         <field name="mode">OUTPUT</field>
         <value name="Pin">
@@ -301,116 +299,146 @@
       <block type="math_boolean_menu"></block>
     </category>
     <category name="Variable" colour="#59C059" secondaryColour="#389438" custom="InstanceVariables"></category>
-    <category name="Modules" colour="#855CD6" secondaryColour="#774DCB" custom="InstanceModule"></category>
-  </blockToolboxXml>
+    <category name="Procedure" colour="#1f9999" secondaryColour="#2a8c8c" custom="PROCEDURE"></category>
+    <category name="Robot Modules" colour="#2f9999" secondaryColour="#3a8c8c" custom="ModuleROBOT">
+      <block type="instance_TB6612MotorDriver">
+        <value name="DIR">
+          <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital:12,8,7,4</data>
+          </shadow>
+        </value>
+        <value name="PWM">
+          <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">pwm:11,3,6,5</data>
+          </shadow>
+        </value>
+      </block>
+      <block type="instance_RangeFinder">
+        <value name="Pin">
+          <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital:2,4</data>
+          </shadow>
+        </value>
+      </block>
+    <block type="module_OseppRemote_Button">
+    </block>
+    <block type="module_OseppRemote_Channel">
+    </block>
+    <block type="module_OseppRemote_isTimeout">
+          <value name="time">
+        <shadow type="math_whole_number">
+          <field name="NUM">500</field>
+        </shadow>
+      </value>
+    </block>
+    </category>
 
-  <hardwareToolboxXml>
-    <category name="Display" colour="#4C97FF" secondaryColour="#3373CC">
+    <category name="Display Modules" colour="#4C97FF" secondaryColour="#3373CC"  custom="ModuleDisplay">
       <block type="instance_lcd1602">
         <field name="NAME">lcd1</field>
         <value name="RS">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:2</data>
           </shadow>
         </value>
         <value name="EN">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:3</data>
           </shadow>
         </value>
         <value name="D4">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:4</data>
           </shadow>
         </value>
         <value name="D5">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:5</data>
           </shadow>
         </value>
         <value name="D6">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:6</data>
           </shadow>
         </value>
         <value name="D7">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:7</data>
           </shadow>
         </value>
       </block>
       <block type="instance_rgb">
         <value name="R">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
         <value name="G">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
         <value name="B">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
       </block>
       <block type="instance_led">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:13</data>
           </shadow>
         </value>
       </block>
     </category>
-    <category name="INPUT" colour="#9966FF" secondaryColour="#774DCB">
+    <category name="Input Modules" colour="#9966FF" secondaryColour="#774DCB"   custom="ModuleINPUT">
       <block type="instance_button">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
       <block type="instance_pir">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
       <block type="instance_potentiometer">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
       <block type="instance_slider">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
       <block type="instance_lightsensor">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
       <block type="instance_lm35">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
       <block type="instance_soundsensor">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
@@ -418,107 +446,123 @@
       <block type="instance_ultrasonic">
         <value name="trigPin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:2</data>
           </shadow>
         </value>
         <value name="echoPin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital:4</data>
           </shadow>
         </value>
       </block>
-      
+
       <block type="instance_4dtouch">
         <value name="OUT1">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="OUT2">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="OUT3">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="OUT4">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
       <block type="instance_flame">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>analog</data>
+            <data name="Pin">analog</data>
           </shadow>
         </value>
       </block>
       <block type="instance_irdetector">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
     </category>
-    <category name="OUTPUT" colour="#FFBF00" secondaryColour="#CC9900">
+    <category name="Output Modules" colour="#FFBF00" secondaryColour="#CC9900"  custom="ModuleOUTPUT">
       <block type="instance_buzzer">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
       <block type="instance_speaker">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>digital</data>
+            <data name="Pin">digital</data>
           </shadow>
         </value>
       </block>
       <block type="instance_fanmotor">
         <value name="INA">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
         <value name="INB">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
       </block>
       <block type="instance_servo">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
-            <data>pwm</data>
+            <data name="Pin">pwm</data>
           </shadow>
         </value>
       </block>
       <block type="instance_stepper">
         <value name="Pin1">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="Pin2">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="Pin3">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <value name="Pin4">
           <shadow type="io_arduino_uno_pin_usable_menu">
+            <data name="Pin">digital</data>
           </shadow>
         </value>
         <field name="spv">2048</field>
         <field name="rpm">10</field>
       </block>
     </category>
-  </hardwareToolboxXml>
+  </blockToolboxXml>
 
   <ModuleToolboxXml>
+    <block type="module_RangeFinder_Ping"></block>
+    <block type="module_set_TB6612MotorDriver">
+      <value name="pwm">
+        <shadow type="math_whole_number">
+          <field name="NUM">255</field>
+        </shadow>
+      </value>
+    </block>
     <block type="module_set_rgb">
       <value name="colour">
         <shadow type="colour_picker"></shadow>

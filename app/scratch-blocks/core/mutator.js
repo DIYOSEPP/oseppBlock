@@ -83,7 +83,7 @@ Blockly.Mutator.prototype.drawIcon_ = function(group) {
   // Axle hole.
   Blockly.utils.createSvgElement('circle',
       {'class': 'blocklyIconShape', 'r': '2.7', 'cx': '8', 'cy': '8'},
-       group);
+      group);
 };
 
 /**

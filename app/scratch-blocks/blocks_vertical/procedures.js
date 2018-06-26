@@ -56,3 +56,16 @@ Blockly.Blocks['instance_procedure_call'] = {
         this.setHelpUrl('https://en.wikipedia.org/wiki/Subroutine');
     }
 };
+
+Blockly.Blocks['procedure_return'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("return");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour('#2a8c8c', '#2a8c8c', '#287373');
+        this.setTooltip('Terminate a function and return');
+        this.setHelpUrl('https://www.arduino.cc/en/Reference/Return');
+    }
+};

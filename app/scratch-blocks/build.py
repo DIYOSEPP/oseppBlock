@@ -41,7 +41,6 @@ if sys.version_info[0] != 2:
 
 import errno, glob, httplib, json, os, re, subprocess, threading, urllib,urllib2
 
-
 def import_path(fullpath):
   """Import a file with full path specification.
   Allows one to import from any directory, something __import__ does not do.
@@ -124,6 +123,7 @@ window.BLOCKLY_BOOT = function() {
     base_path = calcdeps.FindClosureBasePath(self.search_paths)
     for dep in calcdeps.BuildDependenciesFromFiles(self.search_paths):
       add_dependency.append(calcdeps.GetDepsLine(dep, base_path))
+    add_dependency.sort()  # Deterministic build.
     add_dependency = '\n'.join(add_dependency)
     # Find the Blockly directory name and replace it with a JS variable.
     # This allows blockly_uncompressed.js to be compiled on one computer and be
@@ -137,7 +137,7 @@ window.BLOCKLY_BOOT = function() {
     for dep in calcdeps.BuildDependenciesFromFiles(self.search_paths):
       if not dep.filename.startswith(os.pardir + os.sep):  # '../'
         provides.extend(dep.provides)
-    provides.sort()
+    provides.sort()  # Deterministic build.
     f.write('\n')
     f.write('// Load Blockly.\n')
     for provide in provides:
@@ -170,14 +170,22 @@ class Gen_compressed(threading.Thread):
   Uses the Closure Compiler's online API.
   Runs in a separate thread.
   """
-  def __init__(self, search_paths_vertical):
+  def __init__(self, search_paths_vertical, search_paths_horizontal):
     threading.Thread.__init__(self)
     self.search_paths_vertical = search_paths_vertical
+    #self.search_paths_horizontal = search_paths_horizontal
 
   def run(self):
     self.gen_core(True)
+    #self.gen_core(False)
+    #self.gen_blocks("horizontal")
     self.gen_blocks("vertical")
     self.gen_blocks("common")
+    #self.gen_generator("javascript")
+    #self.gen_generator("python")
+    #self.gen_generator("php")
+    #self.gen_generator("dart")
+    #self.gen_generator("lua")
     self.gen_generator("arduino")
 
   def gen_core(self, vertical):
@@ -201,6 +209,7 @@ class Gen_compressed(threading.Thread):
     # Read in all the source files.
     filenames = calcdeps.CalculateDependencies(search_paths,
         [os.path.join("core", "blockly.js")])
+    filenames.sort()  # Deterministic build.
     for filename in filenames:
       # Filter out the Closure files (the compiler will add them).
       if filename.startswith(os.pardir + os.sep):  # '../'
@@ -263,6 +272,7 @@ class Gen_compressed(threading.Thread):
     params.append(("js_code", "goog.provide('Blockly.Generator');"))
     filenames = glob.glob(
         os.path.join("generators", language, "*.js"))
+    filenames.sort()  # Deterministic build.
     filenames.insert(0, os.path.join("generators", language + ".js"))
     for filename in filenames:
       f = open(filename)
@@ -276,12 +286,12 @@ class Gen_compressed(threading.Thread):
 
   def do_compile(self, params, target_filename, filenames, remove):
     # Send the request to Google.
-    headers = {"Content-type": "application/x-www-form-urlencoded"}
-    conn = httplib.HTTPConnection("127.0.0.1","1080")
-    conn.request("POST", "http://closure-compiler.appspot.com/compile", urllib.urlencode(params), headers)
-    response = conn.getresponse()   
+
+    request=urllib2.Request(r"https://closure-compiler.appspot.com/compile")
+    request.add_header("Content-type","application/x-www-form-urlencoded")
+    response = urllib2.urlopen(request,urllib.urlencode(params))
     json_str = response.read()
-    conn.close()
+
 
     # Parse the JSON response.
     json_data = json.loads(json_str)
@@ -328,14 +338,13 @@ class Gen_compressed(threading.Thread):
       code = HEADER + "\n" + json_data["compiledCode"]
       code = code.replace(remove, "")
 
-      # Trim down Google's Apache licences.
-      # The Closure Compiler used to preserve these until August 2015.
-      # Delete this in a few months if the licences don't return.
+      # Trim down Google's (and only Google's) Apache licences.
+      # The Closure Compiler preserves these.
       LICENSE = re.compile("""/\\*
 
  [\w ]+
 
- (Copyright \\d+ Google Inc.)
+ Copyright \\d+ Google Inc.
  https://developers.google.com/blockly/
 
  Licensed under the Apache License, Version 2.0 \(the "License"\);
@@ -350,7 +359,7 @@ class Gen_compressed(threading.Thread):
  See the License for the specific language governing permissions and
  limitations under the License.
 \\*/""")
-      code = re.sub(LICENSE, r"\n// \1  Apache License 2.0", code)
+      code = re.sub(LICENSE, "", code)
 
       stats = json_data["statistics"]
       original_b = stats["originalSize"]
@@ -489,8 +498,9 @@ developers.google.com/blockly/guides/modify/web/closure""")
   # Horizontal:
   #Gen_uncompressed(search_paths_horizontal, False).start()
 
-  # Compressed forms of vertical.
-  Gen_compressed(search_paths_vertical).start()
+  # Compressed forms of vertical and horizontal.
+  Gen_compressed(search_paths_vertical, search_paths_horizontal).start()
 
   # This is run locally in a separate thread.
   Gen_langfiles().start()
+  

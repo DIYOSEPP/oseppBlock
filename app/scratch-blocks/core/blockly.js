@@ -36,6 +36,7 @@ goog.require('Blockly.Events');
 goog.require('Blockly.FieldAngle');
 goog.require('Blockly.FieldCheckbox');
 goog.require('Blockly.FieldColour');
+goog.require('Blockly.FieldColourSlider');
 // Date picker commented out since it increases footprint by 60%.
 // Add it only if you need it.
 //goog.require('Blockly.FieldDate');
@@ -43,10 +44,12 @@ goog.require('Blockly.FieldDropdown');
 goog.require('Blockly.FieldIconMenu');
 goog.require('Blockly.FieldImage');
 goog.require('Blockly.FieldTextInput');
+goog.require('Blockly.FieldTextInputRemovable');
 goog.require('Blockly.FieldTextDropdown');
 goog.require('Blockly.FieldNumber');
 goog.require('Blockly.FieldNumberDropdown');
 goog.require('Blockly.FieldVariable');
+goog.require('Blockly.FieldVerticalSeparator');
 goog.require('Blockly.Generator');
 goog.require('Blockly.Msg');
 goog.require('Blockly.Procedures');
@@ -325,6 +328,7 @@ Blockly.confirm = function(message, callback) {
   callback(window.confirm(message));
 };
 
+/* eslint-disable no-unused-vars */
 /**
  * Wrapper to window.prompt() that app developers may override to provide
  * alternatives to the modal browser window. Built-in browser prompts are
@@ -333,10 +337,17 @@ Blockly.confirm = function(message, callback) {
  * @param {string} message The message to display to the user.
  * @param {string} defaultValue The value to initialize the prompt with.
  * @param {!function(string)} callback The callback for handling user response.
+ * @param {?string} opt_title An optional title for the prompt.
+ * @param {?string} opt_varType An optional variable type for variable specific
+ *     prompt behavior.
  */
-Blockly.prompt = function(message, defaultValue, callback) {
+Blockly.prompt = function(message, defaultValue, callback, opt_title,
+    opt_varType) {
+  // opt_title and opt_varType are unused because we only need them to pass
+  // information to the scratch-gui, which overwrites this function
   callback(window.prompt(message, defaultValue));
 };
+/* eslint-enable no-unused-vars */
 
 /**
  * Helper function for defining a block from JSON.  The resulting function has
@@ -386,11 +397,15 @@ Blockly.defineBlocksWithJsonArray = function(jsonArray) {
  * @param {boolean} opt_noCaptureIdentifier True if triggering on this event
  *     should not block execution of other event handlers on this touch or other
  *     simultaneous touches.
+ * @param {boolean} opt_noPreventDefault True if triggering on this event
+ *     should prevent the default handler.  False by default.  If
+ *     opt_noPreventDefault is provided, opt_noCaptureIdentifier must also be
+ *     provided.
  * @return {!Array.<!Array>} Opaque data that can be passed to unbindEvent_.
  * @private
  */
 Blockly.bindEventWithChecks_ = function(node, name, thisObject, func,
-    opt_noCaptureIdentifier) {
+    opt_noCaptureIdentifier, opt_noPreventDefault) {
   var handled = false;
   var wrapFunc = function(e) {
     var captureIdentifier = !opt_noCaptureIdentifier;
@@ -418,8 +433,10 @@ Blockly.bindEventWithChecks_ = function(node, name, thisObject, func,
   if (name in Blockly.Touch.TOUCH_MAP) {
     var touchWrapFunc = function(e) {
       wrapFunc(e);
-      // Stop the browser from scrolling/zooming the page.
-      if (handled) {
+      // Calling preventDefault stops the browser from scrolling/zooming the
+      // page.
+      var preventDef = !opt_noPreventDefault;
+      if (handled && preventDef) {
         e.preventDefault();
       }
     };

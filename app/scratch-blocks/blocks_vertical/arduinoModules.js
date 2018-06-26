@@ -32,7 +32,7 @@ Blockly.Blocks['instance_rgb'] = {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/rgb.png", 40, 40, "*"))
             .appendField("RGB Module:")
-            .appendField(new Blockly.FieldInstanceInput('RGB', 'rgb1', 'rgb'), "NAME")
+            .appendField(new Blockly.FieldInstanceInput('RGB', 'rgb1', 'rgb'), "NAME");
         this.appendValueInput("R")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -114,7 +114,8 @@ Blockly.Blocks['instance_led'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('The LED module allows easy plug and play configuration to your Arduino\'s I/O lines. The LED can be controlled through a PWM signal or a digital high/ low output');
+        this.setTooltip('The LED module allows easy plug and play configuration to your Arduino\'s I/O lines.' +
+            ' The LED can be controlled through a PWM signal or a digital high/ low output');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/68-led-modules');
     },
     provideBlocks: ['module_set_led']
@@ -152,7 +153,8 @@ Blockly.Blocks['instance_button'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('The push button module allows detection in states of high or low from the onboard momentary push button.');
+        this.setTooltip('The push button module allows detection in states ' +
+            'of high or low from the onboard momentary push button.');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/76-push-button-module');
     },
     provideBlocks: ['module_read_button']
@@ -162,7 +164,7 @@ Blockly.Blocks['module_read_button'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("BUTTON"), "NAME")
-            .appendField("Pressed")
+            .appendField("Pressed");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(
@@ -239,7 +241,7 @@ Blockly.Blocks['module_lcd_clear'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("LCD1602"), "NAME")
-            .appendField("clear")
+            .appendField("clear");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -256,13 +258,13 @@ Blockly.Blocks['module_lcd_goto'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("LCD1602"), "NAME")
-            .appendField("setCursor");
+            .appendField("Goto");
         this.appendValueInput("column")
             .setCheck("Number")
-            .appendField("column");
+            .appendField("X");
         this.appendValueInput("line")
             .setCheck("Number")
-            .appendField("line");
+            .appendField("Y");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -289,7 +291,8 @@ Blockly.Blocks['instance_buzzer'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('The Piezo sensor acts both as an output buzzer device and an input device measuring sound pressure.');
+        this.setTooltip('The Piezo sensor acts both as an output buzzer' +
+            ' device and an input device measuring sound pressure.');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/72-piezo-sensor-module');
     },
     provideBlocks: ['module_set_buzzer']
@@ -421,8 +424,8 @@ Blockly.Blocks['module_set_fanmotor'] = {
     },
     updateStepShape: function (option) {
         var input = this.getInput('pwm');
-        var oldVisible = !(input.hide||false);
-        var newVisible;;
+        var oldVisible = !(input.hide || false);
+        var newVisible;
         if (option == 's') {
             newVisible = false;
         } else {
@@ -457,7 +460,8 @@ Blockly.Blocks['instance_servo'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('ervos have integrated gears and a shaft that can be precisely controlled. Standard servos allow the shaft to be positioned at various angles, usually between 0 and 180 degrees');
+        this.setTooltip('ervos have integrated gears and a shaft that can be precisely controlled. ' +
+            'Standard servos allow the shaft to be positioned at various angles, usually between 0 and 180 degrees');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/Servo');
     },
     provideBlocks: ['module_servo_write']
@@ -554,7 +558,7 @@ Blockly.Blocks['instance_stepper'] = {
     updateShape: function (option) {
         var pin3 = this.getInput('Pin3');
         var oldVisible = pin3.isVisible();
-        var newVisible;;
+        var newVisible;
         if (option == 'T') {
             newVisible = false;
         } else {
@@ -567,7 +571,7 @@ Blockly.Blocks['instance_stepper'] = {
                 var shadowBlock = input.connection.targetBlock();
                 if (shadowBlock) {
                     if (visilbe) {
-                        shadowBlock.render(false);                      
+                        shadowBlock.render(false);
                     } else {
                         //free the pin
                         if (shadowBlock.isShadow()) {
@@ -627,7 +631,6 @@ Blockly.Blocks['instance_pir'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/pir.png", 40, 40, "*"))
-            .appendField("PIR Sensor")
             .appendField(new Blockly.FieldInstanceInput('PIR', 'pir1', 'pir'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
@@ -664,8 +667,7 @@ Blockly.Blocks['instance_potentiometer'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/potentiometer.png", 40, 40, "*"))
-            .appendField("Potentiometer")
-            .appendField(new Blockly.FieldInstanceInput('POTENTIOMETER', 'pot1', 'pot'), "NAME");
+            .appendField(new Blockly.FieldInstanceInput('POTENTIOMETER', 'potentiometer', 'potentiometer'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
             .appendField("on Pin");
@@ -701,7 +703,6 @@ Blockly.Blocks['instance_slider'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/slider.png", 40, 40, "*"))
-            .appendField("sensor")
             .appendField(new Blockly.FieldInstanceInput('SLIDER', 'slider', 'slider'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
@@ -738,7 +739,6 @@ Blockly.Blocks['instance_lightsensor'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/lightsensor.png", 40, 40, "*"))
-            .appendField("light sensor")
             .appendField(new Blockly.FieldInstanceInput('LIGHTSENSOR', 'light1', 'light'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
@@ -775,7 +775,6 @@ Blockly.Blocks['instance_lm35'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/temperaturesensor.png", 40, 40, "*"))
-            .appendField("sensor")
             .appendField(new Blockly.FieldInstanceInput('LM35', 'lm35_1', 'lm35_'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
@@ -785,7 +784,8 @@ Blockly.Blocks['instance_lm35'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('LM35 Temperature sensor uses the LM35 integrated circuit. Can be used in numerous weather detection applications for home automation / weather monitoring.');
+        this.setTooltip('LM35 Temperature sensor uses the LM35 integrated circuit. ' +
+            'Can be used in numerous weather detection applications for home automation / weather monitoring.');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/79-lm35-temperature-sensor-module');
     },
     provideBlocks: ['module_lm35_get']
@@ -814,8 +814,7 @@ Blockly.Blocks['instance_soundsensor'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/soundsensor.png", 40, 40, "*"))
-            .appendField("sensor")
-            .appendField(new Blockly.FieldInstanceInput('SOUNDSENSOR', 'sound1', 'sound'), "NAME");
+            .appendField(new Blockly.FieldInstanceInput('SOUNDSENSOR', 'soundSensor', 'soundSensor'), "NAME");
         this.appendValueInput("Pin")
             .setCheck("Pin")
             .appendField("on Pin");
@@ -851,7 +850,7 @@ Blockly.Blocks['instance_ultrasonic'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage("blockIcon/ultrasonic.png", 40, 40, "*"))
-            .appendField(new Blockly.FieldInstanceInput('ULTRASONIC', 'ultr1', 'ultr'), "NAME");
+            .appendField(new Blockly.FieldInstanceInput('ULTRASONIC', 'ultrasonic', 'ultrasonic'), "NAME");
         this.appendValueInput("trigPin")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -874,7 +873,7 @@ Blockly.Blocks['instance_ultrasonic'] = {
 Blockly.Blocks['module_ultrasonic_get'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("distance(mm) of")
+            .appendField("mm of")
             .appendField(new Blockly.FieldInstanceDropdown("ULTRASONIC"), "NAME");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
@@ -891,8 +890,10 @@ Blockly.Blocks['module_ultrasonic_get'] = {
 Blockly.Blocks['instance_4dtouch'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/1-100/LS00010_web-81-300-225-80.jpg", 40, 40, "*"))
-            .appendField(new Blockly.FieldInstanceInput('TOUCH4D', 'Touch1', 'Touch'), "NAME");
+            .appendField(
+                new Blockly.FieldImage("https://osepp.com/images/igallery/resized/1-100/LS00010_web-81-300-225-80.jpg",
+                    40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('TOUCH4D', 'TOUCH4D_', 'TOUCH4D_'), "NAME");
         this.appendValueInput("OUT1")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -926,7 +927,8 @@ Blockly.Blocks['module_4dtouch_get'] = {
             .appendField(new Blockly.FieldInstanceDropdown("TOUCH4D"), "NAME")
             .appendField(" ");
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["OUT1", "OUT1"], ["OUT2", "OUT2"], ["OUT3", "OUT3"], ["OUT4", "OUT4"]]), "CHANNEL")
+            .appendField(new Blockly.FieldDropdown([["OUT1", "OUT1"], ["OUT2", "OUT2"], ["OUT3", "OUT3"], ["OUT4", "OUT4"]]),
+                "CHANNEL")
             .appendField("Pressed");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
@@ -943,7 +945,8 @@ Blockly.Blocks['module_4dtouch_get'] = {
 Blockly.Blocks['instance_flame'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/1-100/Flame_Sensor_Module-92-800-600-80.jpg", 40, 40, "*"))
+            .appendField(new Blockly.FieldImage(
+                "https://osepp.com/images/igallery/resized/1-100/Flame_Sensor_Module-92-800-600-80.jpg", 40, 40, "*"))
             .appendField(new Blockly.FieldInstanceInput('FLAME', 'Flame1', 'Flame'), "NAME")
             .appendField("on Pin");
         this.appendValueInput("Pin")
@@ -953,7 +956,8 @@ Blockly.Blocks['instance_flame'] = {
             Blockly.Colours.cInstanceDefine.primary,
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.tertiary);
-        this.setTooltip('detect variations in light wavelength (such as fire flame detection) in the range of 760nm-1100 nm');
+        this.setTooltip(
+            'detect variations in light wavelength (such as fire flame detection) in the range of 760nm-1100 nm');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module');
     },
     provideBlocks: ['module_read_flame']
@@ -963,7 +967,7 @@ Blockly.Blocks['module_read_flame'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("FLAME"), "NAME")
-            .appendField("Value")
+            .appendField("Value");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(
@@ -979,7 +983,8 @@ Blockly.Blocks['module_read_flame'] = {
 Blockly.Blocks['instance_irdetector'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage("https://osepp.com/images/igallery/resized/101-200/IR_DETECTOR_IRDET_01-101-300-225-80.jpg", 40, 40, "*"))
+            .appendField(new Blockly.FieldImage(
+                "https://osepp.com/images/igallery/resized/101-200/IR_DETECTOR_IRDET_01-101-300-225-80.jpg", 40, 40, "*"))
             .appendField(new Blockly.FieldInstanceInput('IRDETECTOR', 'detector1', 'detector'), "NAME")
             .appendField("on Pin");
         this.appendValueInput("Pin")
@@ -999,7 +1004,7 @@ Blockly.Blocks['module_read_irdetector'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("IRDETECTOR"), "NAME")
-            .appendField("Trigged")
+            .appendField("Trigged");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(
@@ -1009,5 +1014,191 @@ Blockly.Blocks['module_read_irdetector'] = {
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
         this.setTooltip('Detects when objects are within the calibrated range');
         this.setHelpUrl('https://osepp.com/electronic-modules/sensor-modules/64-ir-detector');
+    }
+};
+
+Blockly.Blocks['instance_TB6612MotorDriver'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("blockIcon/tb6612motordriver.png", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('TB6612MotorDriver', 'Motor', 'Motor'), "NAME");
+
+        this.appendValueInput("DIR")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(new Blockly.FieldDropdown([["Forward", "f"], ["Backward", "b"]]), "frb")
+            .appendField("DIR");
+        this.appendValueInput("PWM")
+            .setCheck("Pin")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("PWM");
+
+        this.setInputsInline(false);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('Capacitive touch Module');
+    },
+    provideBlocks: ['module_set_TB6612MotorDriver']
+};
+
+Blockly.Blocks['module_set_TB6612MotorDriver'] = {
+    init: function () {
+        var dropdown = new Blockly.FieldDropdown([["forward", "f"], ["backward", "b"], ["stop", "s"]],
+            function (option) {
+                this.sourceBlock_.updateStepShape(option);
+            });
+
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceDropdown("TB6612MotorDriver"), "NAME")
+            .appendField(" ")
+            .appendField(dropdown, "dir");
+        this.appendValueInput("pwm")
+            .setCheck("Number");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(
+            Blockly.Colours.cInstanceStatement.primary,
+            Blockly.Colours.cInstanceStatement.secondary,
+            Blockly.Colours.cInstanceStatement.tertiary);
+        this.setTooltip('CHOOSE THE SPEED AND DIRECTION OF MOTOR');
+    },
+    afterCreateBeforRender: function () {
+        this.updateStepShape(this.getFieldValue("dir"));
+    },
+    updateStepShape: function (option) {
+        var input = this.getInput('pwm');
+        var oldVisible = !(input.hide || false);
+        var newVisible;
+        if (option == 's') {
+            newVisible = false;
+        } else {
+            newVisible = true;
+        }
+        if (oldVisible != newVisible) {
+            input.setVisible(newVisible);
+            input.hide = !newVisible;
+            if (newVisible) {
+                var shadowBlock = input.connection.targetBlock();
+                if (shadowBlock) {
+                    shadowBlock.render(false);
+                }
+            }
+        }
+    }
+};
+
+Blockly.Blocks['instance_RangeFinder'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("blockIcon/pingsensor.png", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('RangeFinder', 'RangeFinder', 'RangeFinder'), "NAME");
+        this.appendValueInput("Pin")
+            .setCheck("Pin")
+            .appendField("on Pin");
+        this.setInputsInline(true);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('An ultrasonic transmitter and receiver sensor all in one.');
+    },
+    provideBlocks: ['module_RangeFinder_Ping']
+};
+
+Blockly.Blocks['module_RangeFinder_Ping'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("mm of")
+            .appendField(new Blockly.FieldInstanceDropdown("RangeFinder"), "NAME");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setTooltip('READ THE DISTANCE IN MILLIMETERS OF THE ULTRASONIC SENSOR');
+    }
+};
+
+Blockly.Blocks['instance_OseppRemote'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("Remote Update");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceInput('remote', 'remote','remote'), "NAME").setVisible(false);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip('');
+    },
+    provideBlocks: ['module_OseppRemote_Button','module_OseppRemote_Channel','module_OseppRemote_isTimeout']
+};
+
+Blockly.Blocks['module_OseppRemote_Button'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("Remote")
+            .appendField(new Blockly.FieldDropdown([
+                ["L", "1"], ["R", "2"], ["U", "4"], ["D", "8"],
+                ["A", "16"], ["B", "32"], ["X", "64"], ["Y", "128"]
+            ]),
+                "CHANNEL")
+            .appendField("Pressed");
+        this.setInputsInline(true);
+        this.setOutput(true, "Boolean");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
+        this.setTooltip('DETECT IF REMOTE BUTTON IS PRESSED');
+        this.setHelpUrl('');
+    }
+};
+
+Blockly.Blocks['module_OseppRemote_Channel'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("Remote")
+            .appendField(new Blockly.FieldDropdown([
+                ["Left X", "0"], ["Left Y", "1"], ["Right X", "2"], ["Right Y", "3"],
+                ["Gravity X", "4"], ["Gravity Y", "5"], ["Gravity Z", "6"]
+            ]),
+                "CHANNEL");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setTooltip('DETECT IF REMOTE BUTTON IS PRESSED');
+        this.setHelpUrl('');
+    }
+};
+
+Blockly.Blocks['module_OseppRemote_isTimeout'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("Remote Timeout");
+        this.appendValueInput("time")
+            .setCheck("Number");
+        this.setInputsInline(true);
+        this.setOutput(true, "Boolean");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
+        this.setTooltip('DETECT IF REMOTE IS TIMEOUT');
+        this.setHelpUrl('');
     }
 };

@@ -88,17 +88,18 @@ Blockly.Blocks['control_if'] = {
         return containerBlock;
     },
     compose: function (containerBlock) {
-        var clauseBlock = containerBlock.nextConnection.targetBlock();
+        var clauseBlock = containerBlock;
         // Count number of inputs.
         this.elseifCount_ = 0;
         this.elseCount_ = 0;
-        var valueConnections = [null];
-        var statementConnections = [null];
+        var valueConnections = [];
+        var statementConnections = [];
         var elseStatementConnection = null;
         while (clauseBlock) {
             switch (clauseBlock.type) {
-                case 'controls_if_elseif':
-                    this.elseifCount_++;
+                case 'controls_if_elseif':  
+                    this.elseifCount_++;      
+                case 'controls_if_if':
                     valueConnections.push(clauseBlock.valueConnection_);
                     statementConnections.push(clauseBlock.statementConnection_);
                     break;
@@ -114,17 +115,18 @@ Blockly.Blocks['control_if'] = {
         }
         this.updateShape_();
         // Reconnect any child blocks.
-        for (var i = 1; i <= this.elseifCount_; i++) {
+        for (var i = 0; i <= this.elseifCount_; i++) {
             Blockly.Mutator.reconnect(valueConnections[i], this, 'IF' + i);
             Blockly.Mutator.reconnect(statementConnections[i], this, 'DO' + i);
         }
         Blockly.Mutator.reconnect(elseStatementConnection, this, 'ELSE');
     },
     saveConnections: function (containerBlock) {
-        var clauseBlock = containerBlock.nextConnection.targetBlock();
-        var i = 1;
+        var clauseBlock = containerBlock;
+        var i = 0;
         while (clauseBlock) {
             switch (clauseBlock.type) {
+                case 'controls_if_if':
                 case 'controls_if_elseif':
                     var inputIf = this.getInput('IF' + i);
                     var inputDo = this.getInput('DO' + i);
@@ -148,20 +150,13 @@ Blockly.Blocks['control_if'] = {
     },
     updateShape_: function () {
         // Delete everything.
-        if (this.getInput('ELSE')) {
-            this.removeInput('ELSE');
-        }
-        var i = 1;
-        while (this.getInput('IF' + i)) {
-            this.removeInput('IF' + i);
-            this.removeInput('DO' + i);
-            i++;
-        }
+        while (this.inputList[0]) this.removeInput(this.inputList[0].name);
+
         // Rebuild block.
-        for (var i = 1; i <= this.elseifCount_; i++) {
+        for (var i = 0; i <= this.elseifCount_; i++) {
             this.appendValueInput('IF' + i)
                 .setCheck(["Boolean", "Number"])
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSEIF);
+                .appendField(i==0?'if':Blockly.Msg.CONTROLS_IF_MSG_ELSEIF);
             this.appendStatementInput('DO' + i);
         }
         if (this.elseCount_) {
@@ -373,6 +368,8 @@ Blockly.Blocks['control_delay'] = {
         this.appendValueInput("ms")
             .setCheck("Number")
             .appendField("delay");
+        this.appendDummyInput()
+            .appendField("Milliseconds");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -385,7 +382,9 @@ Blockly.Blocks['control_delaymicroseconds'] = {
     init: function () {
         this.appendValueInput("us")
             .setCheck("Number")
-            .appendField("delayMicroseconds");
+            .appendField("delay");
+        this.appendDummyInput()
+            .appendField("Microseconds");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -398,7 +397,7 @@ Blockly.Blocks['control_delaymicroseconds'] = {
 Blockly.Blocks['control_millis'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Get Millis");
+            .appendField("Millis");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.tertiary);
@@ -410,7 +409,7 @@ Blockly.Blocks['control_millis'] = {
 Blockly.Blocks['control_micros'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Get micros");
+            .appendField("Micros");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.secondary, Blockly.Colours.cArduinoInput.tertiary);

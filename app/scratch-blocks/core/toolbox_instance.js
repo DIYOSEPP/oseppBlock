@@ -67,12 +67,12 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             block.appendChild(field);
             xmlList.push(block);
         }
-    }
+//    }
 
-    if (variableList.length > 0) {
+//    if (variableList.length > 0) {
         if (Blockly.Blocks['instance_set_number']) {
             // <block type="instance_set_number">
-            //   <field name="instance_name">variableList[0]</field>
+            //   <field name="instance_name">variableList[i]</field>
             //   <value name="VALUE">
             //     <shadow type="math_number">
             //       <field name="NUM">0</field>
@@ -81,7 +81,7 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             // </block>
             var block = goog.dom.createDom('block');
             block.setAttribute('type', 'instance_set_number');
-            var field = goog.dom.createDom('field', null, variableList[0]);
+            var field = goog.dom.createDom('field', null, variableList[i]);
             field.setAttribute('name', 'instance_name');
             block.appendChild(field);
 
@@ -125,9 +125,9 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             block.appendChild(field);
             xmlList.push(block);
         }
-    }
+//    }
 
-    if (variableList.length > 0) {
+//    if (variableList.length > 0) {
         if (Blockly.Blocks['instance_set_boolean']) {
             // <block type="instance_set_boolean">
             //   <field name="instance_name">variableList[0]</field>
@@ -138,7 +138,7 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             // </block>
             var block = goog.dom.createDom('block');
             block.setAttribute('type', 'instance_set_boolean');
-            var field = goog.dom.createDom('field', null, variableList[0]);
+            var field = goog.dom.createDom('field', null, variableList[i]);
             field.setAttribute('name', 'instance_name');
             block.appendChild(field);
 
@@ -178,9 +178,9 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             block.appendChild(field);
             xmlList.push(block);
         }
-    }
+//    }
 
-    if (variableList.length > 0) {
+//    if (variableList.length > 0) {
         if (Blockly.Blocks['instance_set_string']) {
             // <block type="instance_set_string">
             //   <field name="instance_name">variableList[0]</field>
@@ -192,7 +192,7 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             // </block>
             var block = goog.dom.createDom('block');
             block.setAttribute('type', 'instance_set_string');
-            var field = goog.dom.createDom('field', null, variableList[0]);
+            var field = goog.dom.createDom('field', null, variableList[i]);
             field.setAttribute('name', 'instance_name');
             block.appendChild(field);
 
@@ -296,32 +296,7 @@ Blockly.InstanceToolbox.flyoutCategoryVariable = function (workspace) {
             xmlList.push(block);
         }
     }
-
-
     return xmlList;
-};
-
-Blockly.InstanceToolbox.flyoutCategoryModule = function (workspace) {
-    var provideBlocks = [];
-    var result=[];
-    if (workspace.isFlyout) workspace = workspace.targetWorkspace;
-    var allblocks = workspace.getAllBlocks();
-    for (var x = 0, block; block = allblocks[x]; x++) {
-        if (block.rendered !== true) continue;
-        if (block.provideBlocks) {
-            provideBlocks = provideBlocks.concat(block.provideBlocks);
-        }
-    }
-    var dom = Blockly.Xml.textToDom(ModuleToolboxXml);
-    var chields = dom.childNodes;
-    for (var i = 0, xml; xml = chields[i]; i++)
-    {
-        if (xml.tagName && xml.tagName.toLocaleLowerCase() == 'block')
-        {
-            if (provideBlocks.lastIndexOf(xml.getAttribute('type')) >= 0) result.push(xml);
-        }
-    }
-    return result;
 };
 
 Blockly.InstanceToolbox.flyoutCategoryProcedure = function (workspace) {
@@ -347,6 +322,92 @@ Blockly.InstanceToolbox.flyoutCategoryProcedure = function (workspace) {
             xmlList.push(block);
         }
     }
-
+    var block = goog.dom.createDom('block');
+    block.setAttribute('type', 'procedure_return');
+    xmlList.push(block);
     return xmlList;
+};
+
+
+
+Blockly.InstanceToolbox.modBlocks_cache = Blockly.InstanceToolbox.modBlocks_cache || null;
+
+
+Blockly.InstanceToolbox.createMod_cache = function () {
+    var subBlocks = [];
+    var dom = Blockly.Xml.textToDom(ModuleToolboxXml);
+    var chields = dom.childNodes;
+    for (var i = 0, xml; xml = chields[i]; i++) {
+        if (xml.tagName && xml.tagName.toLocaleLowerCase() == 'block') {
+            subBlocks[xml.getAttribute('type')] = xml;
+        }
+    }
+
+    Blockly.InstanceToolbox.modBlocks_cache = [];
+
+    var modules = Blockly.Xml.textToDom(blockToolboxXml).childNodes;
+
+    for (var i = 0, xml; xml = modules[i]; i++) {
+        if (xml.tagName == null) continue;
+        if (xml.tagName.toLocaleLowerCase() != 'category') continue;
+        if (xml.getAttribute('custom') == null) continue;
+        if (xml.getAttribute('custom').length <= 0) continue;
+
+        Blockly.InstanceToolbox.modBlocks_cache[xml.getAttribute('custom')] = [];
+        for (var k = 0, block; block = xml.childNodes[k]; k++) {
+            if (block.tagName==null|| block.tagName.toLocaleLowerCase() != 'block') continue;
+            var node = [];
+            node.xml = block.cloneNode(true);
+            node.subBlocks = [];
+            var blk = Blockly.Blocks[block.getAttribute('type')];
+            if (blk.provideBlocks) {
+                for (var j = 0, sb; sb = blk.provideBlocks[j]; j++) {
+                    var sbxml = subBlocks[sb];
+                    node.subBlocks.push(sbxml.cloneNode(true));
+                }
+            }
+            Blockly.InstanceToolbox.modBlocks_cache[xml.getAttribute('custom')].push(node);
+        }
+    }
+    return Blockly.InstanceToolbox.modBlocks_cache;
+}
+
+Blockly.InstanceToolbox.flyoutCategoryModule = function (workspace, categoryName) {
+    var result = [];
+    var provideBlocks = [];
+
+    if (workspace.isFlyout) workspace = workspace.targetWorkspace;
+    var allblocks = workspace.getAllBlocks();
+    for (var x = 0, block; block = allblocks[x]; x++) {
+        if (block.rendered !== true) continue;
+        if (block.provideBlocks) {
+            provideBlocks = provideBlocks.concat(block.provideBlocks);
+        }
+    }
+
+    var categorys = Blockly.InstanceToolbox.modBlocks_cache || Blockly.InstanceToolbox.createMod_cache();
+    var modules = categorys[categoryName];
+    for (var i = 0, mod; mod = modules[i]; i++) {
+        result.push(mod.xml);
+        for (var x = 0, block; block = mod.subBlocks[x]; x++) {
+            if (provideBlocks.lastIndexOf(block.getAttribute('type')) >= 0) result.push(block);
+        }
+    }
+    return result;
+};
+
+
+Blockly.InstanceToolbox.flyoutCategoryModuleDisplay = function (workspace) {
+    return Blockly.InstanceToolbox.flyoutCategoryModule(workspace, "ModuleDisplay");
+};
+
+Blockly.InstanceToolbox.flyoutCategoryModuleInput = function (workspace) {
+    return Blockly.InstanceToolbox.flyoutCategoryModule(workspace, "ModuleINPUT");
+};
+Blockly.InstanceToolbox.flyoutCategoryModuleOutput = function (workspace) {
+    return Blockly.InstanceToolbox.flyoutCategoryModule(workspace, "ModuleOUTPUT");
+};
+
+Blockly.InstanceToolbox.flyoutCategoryModuleRobot = function (workspace) {
+    return Blockly.InstanceToolbox.flyoutCategoryModule(workspace, "ModuleROBOT");
 };

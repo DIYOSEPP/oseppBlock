@@ -48,7 +48,7 @@ Blockly.SNAP_RADIUS = 48;
  * Maximum misalignment between connections for them to snap together,
  * when a connection is already highlighted.
  */
-Blockly.CONNECTING_SNAP_RADIUS = 96;
+Blockly.CONNECTING_SNAP_RADIUS = 68;
 
 /**
  * How much to prefer staying connected to the current connection over moving to
@@ -245,20 +245,6 @@ Blockly.OUTPUT_SHAPE_ROUND = 2;
 Blockly.OUTPUT_SHAPE_SQUARE = 3;
 
 /**
- * Radius of stack glow, in px.
- * @type {number}
- * @const
- */
-Blockly.STACK_GLOW_RADIUS = 1.3;
-
-/**
- * Radius of replacement glow, in px.
- * @type {number}
- * @const
- */
-Blockly.REPLACEMENT_GLOW_RADIUS = 2;
-
-/**
  * ENUM for categories.
  * @const
  */
@@ -268,6 +254,7 @@ Blockly.Categories = {
   "sound": "sounds",
   "pen": "pen",
   "data": "data",
+  "dataLists": "data-lists",
   "event": "events",
   "control": "control",
   "sensing": "sensing",
@@ -326,3 +313,56 @@ Blockly.RENAME_VARIABLE_ID = 'RENAME_VARIABLE_ID';
  * @const {string}
  */
 Blockly.DELETE_VARIABLE_ID = 'DELETE_VARIABLE_ID';
+
+/**
+ * String for use in the dropdown created in field_variable,
+ * specifically for broadcast messages.
+ * This string indicates that this option in the dropdown is 'New message...'
+ * and if selected, should trigger the prompt to create a new message.
+ * @const {string}
+ */
+Blockly.NEW_BROADCAST_MESSAGE_ID = 'NEW_BROADCAST_MESSAGE_ID';
+
+/**
+ * String representing the variable type of broadcast message blocks.
+ * This string, for use in differentiating between types of variables,
+ * indicates that the current variable is a broadcast message.
+ * @const {string}
+ */
+Blockly.BROADCAST_MESSAGE_VARIABLE_TYPE = 'broadcast_msg';
+
+/**
+ * String representing the variable type of list blocks.
+ * This string, for use in differentiating between types of variables,
+ * indicates that the current variable is a list.
+ * @const {string}
+ */
+Blockly.LIST_VARIABLE_TYPE = 'list';
+
+// TODO (#1251) Replace '' below with 'scalar', and start using this constant
+// everywhere.
+/**
+ * String representing the variable type of scalar variables.
+ * This string, for use in differentiating between types of variables,
+ * indicates that the current variable is a scalar variable.
+ * @const {string}
+ */
+Blockly.SCALAR_VARIABLE_TYPE = '';
+
+/**
+ * The type of all procedure definition blocks.
+ * @const {string}
+ */
+Blockly.PROCEDURES_DEFINITION_BLOCK_TYPE = 'procedures_definition';
+
+/**
+ * The type of all procedure prototype blocks.
+ * @const {string}
+ */
+Blockly.PROCEDURES_PROTOTYPE_BLOCK_TYPE = 'procedures_prototype';
+
+/**
+ * The type of all procedure call blocks.
+ * @const {string}
+ */
+Blockly.PROCEDURES_CALL_BLOCK_TYPE = 'procedures_call';

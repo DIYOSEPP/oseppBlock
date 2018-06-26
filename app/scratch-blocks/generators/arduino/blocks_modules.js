@@ -4,7 +4,7 @@ goog.require('Blockly.Arduino');
 
 
 function addCommandTextToSetup(block, field) {
-    var fieldValue = block.getFieldValue(field)
+    var fieldValue = block.getFieldValue(field);
     var commandText = block.getCommentText();
     if (!commandText) {
         commandText = '//' + fieldValue;
@@ -51,7 +51,7 @@ Blockly.Arduino['instance_rgb'] = function (block) {
 Blockly.Arduino['module_set_rgb'] = function (block) {
     var dropdown_rgb = block.getFieldValue('rgb');
 
-    var rgb = requireInstance(block, dropdown_rgb);
+    var rgb = Blockly.Arduino.requireInstance(block, dropdown_rgb);
     if (!rgb) return '\n';
     var pin_r = Blockly.Arduino.valueToCode(rgb, 'R', Blockly.Arduino.ORDER_ATOMIC);
     var pin_g = Blockly.Arduino.valueToCode(rgb, 'G', Blockly.Arduino.ORDER_ATOMIC);
@@ -83,18 +83,15 @@ Blockly.Arduino['module_set_rgb'] = function (block) {
                     if (c.length > 2) b = c[2];
                 }
             } catch (e) {
+                //console.log(e);
             }
         }
     }
 
-
     var code = '';
-    if (Blockly.Arduino.isPWMPin(pin_r))
-        code += 'analogWrite(' + pin_r + ',' + r + ');\n';
-    if (Blockly.Arduino.isPWMPin(pin_g))
-        code += 'analogWrite(' + pin_g + ',' + g + ');\n';
-    if (Blockly.Arduino.isPWMPin(pin_b))
-        code += 'analogWrite(' + pin_b + ',' + b + ');\n';
+    if (Blockly.Arduino.isPWMPin(pin_r)) { code += 'analogWrite(' + pin_r + ',' + r + ');\n'; }
+    if (Blockly.Arduino.isPWMPin(pin_g)) { code += 'analogWrite(' + pin_g + ',' + g + ');\n'; }
+    if (Blockly.Arduino.isPWMPin(pin_b)) { code += 'analogWrite(' + pin_b + ',' + b + ');\n'; }
     return code;
 };
 
@@ -126,7 +123,7 @@ Blockly.Arduino['module_set_led'] = function (block) {
             valueNumber = true;
         }
     }
-    var led = requireInstance(block, dropdown_name);
+    var led = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!led) return '\n';
     var pin = Blockly.Arduino.valueToCode(led, 'Pin', Blockly.Arduino.ORDER_NONE);
     //if (!Blockly.Arduino.isDigitalPin(pin)) return '\n';---Users should see the errors
@@ -145,7 +142,7 @@ Blockly.Arduino['instance_button'] = function (block) {
 
 Blockly.Arduino['module_read_button'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'digitalRead(' + pin + ')==LOW';
@@ -189,7 +186,7 @@ Blockly.Arduino['instance_lcd1602'] = function (block) {
 
 Blockly.Arduino['module_lcd_print'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    if (!requireInstance(block, dropdown_name)) return '\n';
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
     var value_value = Blockly.Arduino.valueToCode(block, 'value', Blockly.Arduino.ORDER_NONE);
     // TODO: Assemble Arduino into code variable.
     var code = dropdown_name + '.print(' + value_value + ');\n';
@@ -199,14 +196,14 @@ Blockly.Arduino['module_lcd_print'] = function (block) {
 Blockly.Arduino['module_lcd_clear'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
     // TODO: Assemble Arduino into code variable.
-    if (!requireInstance(block, dropdown_name)) return '\n';
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
     var code = dropdown_name + '.clear();\n';
     return code;
 };
 
 Blockly.Arduino['module_lcd_goto'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    if (!requireInstance(block, dropdown_name)) return '\n';
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
     var value_column = Blockly.Arduino.valueToCode(block, 'column', Blockly.Arduino.ORDER_NONE) || 0;
     var value_line = Blockly.Arduino.valueToCode(block, 'line', Blockly.Arduino.ORDER_NONE) || 0;
     // TODO: Assemble Arduino into code variable.
@@ -224,7 +221,7 @@ Blockly.Arduino['module_set_buzzer'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
     var value_state = Blockly.Arduino.valueToCode(block, 'state', Blockly.Arduino.ORDER_NONE);
 
-    var buzzer = requireInstance(block, dropdown_name);
+    var buzzer = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!buzzer) return '\n';
     var pin = Blockly.Arduino.valueToCode(buzzer, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'digitalWrite(' + pin + ',' + value_state + ');\n';
@@ -241,7 +238,7 @@ Blockly.Arduino['module_buzzer_playtone'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
     var value_frequency = Blockly.Arduino.valueToCode(block, 'frequency', Blockly.Arduino.ORDER_NONE);
 
-    var speaker = requireInstance(block, dropdown_name);
+    var speaker = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!speaker) return '\n';
     var pin = Blockly.Arduino.valueToCode(speaker, 'Pin', Blockly.Arduino.ORDER_NONE);
 
@@ -252,7 +249,7 @@ Blockly.Arduino['module_buzzer_playtone'] = function (block) {
 Blockly.Arduino['module_buzzer_notone'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
 
-    var speaker = requireInstance(block, dropdown_name);
+    var speaker = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!speaker) return '\n';
     var pin = Blockly.Arduino.valueToCode(speaker, 'Pin', Blockly.Arduino.ORDER_NONE);
 
@@ -286,7 +283,7 @@ Blockly.Arduino['module_set_fanmotor'] = function (block) {
     var dropdown_dir = block.getFieldValue('dir');
     var value_pwm = Blockly.Arduino.valueToCode(block, 'pwm', Blockly.Arduino.ORDER_ATOMIC) || 0;
 
-    var fan = requireInstance(block, dropdown_name);
+    var fan = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!fan) return '\n';
     var pin_ina = Blockly.Arduino.valueToCode(fan, 'INA', Blockly.Arduino.ORDER_NONE);
     var pin_inb = Blockly.Arduino.valueToCode(fan, 'INB', Blockly.Arduino.ORDER_NONE);
@@ -320,7 +317,7 @@ Blockly.Arduino['module_servo_write'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
     var value_angle = Blockly.Arduino.valueToCode(block, 'angle', Blockly.Arduino.ORDER_NONE) || 0;
 
-    var servo = requireInstance(block, dropdown_name);
+    var servo = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!servo) return '\n';
 
     var code = dropdown_name + '.write(' + value_angle + ');\n';
@@ -364,7 +361,7 @@ Blockly.Arduino['instance_stepper'] = function (block) {
 
 Blockly.Arduino['module_stepper_move'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    if (!requireInstance(block, dropdown_name)) return '\n';
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
     var value_step = Blockly.Arduino.valueToCode(block, 'step', Blockly.Arduino.ORDER_NONE) || 0;
 
     var code = dropdown_name + '.step(' + value_step + ');\n';
@@ -373,7 +370,7 @@ Blockly.Arduino['module_stepper_move'] = function (block) {
 
 Blockly.Arduino['module_stepper_speed'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    if (!requireInstance(block, dropdown_name)) return '\n';
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
     var value_speed = Blockly.Arduino.valueToCode(block, 'speed', Blockly.Arduino.ORDER_NONE) || 0;
 
     var code = dropdown_name + '.setSpeed(' + value_speed + ');\n';
@@ -387,7 +384,7 @@ Blockly.Arduino['instance_pir'] = function (block) {
 
 Blockly.Arduino['module_pir_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'digitalRead(' + pin + ')';
@@ -401,7 +398,7 @@ Blockly.Arduino['instance_potentiometer'] = function (block) {
 
 Blockly.Arduino['module_potentiometer_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')';
@@ -415,7 +412,7 @@ Blockly.Arduino['instance_slider'] = function (block) {
 
 Blockly.Arduino['module_slider_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')';
@@ -429,7 +426,7 @@ Blockly.Arduino['instance_lightsensor'] = function (block) {
 
 Blockly.Arduino['module_lightsensor_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')';
@@ -443,7 +440,7 @@ Blockly.Arduino['instance_lm35'] = function (block) {
 
 Blockly.Arduino['module_lm35_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')*0.48828125';
@@ -457,7 +454,7 @@ Blockly.Arduino['instance_soundsensor'] = function (block) {
 
 Blockly.Arduino['module_soundsensor_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')';
@@ -468,35 +465,47 @@ Blockly.Arduino['instance_ultrasonic'] = function (block) {
     var text_name = block.getFieldValue('NAME');
     var value_trigpin = Blockly.Arduino.valueToCode(block, 'trigPin', Blockly.Arduino.ORDER_ATOMIC);
     var value_echopin = Blockly.Arduino.valueToCode(block, 'echoPin', Blockly.Arduino.ORDER_ATOMIC);
+    Blockly.Arduino.addDeclaration(text_name,
+        'OseppUltrasonic ' + text_name + '(' + value_trigpin + ',' + value_echopin + ');');
 
     var funcode = [];
-    funcode.push('pinMode(trig,OUTPUT);');
-    funcode.push('pinMode(echo,INPUT);');
-    funcode.push('digitalWrite(trig,LOW);');
-    funcode.push('delayMicroseconds(2);');
-    funcode.push('digitalWrite(trig, HIGH);');
-    funcode.push('delayMicroseconds(10);');
-    funcode.push('delayMicroseconds(2);');
-    funcode.push('float dist= pulseIn(echo, HIGH) / 5.8;');
-    funcode.push('if (dist == 0)dist = 4000;');
-    funcode.push('return dist;');
-    Blockly.Arduino.addFunction('ULTRASONIC',
-        'float get_distance_mm_of_ultrasonic(int trig,int echo){\n' +
-        Blockly.Arduino.prefixLines((funcode.join('\n')), Blockly.Arduino.INDENT) +
-        '\n}\n'
-    );
+    funcode.push('class OseppUltrasonic{');
+    funcode.push('private:');
+    funcode.push('  uint8_t _trig_Pin, _echo_pin;');
+    funcode.push('  float _lastPing;');
+    funcode.push('  unsigned long _lastEntry;');
+    funcode.push('public:');
+    funcode.push('  OseppUltrasonic(uint8_t trig_Pin, uint8_t echo_pin){');
+    funcode.push('    _trig_Pin = trig_Pin;');
+    funcode.push('    _echo_pin = echo_pin;');
+    funcode.push('    _lastEntry = 0;');
+    funcode.push('    _lastPing = 0;');
+    funcode.push('  }');
+    funcode.push('  float ping(unsigned int max_mm = 4000){');
+    funcode.push('    if (millis() - _lastEntry < 25)return _lastPing;');
+    funcode.push('    _lastEntry = millis();');
+    funcode.push('    pinMode(_trig_Pin, OUTPUT);');
+    funcode.push('    digitalWrite(_trig_Pin, LOW);');
+    funcode.push('    pinMode(_echo_pin, INPUT);');
+    funcode.push('    digitalWrite(_echo_pin, LOW);');
+    funcode.push('    digitalWrite(_trig_Pin, HIGH);');
+    funcode.push('    delayMicroseconds(10);');
+    funcode.push('    digitalWrite(_trig_Pin, LOW);');
+    funcode.push('    unsigned long duration = pulseIn(_echo_pin, HIGH, max_mm * 5.5 + 200);');
+    funcode.push('    if (duration == 0)_lastPing = max_mm;else _lastPing = (float)duration / 5.8;');
+    funcode.push('    return _lastPing;');
+    funcode.push('  }');
+    funcode.push('};');
+    Blockly.Arduino.adduserClass('OseppUltrasonic', funcode.join("\n"));
 
     return '';
 };
 
 Blockly.Arduino['module_ultrasonic_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
-    var trig = Blockly.Arduino.valueToCode(defineBlock, 'trigPin', Blockly.Arduino.ORDER_NONE);
-    var echo = Blockly.Arduino.valueToCode(defineBlock, 'echoPin', Blockly.Arduino.ORDER_NONE);
-
-    var code = 'get_distance_mm_of_ultrasonic(' + trig + ',' + echo + ')';
+    var code = dropdown_name + '.ping()';
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -537,7 +546,7 @@ Blockly.Arduino['instance_4dtouch'] = function (block) {
 Blockly.Arduino['module_4dtouch_get'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
 
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
 
     var dropdown_channel = block.getFieldValue('CHANNEL');
@@ -555,7 +564,7 @@ Blockly.Arduino['instance_flame'] = function (block) {
 
 Blockly.Arduino['module_read_flame'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'analogRead(' + pin + ')';
@@ -569,9 +578,243 @@ Blockly.Arduino['instance_irdetector'] = function (block) {
 
 Blockly.Arduino['module_read_irdetector'] = function (block) {
     var dropdown_name = block.getFieldValue('NAME');
-    var defineBlock = requireInstance(block, dropdown_name);
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
     var code = 'digitalRead(' + pin + ')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+
+Blockly.Arduino['instance_TB6612MotorDriver'] = function (block) {
+    var text_name = block.getFieldValue('NAME');
+    var DIR = Blockly.Arduino.valueToCode(block, 'DIR', Blockly.Arduino.ORDER_NONE);
+    var frb = block.getFieldValue('frb');
+    var PWM = Blockly.Arduino.valueToCode(block, 'PWM', Blockly.Arduino.ORDER_NONE);
+    // TODO: Assemble Arduino into code variable.
+
+    if (Blockly.Arduino.isDigitalPin(DIR)) {
+        Blockly.Arduino.reservePin(block, DIR, 'OUTPUT', text_name + '-DIR');
+    }
+    if (Blockly.Arduino.isDigitalPin(PWM)) {
+        Blockly.Arduino.reservePin(block, PWM, 'OUTPUT', text_name + '-PWM');
+    }
+    Blockly.Arduino.addDeclaration(text_name,
+        'OseppTBMotor ' + text_name + '(' + DIR + ',' + PWM + (frb == 'f' ? '' : ',LOW') + ');');
+
+    var funcode = [];
+    funcode.push('class OseppTBMotor{');
+    funcode.push('private:');
+    funcode.push('  uint8_t _dir_pin, _pwm_pin;');
+    funcode.push('  uint8_t _forward_level;');
+    funcode.push('public:');
+    funcode.push('  OseppTBMotor(uint8_t dir_pin, uint8_t pwm_pin, uint8_t forward_level = HIGH){');
+    funcode.push('    _dir_pin = dir_pin;');
+    funcode.push('    _pwm_pin = pwm_pin;');
+    funcode.push('    _forward_level = forward_level;');
+    funcode.push('    pinMode(_dir_pin, OUTPUT);');
+    funcode.push('    digitalWrite(_pwm_pin, LOW);');
+    funcode.push('  }');
+    funcode.push('  void forward(int pwm){');
+    funcode.push('    if (pwm < 0){');
+    funcode.push('      digitalWrite(_dir_pin, !_forward_level);');
+    funcode.push('      pwm=-pwm;');
+    funcode.push('    }else{');
+    funcode.push('      digitalWrite(_dir_pin, _forward_level);');
+    funcode.push('    }');
+    funcode.push('    analogWrite(_pwm_pin, pwm > 255 ? 255 : pwm);');
+    funcode.push('  }');
+    funcode.push('  void backward(int pwm){');
+    funcode.push('    forward(-pwm);');
+    funcode.push('  }');
+    funcode.push('};');
+    Blockly.Arduino.adduserClass('OseppTBMotor', funcode.join("\n"));
+    return '';
+};
+Blockly.Arduino['module_set_TB6612MotorDriver'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+    var dropdown_dir = block.getFieldValue('dir');
+    var value_pwm = Blockly.Arduino.valueToCode(block, 'pwm', Blockly.Arduino.ORDER_ATOMIC) || 0;
+
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
+    var code = dropdown_name + '.';
+
+    if (dropdown_dir == 's') {
+        code += 'forward(0);\n';
+    } else if (dropdown_dir == 'f') {
+        code += 'forward(' + value_pwm + ');\n';
+    } else {
+        code += 'backward(' + value_pwm + ');\n';
+    }
+    return code;
+};
+
+Blockly.Arduino['instance_RangeFinder'] = function (block) {
+    var text_name = block.getFieldValue('NAME');
+    var pin = Blockly.Arduino.valueToCode(block, 'Pin', Blockly.Arduino.ORDER_ATOMIC);
+
+    Blockly.Arduino.addDeclaration(text_name, 'OseppRangeFinder ' + text_name + '(' + pin + ');');
+    var funcode = [];
+    funcode.push('class OseppRangeFinder{');
+    funcode.push('private:');
+    funcode.push('  uint8_t _sig_Pin;');
+    funcode.push('  float _lastPing;');
+    funcode.push('  unsigned long _lastEntry;');
+    funcode.push('public:');
+    funcode.push('  OseppRangeFinder(uint8_t sig_Pin){');
+    funcode.push('    _sig_Pin = sig_Pin;');
+    funcode.push('    _lastEntry = 0;');
+    funcode.push('    _lastPing = 0;');
+    funcode.push('  }');
+    funcode.push('  float ping(unsigned int max_mm = 4000){');
+    funcode.push('    if (millis() - _lastEntry < 25)return _lastPing;');
+    funcode.push('    _lastEntry = millis();');
+    funcode.push('    pinMode(_sig_Pin, INPUT);');
+    funcode.push('    if (digitalRead(_sig_Pin) == HIGH)return _lastPing;');
+    funcode.push('    pinMode(_sig_Pin, OUTPUT);');
+    funcode.push('    digitalWrite(_sig_Pin, HIGH);');
+    funcode.push('    delayMicroseconds(10);');
+    funcode.push('    digitalWrite(_sig_Pin, LOW);');
+    funcode.push('    pinMode(_sig_Pin, INPUT);');
+    funcode.push('    unsigned long duration = pulseIn(_sig_Pin, HIGH, max_mm * 5.5 + 200);');
+    funcode.push('    if (duration == 0)_lastPing = max_mm;else _lastPing = (float)duration / 5.8;');
+    funcode.push('    return _lastPing;');
+    funcode.push('  }');
+    funcode.push('};');
+
+    Blockly.Arduino.adduserClass('OseppRangeFinder', funcode.join("\n"));
+
+    return '';
+};
+
+Blockly.Arduino['module_RangeFinder_Ping'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
+
+    var code = dropdown_name + '.ping()';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['module_OseppRemote_Feed'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+
+    if (!Blockly.Arduino.requireInstance(block, dropdown_name)) return '\n';
+
+    var code = dropdown_name + '.ping()';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+
+
+
+Blockly.Arduino.addClass_instance_OseppRemote=function(){
+    var funcode = [];
+    funcode.push("class OseppRemote");
+    funcode.push("{");
+    funcode.push("private:");
+    funcode.push("  char letter;");
+    funcode.push("  int number;");
+    funcode.push("  char minusSign;");
+    funcode.push("  char tempButton;");
+    funcode.push("  char mButtonState;");
+    funcode.push("  int mChannel[7];");
+    funcode.push("  unsigned long mLast_Data_millis;");
+    funcode.push("public:");
+    funcode.push("  OseppRemote(){");
+    funcode.push("    letter = 0;");
+    funcode.push("    number = 0;");
+    funcode.push("    minusSign = 0;");
+    funcode.push("    mButtonState = 0;");
+    funcode.push("    tempButton = 0;");
+    funcode.push("    mLast_Data_millis = millis();");
+    funcode.push("  }");
+    funcode.push("  void update(){");
+    funcode.push("    while (Serial.available()){");
+    funcode.push("      char data = Serial.read();");
+    funcode.push("      mLast_Data_millis = millis();");
+    funcode.push("      if ((data >= '0') && (data <= '9')){");
+    funcode.push("        number *= 10;");
+    funcode.push("        number += data - '0';");
+    funcode.push("      }else if (data == '-'){");
+    funcode.push("        minusSign = 1;");
+    funcode.push("      }else{");
+    funcode.push("        if (minusSign)number = -number;");
+    funcode.push("        switch (letter)");
+    funcode.push("        {");
+    funcode.push("        case 'u':mChannel[0] = number;break;");
+    funcode.push("        case 'v':mChannel[1] = number;break;");
+    funcode.push("        case 'w':mChannel[2] = number;break;");
+    funcode.push("        case 'a':mChannel[3] = number;break;");
+    funcode.push("        case 'x':mChannel[4] = number;break;");
+    funcode.push("        case 'y':mChannel[5] = number;break;");
+    funcode.push("        case 'z':mChannel[6] = number;break;");
+    funcode.push("        default:break;");
+    funcode.push("        }");
+    funcode.push("        number = 0;");
+    funcode.push("        minusSign = 0;");
+    funcode.push("        switch (data)");
+    funcode.push("        {");
+    funcode.push("        case 'L':tempButton |= 1;break;");
+    funcode.push("        case 'R':tempButton |= 2;break;");
+    funcode.push("        case 'U':tempButton |= 4;break;");
+    funcode.push("        case 'D':tempButton |= 8;break;");
+    funcode.push("        case 'A':tempButton |= 16;break;");
+    funcode.push("        case 'B':tempButton |= 32;break;");
+    funcode.push("        case 'X':tempButton |= 64;break;");
+    funcode.push("        case 'Y':tempButton |= 128;break;");
+    funcode.push("        case '\\n':mButtonState = tempButton;tempButton = 0;break;");
+    funcode.push("        default:break;");
+    funcode.push("        }");
+    funcode.push("        letter = data;");
+    funcode.push("      }");
+    funcode.push("    }");
+    funcode.push("  }");
+    funcode.push("  uint8_t getButtonState(uint8_t mask){");
+    funcode.push("    update();");
+    funcode.push("    return mButtonState & mask;");
+    funcode.push("  }");
+    funcode.push("  int getChannalData(uint8_t channel){");
+    funcode.push("    update();");
+    funcode.push("    return mChannel[channel];");
+    funcode.push("  }");
+    funcode.push("  bool isTimeoutFor(unsigned long howlong){");
+    funcode.push("    update();");
+    funcode.push("    if (millis() - mLast_Data_millis > howlong)return true;");
+    funcode.push("    return false;");
+    funcode.push("  }");
+    funcode.push("};");
+
+    Blockly.Arduino.adduserClass('OseppRemote', funcode.join("\n"));
+    Blockly.Arduino.addDeclaration('remoteController', 'OseppRemote remoteController;');
+}
+
+
+Blockly.Arduino['instance_OseppRemote'] = function (block) {
+    var text_name = block.getFieldValue('NAME');
+
+    
+    Blockly.Arduino.addClass_instance_OseppRemote();
+    return 'remoteController.update();\n';
+};
+
+Blockly.Arduino['module_OseppRemote_Button'] = function (block) {
+    Blockly.Arduino.addClass_instance_OseppRemote();
+    var channel = block.getFieldValue('CHANNEL');
+    var code ='remoteController.getButtonState('+channel+')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['module_OseppRemote_Channel'] = function (block) {
+    Blockly.Arduino.addClass_instance_OseppRemote();
+    var channel = block.getFieldValue('CHANNEL');
+    var code ='remoteController.getChannalData('+channel+')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['module_OseppRemote_isTimeout'] = function (block) {
+    Blockly.Arduino.addClass_instance_OseppRemote();
+    var value_time = Blockly.Arduino.valueToCode(block, 'time', Blockly.Arduino.ORDER_ATOMIC) || 0;
+    var code ='remoteController.isTimeoutFor('+value_time+')';
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };

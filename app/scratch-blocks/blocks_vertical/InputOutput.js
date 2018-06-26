@@ -348,6 +348,43 @@ Blockly.Blocks['serial_read'] = {
  *auto Reserved
  */
 
+Blockly.Blocks.defaultPin = function (theblock, deftext) {
+    var used = [];
+    var workspace = theblock.workspace;
+    if (workspace.isFlyout) workspace = workspace.targetWorkspace;
+
+    var allblocks = workspace.getAllBlocks();
+    for (var x = 0, block; block = allblocks[x]; x++) {
+        if (block.type === 'io_arduino_uno_pin_usable_menu') {
+            var pin = block.inputList[0].fieldRow[0].getValue();
+            used.push(pin);
+        }
+    }
+
+    var ss = deftext.split(':');
+    used=used.concat(Blockly.Flyout.prototype.Pin_perOrder_for_Block);
+
+    if (ss[1]) {
+        var pins = ss[1].split(',');
+        for (var p, i = 0; p = pins[i]; i++) if (used.indexOf(p) < 0) return p;
+    }
+
+
+    var pwms = ['3', '5', '6', '9', '10', '11'];
+    var type = ss[0];
+
+    if (type.indexOf('pwm') >= 0) {
+        for (var p, i = 0; p = pwms[i]; i++) if (used.indexOf(p) < 0) return p;
+    } else if (type.indexOf('analog') >= 0) {
+        for (var i = 0; i <= 7; i++) if (used.indexOf('A' + i) < 0) return ('A' + i);
+    } else {
+        for (var i = 2; i <= 13; i++) if (used.indexOf(i.toString()) < 0) return i.toString();
+        for (var i = 0; i <= 1; i++) if (used.indexOf(i.toString()) < 0) return i.toString();
+        for (var i = 0; i <= 5; i++) if (used.indexOf('A' + i) < 0) return ('A' + i);
+    }
+
+    return null;
+}
 
 Blockly.Blocks.genMenu = function () {
     var defmenu = [['select pin', 'select pin']]
@@ -364,38 +401,53 @@ Blockly.Blocks.genMenu = function () {
             used.push(pin);
         }
     }
+
     var menu = [];
     var pwms = ['3', '5', '6', '9', '10', '11'];
     var type;
     if (this.sourceBlock_.data) type = this.sourceBlock_.data.toLocaleLowerCase(); else type = 'a';
 
-    switch (type) {
-        case 'pwm':
-            for (var p, i = 0; p = pwms[i]; i++) if (used.indexOf(p) < 0) menu.push([p, p]);
-            break;
-        case 'analog':
-            for (var i = 0; i <= 7; i++) if (used.indexOf('A' + i) < 0) menu.push(['A' + i, 'A' + i]);
-            break;
-        default:
-            for (i = 0; i <= 13; i++) if (used.indexOf(i.toString()) < 0) menu.push([i.toString(), i.toString()]);
-            for (var i = 0; i <= 5; i++) if (used.indexOf('A' + i) < 0) menu.push(['A' + i, 'A' + i]);
+    if (type.indexOf('pwm') >= 0) {
+        for (var p, i = 0; p = pwms[i]; i++) if (used.indexOf(p) < 0) menu.push([p, p]);
+    } else if (type.indexOf('analog') >= 0) {
+        for (var i = 0; i <= 7; i++) if (used.indexOf('A' + i) < 0) menu.push(['A' + i, 'A' + i]);
+    } else {
+        for (i = 0; i <= 13; i++) if (used.indexOf(i.toString()) < 0) menu.push([i.toString(), i.toString()]);
+        for (var i = 0; i <= 5; i++) if (used.indexOf('A' + i) < 0) menu.push(['A' + i, 'A' + i]);
     }
     if (menu.length > 0) return menu;
     return defmenu;
 }
 
+function pinChangeValidator(field, text) {
+    if (!this.sourceBlock_.workspace.isFlyout) {
+        var workspace = this.sourceBlock_.workspace;
+        Blockly.FieldInstanceInput.refWorkspaceToolbox(workspace);
+    }
+}
+
 Blockly.Blocks['io_arduino_uno_pin_usable_menu'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(Blockly.Blocks.genMenu), "Pin");
+            .appendField(new Blockly.FieldDropdown(Blockly.Blocks.genMenu, pinChangeValidator), "Pin");
         this.setInputsInline(true);
         this.setOutput(true, "Pin");
         this.setTooltip('digital pin set');
         this.setHelpUrl('');
         this.setColour(
-    Blockly.Colours.cInstanceDefine.secondary,
-    Blockly.Colours.cInstanceDefine.secondary,
-    Blockly.Colours.cInstanceDefine.tertiary);
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+    },
+    dataHook: function (fieldName) {
+        if (!this.workspace.isFlyout) return;
+        var field = this.getField(fieldName);
+        var value = Blockly.Blocks.defaultPin(this, this.data);
+        if (value) {
+            field.setValue(value);
+            Blockly.Flyout.prototype.Pin_perOrder_for_Block.push(value);
+        }
+        return 
     }
 };

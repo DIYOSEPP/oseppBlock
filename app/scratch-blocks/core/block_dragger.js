@@ -79,6 +79,14 @@ Blockly.BlockDragger = function(block, workspace) {
   this.wouldDeleteBlock_ = false;
 
   /**
+   * Whether the currently dragged block is outside of the workspace. Keep
+   * track so that we can fire events only when this changes.
+   * @type {boolean}
+   * @private
+   */
+  this.wasOutside_ = false;
+
+  /**
    * The location of the top left corner of the dragging block at the beginning
    * of the drag in workspace coordinates.
    * @type {!goog.math.Coordinate}
@@ -179,6 +187,7 @@ Blockly.BlockDragger.prototype.startBlockDrag = function(currentDragDeltaXY) {
  * @param {!goog.math.Coordinate} currentDragDeltaXY How far the pointer has
  *     moved from the position at the start of the drag, in pixel units.
  * @package
+ * @return {boolean} True if the event should be propagated, false if not.
  */
 Blockly.BlockDragger.prototype.dragBlock = function(e, currentDragDeltaXY) {
   var delta = this.pixelsToWorkspaceUnits_(currentDragDeltaXY);
@@ -188,9 +197,15 @@ Blockly.BlockDragger.prototype.dragBlock = function(e, currentDragDeltaXY) {
   this.dragIcons_(delta);
 
   this.deleteArea_ = this.workspace_.isDeleteArea(e);
-  this.draggedConnectionManager_.update(delta, this.deleteArea_);
+  var isOutside = !this.workspace_.isInsideBlocksArea(e);
+  this.draggedConnectionManager_.update(delta, this.deleteArea_, isOutside);
+  if (isOutside !== this.wasOutside_) {
+    this.fireDragOutsideEvent_(isOutside);
+    this.wasOutside_ = isOutside;
+  }
 
-  this.updateCursorDuringBlockDrag_();
+  this.updateCursorDuringBlockDrag_(isOutside);
+  return isOutside;
 };
 
 /**
@@ -204,12 +219,19 @@ Blockly.BlockDragger.prototype.endBlockDrag = function(e, currentDragDeltaXY) {
   // Make sure internal state is fresh.
   this.dragBlock(e, currentDragDeltaXY);
   this.dragIconData_ = [];
+  var isOutside = this.wasOutside_;
+  this.fireEndDragEvent_(isOutside);
+  this.draggingBlock_.setMouseThroughStyle(false);
 
   Blockly.BlockSvg.disconnectUiStop_();
 
   var delta = this.pixelsToWorkspaceUnits_(currentDragDeltaXY);
   var newLoc = goog.math.Coordinate.sum(this.startXY_, delta);
   this.draggingBlock_.moveOffDragSurface_(newLoc);
+
+  // Scratch-specific: note possible illegal definition deletion for rollback below.
+  var isDeletingProcDef = this.wouldDeleteBlock_ &&
+      (this.draggingBlock_.type == Blockly.PROCEDURES_DEFINITION_BLOCK_TYPE);
 
   var deleted = this.maybeDeleteBlock_();
   if (!deleted) {
@@ -221,17 +243,66 @@ Blockly.BlockDragger.prototype.endBlockDrag = function(e, currentDragDeltaXY) {
     this.fireMoveEvent_();
     this.draggingBlock_.scheduleSnapAndBump();
   }
-    //https://github.com/LLK/scratch-blocks/issues/1043
-    //Dropping a duplicated block directly in the delete area will be error
-    //Check if block has been deleted
-  if (this.workspace_) {
-      this.workspace_.setResizesEnabled(true);
+  this.workspace_.setResizesEnabled(true);
 
-      if (this.workspace_.toolbox_) {
-          this.workspace_.toolbox_.removeDeleteStyle();
-      }
+  if (this.workspace_.toolbox_) {
+    this.workspace_.toolbox_.removeDeleteStyle();
   }
   Blockly.Events.setGroup(false);
+
+  if (isOutside) {
+    var ws = this.workspace_;
+    // Reset a drag to outside of scratch-blocks
+    setTimeout(function() {
+      ws.undo();
+    });
+  }
+
+  // Scratch-specific: roll back deletes that create call blocks with defines.
+  // Have to wait for connections to be re-established, so put in setTimeout.
+  // Only do this if we deleted a proc def.
+  if (isDeletingProcDef) {
+    var ws = this.workspace_;
+    setTimeout(function() {
+      var allBlocks = ws.getAllBlocks();
+      for (var i = 0; i < allBlocks.length; i++) {
+        var block = allBlocks[i];
+        if (block.type == Blockly.PROCEDURES_CALL_BLOCK_TYPE) {
+          var procCode = block.getProcCode();
+          // Check for call blocks with no associated define block.
+          if (!Blockly.Procedures.getDefineBlock(procCode, ws)) {
+            // TODO:(#1151)
+            alert('To delete a block definition, first remove all uses of the block');
+            ws.undo();
+            return; // There can only be one define deletion at a time.
+          }
+        }
+      }
+      // The proc deletion was valid, update the toolbox.
+      ws.refreshToolboxSelection_();
+    });
+  }
+};
+
+/**
+ * Fire an event when the dragged blocks move outside or back into the blocks workspace
+ * @param {?boolean} isOutside True if the drag is going outside the visible area.
+ * @private
+ */
+Blockly.BlockDragger.prototype.fireDragOutsideEvent_ = function(isOutside) {
+  var event = new Blockly.Events.BlockDragOutside(this.draggingBlock_);
+  event.isOutside = isOutside;
+  Blockly.Events.fire(event);
+};
+
+/**
+ * Fire an end drag event at the end of a block drag.
+ * @param {?boolean} isOutside True if the drag is going outside the visible area.
+ * @private
+ */
+Blockly.BlockDragger.prototype.fireEndDragEvent_ = function(isOutside) {
+  var event = new Blockly.Events.BlockEndDrag(this.draggingBlock_, isOutside);
+  Blockly.Events.fire(event);
 };
 
 /**
@@ -271,9 +342,10 @@ Blockly.BlockDragger.prototype.maybeDeleteBlock_ = function() {
 /**
  * Update the cursor (and possibly the trash can lid) to reflect whether the
  * dragging block would be deleted if released immediately.
+ * @param {boolean} isOutside True if the cursor is outside of the blocks workspace
  * @private
  */
-Blockly.BlockDragger.prototype.updateCursorDuringBlockDrag_ = function() {
+Blockly.BlockDragger.prototype.updateCursorDuringBlockDrag_ = function(isOutside) {
   this.wouldDeleteBlock_ = this.draggedConnectionManager_.wouldDeleteBlock();
   var trashcan = this.workspace_.trashcan;
   if (this.wouldDeleteBlock_) {
@@ -286,6 +358,13 @@ Blockly.BlockDragger.prototype.updateCursorDuringBlockDrag_ = function() {
     if (trashcan) {
       trashcan.setOpen_(false);
     }
+  }
+
+  if (isOutside) {
+    // Let mouse events through to GUI
+    this.draggingBlock_.setMouseThroughStyle(true);
+  } else {
+    this.draggingBlock_.setMouseThroughStyle(false);
   }
 };
 

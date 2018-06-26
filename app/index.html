@@ -1,13 +1,14 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0"> 
+    <meta http-equiv="expires" content="0">
     <title>oseppBlock</title>
-    <link rel="icon" href="media/osepp.ico" type="image/x-icon"/>
+    <link rel="icon" href="media/osepp.ico" type="image/x-icon" />
     <link rel="stylesheet" href="prettify/arduino.css">
     <script src="prettify/prettify.js"></script>
     <!--free 
@@ -39,7 +40,6 @@
     <!--delete-->
 
     <script src="scratch-blocks/msg/messages.js"></script>
-    <script src="genToolboxXml.js"></script>
     <script src="blocklytoolbox.js"></script>
     <script src="serial.js"></script>
     <script src="display.js"></script>
@@ -50,25 +50,24 @@
             padding: 0;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
+
         /*---------top-mid(main)-foot----------------*/
-        .top, .main, .foot {
+
+        .main,
+        .foot {
             width: 100%;
             position: absolute;
             overflow: hidden;
         }
 
-        .top {
-            height: 40px;
-            top: 0;
-        }
-
         .main {
-            top: 40px;
+            top: 0px;
             bottom: 40px;
             height: auto;
         }
@@ -77,15 +76,22 @@
             bottom: 0;
             height: 40px;
         }
-        /*block[hardware||block]---file[new||save||load|undo||undo]---code[send2ard||verify||upload]*/
-        .top * {
+
+        .upload_buttons {
+            position: fixed;
+            margin-top: 10px;
+            margin-left: -60px;
+            z-index: 9999;
+        }
+
+        .upload_buttons * {
             user-select: none;
             -moz-user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
         }
 
-        .top a {
+        .upload_buttons a {
             cursor: pointer;
             line-height: 35px;
             display: inline-block;
@@ -100,79 +106,27 @@
             box-shadow: 5px 5px 5px #17a1a5;
             text-shadow: 2px 2px 3px #17a1a5;*/
             transition: background-color 0.5s;
-            -moz-transition: background-color 0.5s; /* Firefox 4 */
-            -webkit-transition: background-color 0.5s; /* Safari 和 Chrome */
-            -o-transition: background-color 0.5s; /* Opera */
+            -moz-transition: background-color 0.5s;
+            /* Firefox 4 */
+            -webkit-transition: background-color 0.5s;
+            /* Safari 和 Chrome */
+            -o-transition: background-color 0.5s;
+            /* Opera */
         }
 
-        .top ul {
+        .upload_buttons ul {
             margin-left: 0px;
             margin-right: 0px;
         }
 
-        .top li {
-            display: inline;
+        .upload_buttons li {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
-        .top span {
-            display: inline-block;
-            padding: 0 20px;
-        }
-
-        ul.block {
-            float: left;
-        }
-
-            ul.block li a {
-                width: 113px;
-                color: #fff;
-                text-align: center;
-                background-color: #006468;
-            }
-
-                ul.block li a:hover {
-                    background-color: #0095bb;
-                }
-
-        ul.file {
-            text-align: center;
-            margin-right: 400px auto;
-        }
-
-            ul.file li a {
-                color: #000000;
-                background-color: aquamarine;
-                text-align: center;
-            }
-
-                ul.file li a:hover {
-                    background-color: #0095bb;
-                }
-
-        ul.code {
-            float: right;
-            text-align: right;
-        }
-
-            ul.code li a {
-                color: #fff;
-                background-color: blue;
-                text-align: right;
-            }
-
-                ul.code li a:hover {
-                    background-color: #0095bb;
-                }
-
-        .top input {
-            height: 30px;
-            width: 30px;
-            vertical-align: bottom;
-            text-align: center;
-            border: none;
-            padding: 4px;
-        }
         /*----blocklyArea||codeView-----------------*/
+
         #codediv {
             float: right;
             height: 100%;
@@ -201,7 +155,9 @@
             height: 100%;
             overflow: auto;
         }
+
         /*------Serial_msg_box-----*/
+
         #serial_upload_msg {
             position: absolute;
             width: 100%;
@@ -230,7 +186,7 @@
         }
 
         #msgBar ul {
-            display: inline;
+            display: block;
         }
 
         #toggle_serial_box {
@@ -244,27 +200,64 @@
             margin-left: 10px;
         }
 
-            #msgBar li > * {
-                display: inline-block;
-            }
+        #msgBar li>* {
+            display: inline-block;
+        }
 
         .svg_icon {
             cursor: pointer;
             width: 40px;
             height: 40px;
             transition: fill-opacity 0.5s;
-            -moz-transition: fill-opacity 0.5s; /* Firefox 4 */
-            -webkit-transition: fill-opacity 0.5s; /* Safari 和 Chrome */
-            -o-transition: fill-opacity 0.5s; /* Opera */
+            -moz-transition: fill-opacity 0.5s;
+            /* Firefox 4 */
+            -webkit-transition: fill-opacity 0.5s;
+            /* Safari 和 Chrome */
+            -o-transition: fill-opacity 0.5s;
+            /* Opera */
             vertical-align: middle;
             fill: #006461;
             fill-opacity: 0.7;
         }
 
-            .svg_icon:hover {
-                fill-opacity: 1;
-            }
+        .svg_icon:hover {
+            fill-opacity: 1;
+        }
 
+
+        .select-editable {
+            position: relative;
+            width: 120px;
+            height: 19px;
+        }
+
+        .select-editable * {
+            position: absolute;
+            top: 5px;
+            left: 0px;
+        }
+
+        .select-editable select {
+            font-size: 14px;
+            border: none;
+            width: 120px;
+            margin: 0;
+            vertical-align: middle;
+            white-space: pre;
+        }
+
+        .select-editable input {
+            width: 100px;
+            padding: 1px;
+            font-size: 12px;
+            border: none;
+            vertical-align: middle;
+        }
+
+        .select-editable select:focus,
+        .select-editable input:focus {
+            outline: none;
+        }
 
         /*------Effect-----*/
 
@@ -310,6 +303,7 @@
         }
     </style>
 </head>
+
 <body onload="initWorkspace()">
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none">
         <symbol id="svg_arraw" viewBox="0 0 25 20">
@@ -330,12 +324,9 @@
             </g>
         </symbol>
         <symbol id="svg_sendtoarduino" viewBox="0 0 512 512">
-            <path
-                d="M 448.00001,-4e-6 H 64 c -35.2,0 -64,28.8 -64,64.00002 V 448.00001 C 0,483.2 28.8,512 64,512 H 448.00001 C 483.20004,512 512,483.2 512,448.00001 V 64.000016 C 512,28.799996 483.20004,-4e-6 448.00001,-4e-6 Z">
+            <path d="M 448.00001,-4e-6 H 64 c -35.2,0 -64,28.8 -64,64.00002 V 448.00001 C 0,483.2 28.8,512 64,512 H 448.00001 C 483.20004,512 512,483.2 512,448.00001 V 64.000016 C 512,28.799996 483.20004,-4e-6 448.00001,-4e-6 Z">
             </path>
-            <path
-                style="fill: #ffffff; fill-opacity: 1;"
-                d="M 57.057408,45.413589 H 268.31369 V 71.820624 H 57.057408 Z m 0,39.610553 H 189.09258 V 111.43118 H 57.057408 Z m 0,79.221108 H 189.09258 v 26.40703 H 57.057408 Z m 0,-39.61056 H 268.31369 v 26.40704 H 57.057408 Z m 0,79.22111 H 268.31369 v 26.40703 H 57.057408 Z m 329.740102,57.50933 82.21231,-82.21231 H 419.68243 V 91.459687 H 353.91258 V 179.15282 H 304.5852 Z M 357.9955,470.54072 c -24.039,0 -46.6395,-9.36 -63.6375,-26.358 L 256,405.82697 217.6465,444.17822 c -16.9995,17.001 -39.6,26.3625 -63.63975,26.3625 -24.04425,0 -46.64625,-9.3615 -63.64575,-26.3625 C 73.3615,427.17722 64,404.57672 64,380.53622 c 0,-24.0405 9.3615,-46.6425 26.361,-63.64275 17.00025,-16.9995 39.603,-26.361 63.64275,-26.361 24.0405,0 46.6425,9.3615 63.642,26.361 L 256,355.24697 l 38.3535,-38.3535 c 16.9995,-16.9995 39.6015,-26.36175 63.642,-26.36175 24.042,0 46.644,9.36225 63.64125,26.36175 C 438.6385,333.89372 448,356.49572 448,380.53622 c 0,24.042 -9.3615,46.64325 -26.3625,63.64125 -16.99725,17.001 -39.59925,26.36325 -63.642,26.36325 z m -38.3505,-51.6465 c 10.24575,10.24125 23.865,15.88275 38.3505,15.882 14.48775,0 28.10925,-5.6415 38.3535,-15.88575 10.2435,-10.24575 15.8865,-23.8665 15.8865,-38.35425 0,-14.48775 -5.64225,-28.1085 -15.8865,-38.35275 -10.245,-10.24425 -23.865,-15.8865 -38.3535,-15.8865 -14.487,0 -28.1085,5.6415 -38.35425,15.8865 l -38.3505,38.35275 z M 154.0045,326.29697 c -14.48775,0 -28.1085,5.6415 -38.35275,15.8865 -10.245,10.24425 -15.8865,23.865 -15.8865,38.35275 0,14.487 5.6415,28.10775 15.8865,38.3535 10.245,10.2435 23.86575,15.8865 38.35275,15.8865 14.48775,0 28.1085,-5.6415 38.352,-15.88575 L 230.71,380.53622 192.3565,342.18347 c -10.24425,-10.245 -23.865,-15.88725 -38.352,-15.8865 z m -33.80938,46.73925 v 15 c 0,1.38063 1.11937,2.5 2.5,2.5 h 75 c 1.38063,0 2.5,-1.11937 2.5,-2.5 v -15 c 0,-1.38062 -1.11937,-2.5 -2.5,-2.5 h -75 c -1.38063,0 -2.5,1.11938 -2.5,2.5 z m 274.23171,-2.5 h -27.5 v -27.5 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 h -15 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 27.5 h -27.5 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 15 c 0,1.38062 1.11938,2.5 2.5,2.5 h 27.5 v 27.5 c 0,1.38062 1.11938,2.5 2.5,2.5 h 15 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -27.5 h 27.5 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -15 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 z">
+            <path style="fill: #ffffff; fill-opacity: 1;" d="M 57.057408,45.413589 H 268.31369 V 71.820624 H 57.057408 Z m 0,39.610553 H 189.09258 V 111.43118 H 57.057408 Z m 0,79.221108 H 189.09258 v 26.40703 H 57.057408 Z m 0,-39.61056 H 268.31369 v 26.40704 H 57.057408 Z m 0,79.22111 H 268.31369 v 26.40703 H 57.057408 Z m 329.740102,57.50933 82.21231,-82.21231 H 419.68243 V 91.459687 H 353.91258 V 179.15282 H 304.5852 Z M 357.9955,470.54072 c -24.039,0 -46.6395,-9.36 -63.6375,-26.358 L 256,405.82697 217.6465,444.17822 c -16.9995,17.001 -39.6,26.3625 -63.63975,26.3625 -24.04425,0 -46.64625,-9.3615 -63.64575,-26.3625 C 73.3615,427.17722 64,404.57672 64,380.53622 c 0,-24.0405 9.3615,-46.6425 26.361,-63.64275 17.00025,-16.9995 39.603,-26.361 63.64275,-26.361 24.0405,0 46.6425,9.3615 63.642,26.361 L 256,355.24697 l 38.3535,-38.3535 c 16.9995,-16.9995 39.6015,-26.36175 63.642,-26.36175 24.042,0 46.644,9.36225 63.64125,26.36175 C 438.6385,333.89372 448,356.49572 448,380.53622 c 0,24.042 -9.3615,46.64325 -26.3625,63.64125 -16.99725,17.001 -39.59925,26.36325 -63.642,26.36325 z m -38.3505,-51.6465 c 10.24575,10.24125 23.865,15.88275 38.3505,15.882 14.48775,0 28.10925,-5.6415 38.3535,-15.88575 10.2435,-10.24575 15.8865,-23.8665 15.8865,-38.35425 0,-14.48775 -5.64225,-28.1085 -15.8865,-38.35275 -10.245,-10.24425 -23.865,-15.8865 -38.3535,-15.8865 -14.487,0 -28.1085,5.6415 -38.35425,15.8865 l -38.3505,38.35275 z M 154.0045,326.29697 c -14.48775,0 -28.1085,5.6415 -38.35275,15.8865 -10.245,10.24425 -15.8865,23.865 -15.8865,38.35275 0,14.487 5.6415,28.10775 15.8865,38.3535 10.245,10.2435 23.86575,15.8865 38.35275,15.8865 14.48775,0 28.1085,-5.6415 38.352,-15.88575 L 230.71,380.53622 192.3565,342.18347 c -10.24425,-10.245 -23.865,-15.88725 -38.352,-15.8865 z m -33.80938,46.73925 v 15 c 0,1.38063 1.11937,2.5 2.5,2.5 h 75 c 1.38063,0 2.5,-1.11937 2.5,-2.5 v -15 c 0,-1.38062 -1.11937,-2.5 -2.5,-2.5 h -75 c -1.38063,0 -2.5,1.11938 -2.5,2.5 z m 274.23171,-2.5 h -27.5 v -27.5 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 h -15 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 27.5 h -27.5 c -1.38062,0 -2.5,1.11937 -2.5,2.5 v 15 c 0,1.38062 1.11938,2.5 2.5,2.5 h 27.5 v 27.5 c 0,1.38062 1.11938,2.5 2.5,2.5 h 15 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -27.5 h 27.5 c 1.38062,0 2.5,-1.11938 2.5,-2.5 v -15 c 0,-1.38063 -1.11938,-2.5 -2.5,-2.5 z">
             </path>
         </symbol>
         <symbol id="svg_sendtext" viewBox="0 0 512 512">
@@ -358,58 +349,57 @@
             <path d="M 44.862244,16.131429 16.476042,44.150438 H 33.507763 V 74.037381 H 56.216725 V 44.150438 h 17.031721 z m 51.137758,73.86857 C 74.361447,89.9322 52.707993,90.13552 31.078744,89.89842 24.859049,88.42667 27.475567,78.35577 33.639201,80 c 21.092183,0.0678 42.199264,-0.13553 63.282141,0.10157 5.269758,1.15355 4.586898,9.854459 -0.92134,9.898429 z m 0,20.000011 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z m 0,20 c -21.638555,-0.0678 -43.292009,0.13552 -64.921258,-0.10157 -6.219689,-1.47177 -3.60318,-11.54266 2.560457,-9.89843 21.092183,0.0678 42.199264,-0.13551 63.282141,0.10157 5.269768,1.15355 4.586898,9.85446 -0.92134,9.89843 z M 121.97229,35.79312 C 112.94044,23.14256 102.42517,11.11087 89.409879,2.4451804 83.483942,-1.4584898 76.229324,0.45654991 69.581916,1.2686698e-8 49.809107,0.04269981 30.031564,-0.08569963 10.261732,0.06470057 2.914412,0.80668012 -0.86131394,8.6604305 3.004544e-7,15.3686 0.03936013,59.83736 -0.07875367,104.30976 0.05911457,148.77624 c 0.33425698,6.9418 7.02164623,12.26769 13.82825743,11.22377 34.616372,-0.043 69.23751,0.0861 103.850898,-0.0646 7.34732,-0.74203 11.12304,-8.59578 10.26173,-15.30395 -0.0249,-31.85117 0.0498,-63.70437 -0.0374,-95.55429 -0.56602,-4.91761 -3.37591,-9.21583 -5.99032,-13.284 z M 103.05343,27.28531 C 105.56468,30.87321 113.53311,37.60085 112.1926,40 H 91.428573 V 15.94593 c 4.130172,3.50613 7.966563,7.34732 11.624857,11.33938 z m 15.80372,120.2147 c -0.71257,3.9884 -5.57736,2.03483 -8.43272,2.5 H 11.428572 c -3.7234543,-1.03983 -1.8136856,-5.76177 -2.2857142,-8.647 V 12.5 C 12.996529,6.9238205 23.086484,11.5297 29.307458,9.9999306 c 17.659418,9.3e-6 35.318839,-2.335e-4 52.978258,6.88e-5 0.06156,12.0011306 -0.123363,24.0136006 0.09287,36.0076206 0.961627,5.206689 6.805473,3.82501 10.62556,3.992379 h 25.853004 z"></path>
         </symbol>
     </svg>
-    <div class="top">
-        <ul class="block">
-            <li><a id="hardware">hardware</a><a id="block">block</a></li>
-            <li></li>
-        </ul>
-        <ul id="code_menu" class="code" style="display: none;">
-            <li title="send code to arduino ide">
-                <svg class="svg_icon" id="send_to_arduino_ide">
-                    <use xlink:href="#svg_sendtoarduino" width="35px" height="35px"></use>
-                </svg></li>
-            <li title="verify">
-                <svg class="svg_icon" id="verify">
-                    <use xlink:href="#svg_verify" width="35px" height="35px"></use>
-                </svg>
-            </li>
-            <li title="upload">
-                <svg class="svg_icon" id="upload">
-                    <use xlink:href="#svg_upload" width="35px" height="35px"></use>
-                </svg>
-            </li>
-        </ul>
-        <ul class="file">
-            <li title="new workspace">
-                <svg class="svg_icon" id="new">
-                    <use xlink:href="#svg_newfile" width="35px" height="35px"></use>
-                </svg>
-            </li>
-            <li title="save blocks to file">
-                <svg class="svg_icon" id="save">
-                    <use xlink:href="#svg_savefile" width="35px" height="35px"></use>
-                </svg>
-            </li>
-            <li title="load blocks from file">
-                <svg class="svg_icon" id="load">
-                    <use xlink:href="#svg_loadfile" width="35px" height="35px"></use>
-                </svg>
-            </li>
-            <li><span></span></li>
-            <li id="undo" title="undo">
-                <svg class="svg_icon">
-                    <use xlink:href="#svg_undo" width="35px" height="35px"></use>
-                </svg>
-            </li>
-            <li id="redo" title="redo">
-                <svg class="svg_icon">
-                    <use xlink:href="#svg_redo" width="35px" height="35px"></use>
-                </svg>
-            </li>
-        </ul>
-    </div>
     <div id="blocklyarea" class="main" style="bottom: 0">
         <div id="codediv" style="width: 300px;">
+            <div class="upload_buttons">
+                <ul id="code_menu" style="display: none;">
+                    <li title="send code to arduino ide">
+                        <svg class="svg_icon" id="send_to_arduino_ide">
+                            <use xlink:href="#svg_sendtoarduino" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li title="verify">
+                        <svg class="svg_icon" id="verify">
+                            <use xlink:href="#svg_verify" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li title="upload">
+                        <svg class="svg_icon" id="upload">
+                            <use xlink:href="#svg_upload" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li style="padding-top: 20px"></li>
+                </ul>
+
+                <ul>
+                        <li title="new workspace">
+                            <svg class="svg_icon" id="new">
+                                <use xlink:href="#svg_newfile" width="35px" height="35px"></use>
+                            </svg>
+                        </li>
+                        <li title="save blocks to file">
+                            <svg class="svg_icon" id="save">
+                                <use xlink:href="#svg_savefile" width="35px" height="35px"></use>
+                            </svg>
+                        </li>
+                        <li title="load blocks from file">
+                            <svg class="svg_icon" id="load">
+                                <use xlink:href="#svg_loadfile" width="35px" height="35px"></use>
+                            </svg>
+                        </li>
+                        <li style="padding-top: 10px"></li>
+                        <li id="undo" title="undo">
+                            <svg class="svg_icon">
+                                <use xlink:href="#svg_undo" width="35px" height="35px"></use>
+                            </svg>
+                        </li>
+                        <li id="redo" title="redo">
+                            <svg class="svg_icon">
+                                <use xlink:href="#svg_redo" width="35px" height="35px"></use>
+                            </svg>
+                        </li>
+                    </ul>
+            </div>
             <div id="silderdiv">
             </div>
             <div id="side_code">
@@ -417,31 +407,32 @@
             </div>
         </div>
     </div>
-    <div class="foot" id="footView" style="display:none">
+    <div class="foot" id="footView" style="display: none">
     </div>
-
     <div id="blockly_div" style="position: absolute"></div>
-
     <div id="serial_upload_msg" class="serial_upload_msg_close" style="display: none;">
         <div id="msgBar" style="width: 100%">
-            <ul>
+            <ul style="float: left">
                 <li id="toggle_serial_box" title="toggle serial message box open/close">
                     <svg class="svg_icon">
                         <use xlink:href="#svg_arraw" transform="rotate(90,20,20) translate(13,17)" width="25px" height="20px"></use>
                         <use xlink:href="#svg_arraw" transform="rotate(270,20,20) translate(13,17)" width="25px" height="20px"></use>
                     </svg>
                 </li>
-                <li class="hideifsmallscreen"><span>Arduino Uno on</span></li>
+                <li class="hideifsmallscreen">
+                    <span>Arduino Uno on</span>
+                </li>
                 <li>
-                    <span>
-                        <select id="SelectComPort">
+                    <span class="select-editable">
+                        <select id="ComPortList">
                             <option>select com port</option>
                         </select>
+                        <input id="SelectComPort" type="text" />
                     </span>
                 </li>
                 <li>
-                    <span>
-                        <select id="SelectBandrate">
+                    <span class="select-editable">
+                        <select id="BandrateList">
                             <option>300</option>
                             <option>1200</option>
                             <option>2400</option>
@@ -460,6 +451,7 @@
                             <option>1000000</option>
                             <option>2000000</option>
                         </select>
+                        <input id="SelectBandrate" type="text" />
                     </span>
                 </li>
                 <li title="connect serial port">
@@ -473,11 +465,7 @@
                     </svg>
                 </li>
             </ul>
-
-            <ul>
-                <li>
-                    <input id="sendtext" type="text" class="svg_hide" />
-                </li>
+            <ul style="float: right;">
                 <li>
                     <select id="line_ending" class="svg_hide">
                         <option>No line ending</option>
@@ -492,9 +480,15 @@
                     </svg>
                 </li>
             </ul>
+            <ul style="overflow: hidden;padding-right: 20px;">
+                <li>
+                    <input id="sendtext" type="text" class="svg_hide" style="width: 100%" />
+                </li>
+            </ul>
         </div>
         <div id="msgTextArea" style="background-color: ghostwhite; width: 100%; height: auto; color: black; overflow: auto; position: absolute; top: 40px; bottom: 0;">
         </div>
     </div>
 </body>
+
 </html>

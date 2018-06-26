@@ -172,8 +172,22 @@ Blockly.Css.CONTENT = [
     '-webkit-transform-origin: 0 0;',
   '}',
 
+  '.blocklyWidgetDiv.fieldTextInput.removableTextInput {',
+    'overflow: visible;',
+  '}',
+
   '.blocklyTextDropDownArrow {',
     'position: absolute;',
+  '}',
+
+  '.blocklyTextRemoveIcon {',
+    'position: absolute;',
+    'width: 24px;',
+    'height: 24px;',
+    'top: -40px;',
+    'left: 50%;',
+    'margin-left: -12px;',
+    'cursor: pointer;',
   '}',
 
   '.blocklyNonSelectable {',
@@ -186,9 +200,14 @@ Blockly.Css.CONTENT = [
   '.blocklyWsDragSurface {',
     'display: none;',
     'position: absolute;',
-    'overflow: visible;',
     'top: 0;',
     'left: 0;',
+  '}',
+  /* Added as a separate rule with multiple classes to make it more specific
+     than a bootstrap rule that selects svg:root. See issue #1275 for context.
+  */
+  '.blocklyWsDragSurface.blocklyOverflowVisible {',
+    'overflow: visible;',
   '}',
 
   '.blocklyBlockDragSurface {',
@@ -227,6 +246,7 @@ Blockly.Css.CONTENT = [
     'box-shadow: 0px 0px 8px 1px ' + Blockly.Colours.dropDownShadow + ';',
     'padding: 4px;',
     '-webkit-user-select: none;',
+    'min-height: 26px',
   '}',
 
   '.blocklyDropDownContent {',
@@ -406,6 +426,10 @@ Blockly.Css.CONTENT = [
     'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
   '}',
 
+  '.blocklyDragging.blocklyDraggingMouseThrough {',
+    'pointer-events: none;',
+  '}',
+
   '.blocklyToolboxDelete {',
     'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
   '}',
@@ -445,6 +469,10 @@ Blockly.Css.CONTENT = [
   '.blocklyNonEditableText>text,',
   '.blocklyEditableText>text {',
     'fill: $colour_text;',
+  '}',
+
+  '.blocklyEditableText>.blocklyEditableLabel {',
+    'fill: #fff;',
   '}',
 
   '.blocklyDropdownText {',
@@ -494,7 +522,10 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklyFlyoutLabelText {',
-    'fill: #000;',
+    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    'font-size: 14pt;',
+    'fill: #0e0e0e;',
+    'font-weight: bold;',
   '}',
 
   /*
@@ -624,25 +655,40 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklyAngleCircle {',
-    'stroke: #444;',
+    'stroke: ' + Blockly.Colours.motion.tertiary + ';',
     'stroke-width: 1;',
-    'fill: #ddd;',
-    'fill-opacity: .8;',
+    'fill: ' + Blockly.Colours.motion.secondary + ';',
   '}',
 
-  '.blocklyAngleMarks {',
-    'stroke: #444;',
+  '.blocklyAngleCenterPoint {',
+    'stroke: #fff;',
     'stroke-width: 1;',
+    'fill: #fff;',
+  '}',
+
+  '.blocklyAngleDragHandle {',
+    'stroke: #fff;',
+    'stroke-width: 5;',
+    'stroke-opacity: 0.25;',
+    'fill: #fff;',
+    'cursor: pointer;',
+  '}',
+
+
+  '.blocklyAngleMarks {',
+    'stroke: #fff;',
+    'stroke-width: 1;',
+    'stroke-opacity: 0.5;',
   '}',
 
   '.blocklyAngleGauge {',
-    'fill: #f88;',
-    'fill-opacity: .8;',
+    'fill: #fff;',
+    'fill-opacity: 0.20;',
   '}',
 
   '.blocklyAngleLine {',
-    'stroke: #f00;',
-    'stroke-width: 2;',
+    'stroke: #fff;',
+    'stroke-width: 1;',
     'stroke-linecap: round;',
     'pointer-events: none;',
   '}',
@@ -670,10 +716,11 @@ Blockly.Css.CONTENT = [
     'background-color: $colour_toolbox;',
     'color: $colour_toolboxText;',
     'overflow-x: hidden;',
-    'overflow-y: hidden;',
+    'overflow-y: auto;',
     'position: absolute;',
     'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'z-index: 40;', /* so blocks go over toolbox when dragging */
+    '-webkit-tap-highlight-color: transparent;', /* issue #1345 */
   '}',
 
   '.blocklyTreeRoot {',
@@ -775,54 +822,52 @@ Blockly.Css.CONTENT = [
     'color: #fff;',
   '}',
 
-  /* Copied from: goog/css/colorpicker-simplegrid.css */
-  /*
-   * Copyright 2007 The Closure Library Authors. All Rights Reserved.
-   *
-   * Use of this source code is governed by the Apache License, Version 2.0.
-   * See the COPYING file for details.
-   */
-
-  /* Author: pupius@google.com (Daniel Pupius) */
-
-  /*
-    Styles to make the colorpicker look like the old gmail color picker
-    NOTE: without CSS scoping this will override styles defined in palette.css
-  */
-  '.blocklyWidgetDiv .goog-palette {',
-    'outline: none;',
-    'cursor: default;',
-  '}',
-
-  '.blocklyWidgetDiv .goog-palette-table {',
-    'border-collapse: collapse;',
-  '}',
-
-  '.blocklyWidgetDiv .goog-palette-cell {',
-    'height: 13px;',
-    'width: 15px;',
-    'margin: 0;',
-    'border: 0;',
-    'text-align: center;',
-    'vertical-align: middle;',
-    'font-size: 1px;',
-  '}',
-
-  '.blocklyWidgetDiv .goog-palette-colorswatch {',
+  '.blocklyDropDownDiv .goog-slider-horizontal {',
+    'margin: 8px;',
+    'height: 22px;',
+    'width: 150px;',
     'position: relative;',
-    'height: 13px;',
-    'width: 15px;',
+    'outline: none;',
+    'border-radius: 11px;',
+    'margin-bottom: 20px;',
   '}',
 
-  '.blocklyWidgetDiv .goog-palette-cell-hover .goog-palette-colorswatch {',
-    'border: 1px solid #FFF;',
-    'box-sizing: border-box;',
+  '.blocklyDropDownDiv .goog-slider-horizontal .goog-slider-thumb {',
+    'width: 26px;',
+    'height: 26px;',
+    'top: -1px;',
+    'position: absolute;',
+    'background-color: white;',
+    'border-radius: 100%;',
+    '-webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);',
+    '-moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);',
+    'box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);',
   '}',
 
-  '.blocklyWidgetDiv .goog-palette-cell-selected .goog-palette-colorswatch {',
-    'border: 1px solid #000;',
-    'box-sizing: border-box;',
-    'color: #fff;',
+  '.scratchEyedropper {',
+    'background: none;',
+    'outline: none;',
+    'border: none;',
+    'width: 100%;',
+    'text-align: center;',
+    'border-top: 1px solid #ddd;',
+    'padding-top: 5px;',
+    'cursor: pointer;',
+  '}',
+
+  '.scratchColourPickerLabel {',
+    'font-family: "Helvetica Neue", Helvetica, sans-serif;',
+    'font-size: 0.65rem;',
+    'color: $colour_toolboxText;',
+    'margin: 8px;',
+  '}',
+
+  '.scratchColourPickerLabelText {',
+    'font-weight: bold;',
+  '}',
+
+  '.scratchColourPickerReadout {',
+    'margin-left: 10px;',
   '}',
 
   /* Copied from: goog/css/menu.css */
@@ -907,6 +952,7 @@ Blockly.Css.CONTENT = [
     'font-weight: bold;',
     'list-style: none;',
     'margin: 0;',
+    'min-height: 24px;',
      /* 28px on the left for icon or checkbox; 7em on the right for shortcut. */
     'padding: 4px 7em 4px 28px;',
     'white-space: nowrap;',
@@ -1089,47 +1135,63 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.scratchCategoryMenu {',
-    'width: 250px;',
+    'width: 52px;',
     'background: $colour_toolbox;',
     'color: $colour_toolboxText;',
-    'font-size: .9em;',
+    'font-size: .7rem;',
     'user-select: none;',
     '-webkit-user-select: none;',
     '-moz-user-select: none;',
     '-ms-user-select: none;',
   '}',
 
-  '.scratchCategoryRow {',
-    'width: 50%;',
+  '.scratchCategoryMenuHorizontal {',
+    'width: 100%;',
+    'height: 50px;',
+    'background: $colour_toolbox;',
+    'color: $colour_toolboxText;',
+    'font-size: .7em;',
+    'user-select: none;',
+    '-webkit-user-select: none;',
+    '-moz-user-select: none;',
+    '-ms-user-select: none;',
+  '}',
+
+  '.scratchCategoryMenuHorizontal .scratchCategoryMenuRow {',
+    'float: left;',
+    'margin: 3px;',
+  '}',
+
+  '.scratchCategoryMenuRow {',
   '}',
 
   '.scratchCategoryMenuItem {',
-    'padding: 4px;',
-    'width: 50%;',
+    'padding: 0.375rem 0px;',
     'cursor: pointer;',
+    'text-align: center;',
+  '}',
+
+  '.scratchCategoryMenuHorizontal .scratchCategoryMenuItem {',
+    'padding: 6px 5px;',
   '}',
 
   '.scratchCategoryMenuItem.categorySelected {',
     'background: $colour_toolboxSelected;',
-    'border-radius: 16px;',
   '}',
 
-  '.scratchCategoryItemBubbleLTR {',
-    'width: 14px;',
-    'height: 14px;',
+  '.scratchCategoryItemBubble {',
+    'width: 1.25rem;',
+    'height: 1.25rem;',
     'border: 1px solid;',
-    'border-radius: 8px;',
-    'float: left;',
-    'margin-right: 8px;',
+    'border-radius: 100%;',
+    'margin: 0 auto 0.125rem;',
   '}',
 
-  '.scratchCategoryItemBubbleRTL {',
-    'width: 14px;',
-    'height: 14px;',
-    'border: 1px solid;',
-    'border-radius: 8px;',
-    'float: right;',
-    'margin-left: 8px;',
+  '.scratchCategoryItemIcon {',
+    'width: 1.25rem;',
+    'height: 1.25rem;',
+    'margin: 0 auto 0.125rem;',
+    'background-size: 100%;',
   '}',
 
   '.scratchCategoryMenuItem:hover {',

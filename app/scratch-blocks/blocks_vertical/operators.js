@@ -262,7 +262,7 @@ Blockly.Blocks['mathrandom'] = {
     init: function () {
         this.appendValueInput("L")
             .setCheck("Number")
-            .appendField("pick random from");
+            .appendField("random from");
         this.appendValueInput("H")
             .setCheck("Number")
             .appendField("to");

@@ -58,6 +58,10 @@ Blockly.inject = function (container, opt_options) {
     var subContainer = goog.dom.createDom('div', 'injectionDiv');
     container.appendChild(subContainer);
 
+    // Open the Field text cache and leave it open. See this issue for more information
+    // https://github.com/LLK/scratch-blocks/issues/1004
+    Blockly.Field.startCache();
+
     var svg = Blockly.createDom_(subContainer, options);
 
     // Create surfaces for dragging things. These are optimizations
@@ -124,10 +128,11 @@ Blockly.createDom_ = function (container, options) {
     // https://github.com/google/blockly/commit/144be4d49f36fdba260a26edbd170ae75bbc37a6
     var rnd = String(Math.random()).substring(2);
 
+
     var bubleFilter = Blockly.utils.createSvgElement('filter',
-  {
-      'id': 'blocklyBubleFilter'
-  }, defs);
+        {
+            'id': 'blocklyBubleFilter'
+        }, defs);
     options.bubleBlur = Blockly.utils.createSvgElement('feGaussianBlur',
         {
             'in': 'SourceAlpha',
@@ -168,6 +173,8 @@ Blockly.createDom_ = function (container, options) {
             'k4': '0'
         }, bubleFilter);
 
+
+
     // Using a dilate distorts the block shape.
     // Instead use a gaussian blur, and then set all alpha to 1 with a transfer.
     var stackGlowFilter = Blockly.utils.createSvgElement('filter',
@@ -178,7 +185,7 @@ Blockly.createDom_ = function (container, options) {
     options.stackGlowBlur = Blockly.utils.createSvgElement('feGaussianBlur',
         {
             'in': 'SourceGraphic',
-            'stdDeviation': Blockly.STACK_GLOW_RADIUS
+            'stdDeviation': Blockly.Colours.stackGlowSize
         }, stackGlowFilter);
     // Set all gaussian blur pixels to 1 opacity before applying flood
     var componentTransfer = Blockly.utils.createSvgElement('feComponentTransfer', { 'result': 'outBlur' }, stackGlowFilter);
@@ -207,7 +214,7 @@ Blockly.createDom_ = function (container, options) {
     Blockly.utils.createSvgElement('feGaussianBlur',
         {
             'in': 'SourceGraphic',
-            'stdDeviation': Blockly.REPLACEMENT_GLOW_RADIUS
+            'stdDeviation': Blockly.Colours.replacementGlowSize
         }, replacementGlowFilter);
     // Set all gaussian blur pixels to 1 opacity before applying flood
     var componentTransfer = Blockly.utils.createSvgElement('feComponentTransfer',
@@ -287,7 +294,7 @@ Blockly.createMainWorkspace_ = function (svg, options, blockDragSurface, workspa
                     metrics.contentTop + metrics.contentHeight >
                     metrics.viewHeight + edgeTop ||
                     metrics.contentLeft <
-                        (options.RTL ? metrics.viewLeft : edgeLeft) ||
+                    (options.RTL ? metrics.viewLeft : edgeLeft) ||
                     metrics.contentLeft + metrics.contentWidth > (options.RTL ?
                         metrics.viewWidth : metrics.viewWidth + edgeLeft)) {
                     // One or more blocks may be out of bounds.  Bump them back in.
@@ -435,12 +442,12 @@ Blockly.inject.loadSounds_ = function (pathToMedia, workspace) {
     var audioMgr = workspace.getAudioManager();
     audioMgr.load(
         [pathToMedia + 'click.mp3',
-         pathToMedia + 'click.wav',
-         pathToMedia + 'click.ogg'], 'click');
+            pathToMedia + 'click.wav',
+            pathToMedia + 'click.ogg'], 'click');
     audioMgr.load(
         [pathToMedia + 'delete.mp3',
-         pathToMedia + 'delete.ogg',
-         pathToMedia + 'delete.wav'], 'delete');
+            pathToMedia + 'delete.ogg',
+            pathToMedia + 'delete.wav'], 'delete');
 
     // Bind temporary hooks that preload the sounds.
     var soundBinds = [];
@@ -456,10 +463,10 @@ Blockly.inject.loadSounds_ = function (pathToMedia, workspace) {
     // Android ignores any sound not loaded as a result of a user action.
     soundBinds.push(
         Blockly.bindEventWithChecks_(document, 'mousemove', null, unbindSounds,
-            /* opt_noCaptureIdentifier */ true));
+          /* opt_noCaptureIdentifier */ true));
     soundBinds.push(
         Blockly.bindEventWithChecks_(document, 'touchstart', null, unbindSounds,
-            /* opt_noCaptureIdentifier */ true));
+          /* opt_noCaptureIdentifier */ true));
 };
 
 /**
@@ -469,6 +476,6 @@ Blockly.inject.loadSounds_ = function (pathToMedia, workspace) {
  */
 Blockly.updateToolbox = function (tree) {
     console.warn('Deprecated call to Blockly.updateToolbox, ' +
-                 'use workspace.updateToolbox instead.');
+        'use workspace.updateToolbox instead.');
     Blockly.getMainWorkspace().updateToolbox(tree);
 };

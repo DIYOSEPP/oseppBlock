@@ -34,10 +34,10 @@ goog.require('Blockly.FlyoutButton');
 goog.require('Blockly.utils');
 goog.require('Blockly.WorkspaceSvg');
 goog.require('goog.dom');
+goog.require('goog.dom.animationFrame.polyfill');
 goog.require('goog.events');
 goog.require('goog.math.Rect');
 goog.require('goog.userAgent');
-
 
 /**
  * Class for a flyout.
@@ -152,7 +152,7 @@ Blockly.VerticalFlyout.prototype.createDom = function(tagName) {
   */
   this.defs_ = Blockly.utils.createSvgElement('defs', {}, this.svgGroup_);
   var clipPath = Blockly.utils.createSvgElement('clipPath',
-      { 'id': 'blocklyBlockMenuClipPath' + tagName }, this.defs_);
+      {'id':'blocklyBlockMenuClipPath'+tagName}, this.defs_);
   this.clipRect_ = Blockly.utils.createSvgElement('rect',
       {'id': 'blocklyBlockMenuClipRect',
         'height': '0',
@@ -239,6 +239,10 @@ Blockly.VerticalFlyout.prototype.setMetrics_ = function(xyRatio) {
 
   this.clipRect_.setAttribute('height', Math.max(0, metrics.viewHeight) + 'px');
   this.clipRect_.setAttribute('width', metrics.viewWidth + 'px');
+
+  if (this.categoryScrollPositions) {
+    this.selectCategoryByScrollPosition(-this.workspace_.scrollY);
+  }
 };
 
 /**
@@ -259,9 +263,11 @@ Blockly.VerticalFlyout.prototype.position = function() {
   this.width_ = this.getWidth();
 
   if (this.parentToolbox_) {
-    var x = this.parentToolbox_.HtmlDiv.offsetLeft;
-    var y = this.parentToolbox_.HtmlDiv.offsetTop +
-        this.parentToolbox_.getHeight();
+    var toolboxWidth = this.parentToolbox_.getWidth();
+    var categoryWidth = toolboxWidth - this.width_;
+    var x = this.toolboxPosition_ == Blockly.TOOLBOX_AT_RIGHT ?
+        targetWorkspaceMetrics.viewWidth : categoryWidth;
+    var y = 0;
   } else {
     var x = this.toolboxPosition_ == Blockly.TOOLBOX_AT_RIGHT ?
         targetWorkspaceMetrics.viewWidth - this.width_ : 0;
@@ -269,7 +275,7 @@ Blockly.VerticalFlyout.prototype.position = function() {
   }
 
   // Record the height for Blockly.Flyout.getMetrics_
-  this.height_ = targetWorkspaceMetrics.viewHeight - y;
+  this.height_ = Math.max(0, targetWorkspaceMetrics.viewHeight - y);
 
   this.setBackgroundPath_(this.width_, this.height_);
 
@@ -330,20 +336,42 @@ Blockly.VerticalFlyout.prototype.scrollToStart = function() {
 };
 
 /**
+ * Scroll the flyout to a position.
+ * @param {number} pos The targeted scroll position in workspace coordinates.
+ * @package
+ */
+Blockly.VerticalFlyout.prototype.scrollTo = function(pos) {
+  this.scrollTarget = pos * this.workspace_.scale;
+
+  // Make sure not to set the scroll target below the lowest point we can
+  // scroll to, i.e. the content height minus the view height
+  var metrics = this.workspace_.getMetrics();
+  var contentHeight = metrics.contentHeight;
+  var viewHeight = metrics.viewHeight;
+  this.scrollTarget = Math.min(this.scrollTarget, contentHeight - viewHeight);
+
+  this.stepScrollAnimation();
+};
+
+/**
  * Scroll the flyout.
  * @param {!Event} e Mouse wheel scroll event.
  * @private
  */
 Blockly.VerticalFlyout.prototype.wheel_ = function(e) {
+  // remove scrollTarget to stop auto scrolling in stepScrollAnimation
+  this.scrollTarget = null;
+
   var delta = e.deltaY;
 
   if (delta) {
-    if (goog.userAgent.GECKO) {
-      // Firefox's deltas are a tenth that of Chrome/Safari.
+    // Firefox's mouse wheel deltas are a tenth that of Chrome/Safari.
+    // DeltaMode is 1 for a mouse wheel, but not for a trackpad scroll event
+    if (goog.userAgent.GECKO && (e.deltaMode === 1)) {
       delta *= 10;
     }
     var metrics = this.getMetrics_();
-    var pos = -this.workspace_.scrollY + delta;
+    var pos = (metrics.viewTop - metrics.contentTop) + delta;
     var limit = metrics.contentHeight - metrics.viewHeight;
     pos = Math.min(pos, limit);
     pos = Math.max(pos, 0);

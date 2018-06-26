@@ -252,17 +252,12 @@ Blockly.BlockDragSurfaceSvg.prototype.getCurrentBlock = function() {
  *     to, or null if the blocks should be removed from this surface without
  *     being moved to a different surface.
  */
-Blockly.BlockDragSurfaceSvg.prototype.clearAndHide = function (opt_newSurface) {
-    //https://github.com/LLK/scratch-blocks/issues/1043
-    //Dropping a duplicated block directly in the delete area will be error
-    //Check if block has been deleted
-    var cb = this.getCurrentBlock();
-    if (!cb) return;
+Blockly.BlockDragSurfaceSvg.prototype.clearAndHide = function(opt_newSurface) {
   if (opt_newSurface) {
     // appendChild removes the node from this.dragGroup_
-    opt_newSurface.appendChild(cb);
+    opt_newSurface.appendChild(this.getCurrentBlock());
   } else {
-    this.dragGroup_.removeChild(cb);
+    this.dragGroup_.removeChild(this.getCurrentBlock());
   }
   this.SVG_.style.display = 'none';
   goog.asserts.assert(this.dragGroup_.childNodes.length == 0,
