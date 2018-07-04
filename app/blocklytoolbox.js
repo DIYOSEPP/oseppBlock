@@ -177,6 +177,13 @@ var blockToolboxXml=
 '			</shadow>'+
 '		</value>'+
 '	</block>'+
+'	<block type="negativeoperators">'+
+'		<value name="NUM2">'+
+'			<shadow type="math_number">'+
+'				<field name="NUM">0</field>'+
+'			</shadow>'+
+'		</value>'+
+'	</block>'+
 '	<block type="comparisonoperators">'+
 '		<field name="Operators">==</field>'+
 '		<value name="NUM1">'+

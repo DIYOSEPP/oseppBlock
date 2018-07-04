@@ -19,6 +19,14 @@ Blockly.Arduino['arithmeticoperators'] = function (block) {
     return [code, order];
 };
 
+Blockly.Arduino['negativeoperators'] = function (block) {
+    var value_num2 = Blockly.Arduino.valueToCode(block, 'NUM2', Blockly.Arduino.ORDER_UNARY_PREFIX) || '0';
+    // TODO: Assemble Arduino into code variable.
+    var code = '-' + value_num2;
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, Blockly.Arduino.ORDER_UNARY_PREFIX];
+};
+
 Blockly.Arduino['comparisonoperators'] = function (block) {
     var dropdown_operators = block.getFieldValue('Operators');
     var order = ((dropdown_operators === '==') || (dropdown_operators === '!=')) ?

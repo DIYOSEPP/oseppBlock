@@ -61,6 +61,21 @@ Blockly.Blocks['arithmeticoperators'] = {
     }
 };
 
+Blockly.Blocks['negativeoperators'] = {
+    init: function () {
+        this.appendValueInput("NUM2")
+            .setCheck("Number")
+            .appendField("Negative");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setTooltip('Return negative number');
+    }
+};
+
+
+
 Blockly.Blocks['comparisonoperators'] = {
     init: function () {
         this.appendValueInput("NUM1")
