@@ -51,3 +51,5 @@ app/closure-library
 node_modules
 release
 app/build.py
+oseppBlock-*-*/*
+app.zip

@@ -60,11 +60,11 @@ Note: *closure-library* should be in the app directory
         cd $HOME
         #for windows , you need to download and install git first
         #then execute the following command in the bash environment
-        git clone git://github.com/DIYOSEPP/oseppBlock.git
+        git clone --depth 1 git://github.com/DIYOSEPP/oseppBlock.git
         cd oseppBlock
         git checkout master
         cd app/
-        git clone git://github.com/google/closure-library.git
+        git clone --depth 1 git://github.com/google/closure-library.git
 ```
 
 ## 3. Install Compiler Dependencies
@@ -136,9 +136,12 @@ If you want to add your own block, please refer to
 
 ## change log
 
++ 20180704
+  + add negative Block
+  + change comment Text Font Size
 + 20180626
-    + Updated to the latest **scratch block** core
-    + Update to the latest **electron**
-    + add **robot** blocks and **remote** blocks
-    + add **tcp Serial Monitor**
-    + When the port is an IP address, use **arduino OTA** to upload the sketch (compatible with Arduino Uno Wifi)
+  + Updated to the latest **scratch block** core
+  + Update to the latest **electron**
+  + add **robot** blocks and **remote** blocks
+  + add **tcp Serial Monitor**
+  + When the port is an IP address, use **arduino OTA** to upload the sketch (compatible with Arduino Uno Wifi)
