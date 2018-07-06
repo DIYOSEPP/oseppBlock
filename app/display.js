@@ -378,3 +378,58 @@ function initWorkspace() {
         console.log(e);
     }
 }
+
+var takeScreen = function () {
+    var wc = require("electron").remote.getCurrentWindow();
+    const fs = require('fs');
+    var oldsize = wc.getContentSize();
+
+    var svg = document.getElementsByClassName('blocklySvg')[0];
+    var blocklyCanvas = document.getElementsByClassName('blocklyBlockCanvas')[0];
+    var blocklyBubbleCanvas = document.getElementsByClassName('blocklyBubbleCanvas')[0];
+
+    var vbox = svg.getBoundingClientRect();
+    var bbox = blocklyCanvas.getBoundingClientRect();
+    var bbbox = blocklyBubbleCanvas.getBoundingClientRect();
+    if (bbbox.height > 0 && bbbox.width > 0) {
+        var mx = bbbox.x + bbbox.width;
+        mx = Math.max(mx, bbox.x + bbox.width);
+        var my = bbbox.y + bbbox.height;
+        my = Math.max(my, bbox.y + bbox.height)
+        bbox.x = Math.max(bbbox.x, bbox.x);
+        bbox.y = Math.max(bbbox.y, bbox.y);
+        bbox.width = mx - bbox.x;
+        bbox.height = my - bbox.y;
+    }
+
+    var newwidth = oldsize[0] + bbox.width - vbox.width + bbox.x;
+    var newheight = oldsize[1] + bbox.height - vbox.height + bbox.y;
+
+    var el=document.getElementById('code_area');
+    newwidth+=Math.max(0,el.scrollWidth-el.clientWidth+50);
+    newheight=Math.max(newheight,el.scrollHeight+50);
+
+    var msg=document.getElementById('serial_upload_msg');
+    newheight+=msg.clientHeight;
+
+    newwidth = Math.ceil(newwidth + 80);
+    newheight = Math.ceil(newheight);
+    
+    wc.setContentSize(Math.max(oldsize[0], newwidth), Math.max(oldsize[1], newheight));
+    var oldcodewith=curwidth;
+    curwidth=el.scrollWidth+50;
+    resizeWorkspaceDiv();
+    var now=new Date;
+    var fname=''+now.getTime()+'.png';
+    setTimeout(function () {
+        wc.capturePage(function (image) {
+            fs.writeFile(fname, image.toPNG(), (err) => {
+                if (err) throw err;
+            })
+        })
+        curwidth=oldcodewith;
+        resizeWorkspaceDiv();
+        wc.setContentSize(oldsize[0], oldsize[1]);
+    }, 500);
+    return fname;
+}

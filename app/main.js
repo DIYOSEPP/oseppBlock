@@ -6,9 +6,9 @@ let win;
 
 function createWindow () {
     if (process.platform == 'win32') {
-        win = new BrowserWindow({show:false,width: 1024, height: 768,icon:`${__dirname}/media/osepp.ico`});
+        win = new BrowserWindow({show:false,enableLargerThanScreen:true,width: 1024, height: 768,icon:`${__dirname}/media/osepp.ico`});
     }else{
-        win = new BrowserWindow({show:false,width: 1024, height: 768});
+        win = new BrowserWindow({show:false,enableLargerThanScreen:true,width: 1024, height: 768});
     }
     
     win.maximize();

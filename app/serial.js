@@ -58,7 +58,7 @@ var onSerialData = function (data) {
     };
 };
 var onSerialError = function (error) {
-    if (serial && (!serial.isNetWrok) && (!serial.isOpen())) serial = null;
+    if (serial && (!serial.isNetWrok) && (!serial.isOpen)) serial = null;
 };
 
 function addClass(element, classText) {
@@ -101,6 +101,14 @@ var onSerialClose = function () {
 
 function serial_doOpen() {
     var port = document.getElementById("SelectComPort").value;
+    if (port.toLowerCase() == 'debug') {
+        try {
+            var browser = require("electron").remote.getCurrentWindow();
+            browser.openDevTools();
+        } finally {
+            return;
+        }
+    }
     var baud = parseInt(document.getElementById("SelectBandrate").value);
     var ip = reIP.exec(port);
     if (ip) {
@@ -451,8 +459,8 @@ function insideArduinoPath() {
         curPath = path.resolve(curPath, "..", "..", "..");
     }
     var dirset = [curPath];
-    while(dirset.length){
-        var dir=dirset.pop();
+    while (dirset.length) {
+        var dir = dirset.pop();
         if (verifyArduinoPath(dir)) return dir;
         var files = fs.readdirSync(dir);
         for (var fn, i = 0; fn = files[i]; i++) {
@@ -480,7 +488,7 @@ function getArduinoPath() {
     if (!verifyArduinoPath(arduinoPath)) {
         try {
             arduinoPath = insideArduinoPath();
-            if(arduinoPath)window.localStorage.arduinoPath = arduinoPath;
+            if (arduinoPath) window.localStorage.arduinoPath = arduinoPath;
         } catch (e) {
             arduinoPath = "";
         }
