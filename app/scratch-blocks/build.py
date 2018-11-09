@@ -150,9 +150,9 @@ window.BLOCKLY_BOOT = function() {
     # Find the Blockly directory name and replace it with a JS variable.
     # This allows blockly_uncompressed.js to be compiled on one computer and be
     # used on another, even if the directory name differs.
-    m = re.search('[\\/]([^\\/]+)[\\/]core[\\/]blockly.js', add_dependency)
-    add_dependency = re.sub('([\\/])' + re.escape(m.group(1)) +
-        '([\\/]core[\\/])', '\\1" + dir + "\\2', add_dependency)
+    #m = re.search('[\\/]([^\\/]+)[\\/]core[\\/]blockly.js', add_dependency)
+    #add_dependency = re.sub('([\\/])' + re.escape(m.group(1)) +
+    #    '([\\/]core[\\/])', '\\1" + dir + "\\2', add_dependency)
     f.write(add_dependency + '\n')
 
     provides = []
@@ -225,10 +225,12 @@ class Gen_compressed(threading.Thread):
 
   def run(self):
     self.gen_core(True)
-    self.gen_core(False)
-    self.gen_blocks("horizontal")
-    self.gen_blocks("vertical")
+    # self.gen_core(False)
+    # self.gen_blocks("horizontal")
+    # self.gen_blocks("vertical")
+    self.gen_blocks("arduino")
     self.gen_blocks("common")
+    # self.gen_generator("arduino")
 
   def gen_core(self, vertical):
     if vertical:
@@ -269,6 +271,9 @@ class Gen_compressed(threading.Thread):
     elif block_type == "vertical":
       target_filename = "blocks_compressed_vertical.js"
       filenames = glob.glob(os.path.join("blocks_vertical", "*.js"))
+    elif block_type == "arduino":
+      target_filename = "blocks_compressed_arduino.js"
+      filenames = glob.glob(os.path.join("blocks_arduino", "*.js"))
     elif block_type == "common":
       target_filename = "blocks_compressed.js"
       filenames = glob.glob(os.path.join("blocks_common", "*.js"))
@@ -600,7 +605,7 @@ if __name__ == "__main__":
   search_paths = calcdeps.ExpandDirectories(
       ["core", os.path.join(closure_root, closure_library)])
 
-  search_paths_horizontal = filter(exclude_vertical, search_paths)
+  # search_paths_horizontal = filter(exclude_vertical, search_paths)
   search_paths_vertical = filter(exclude_horizontal, search_paths)
 
   closure_env = {
@@ -616,10 +621,10 @@ if __name__ == "__main__":
   # Vertical:
   Gen_uncompressed(search_paths_vertical, True, closure_env).start()
   # Horizontal:
-  Gen_uncompressed(search_paths_horizontal, False, closure_env).start()
+  # Gen_uncompressed(search_paths_horizontal, False, closure_env).start()
 
   # Compressed forms of vertical and horizontal.
-  Gen_compressed(search_paths_vertical, search_paths_horizontal, closure_env).start()
+  Gen_compressed(search_paths_vertical, [], closure_env).start()
 
   # This is run locally in a separate thread.
   # Gen_langfiles().start()
