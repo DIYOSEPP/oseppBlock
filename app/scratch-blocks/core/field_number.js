@@ -62,18 +62,24 @@ Blockly.FieldNumber = function(opt_value, opt_min, opt_max, opt_precision,
 goog.inherits(Blockly.FieldNumber, Blockly.FieldTextInput);
 
 /**
+ * Construct a FieldNumber from a JSON arg object.
+ * @param {!Object} options A JSON object with options (value, min, max, and
+ *                          precision).
+ * @returns {!Blockly.FieldNumber} The new field instance.
+ * @package
+ * @nocollapse
+ */
+Blockly.FieldNumber.fromJson = function(options) {
+  return new Blockly.FieldNumber(options['value'],
+      options['min'], options['max'], options['precision']);
+};
+
+/**
  * Fixed width of the num-pad drop-down, in px.
  * @type {number}
  * @const
  */
 Blockly.FieldNumber.DROPDOWN_WIDTH = 168;
-
-/**
- * Extra padding to add between the block and the num-pad drop-down, in px.
- * @type {number}
- * @const
- */
-Blockly.FieldNumber.DROPDOWN_Y_PADDING = 8;
 
 /**
  * Buttons for the num-pad, in order from the top left.
@@ -82,7 +88,7 @@ Blockly.FieldNumber.DROPDOWN_Y_PADDING = 8;
  * @type {Array.<string>}
  * @const
  */
- // Calculator order
+// Calculator order
 Blockly.FieldNumber.NUMPAD_BUTTONS =
     ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', '-', ' '];
 
@@ -184,8 +190,8 @@ Blockly.FieldNumber.prototype.showNumPad_ = function() {
   this.addButtons_(contentDiv);
 
   // Set colour and size of drop-down
-  Blockly.DropDownDiv.setColour(Blockly.Colours.numPadBackground,
-      Blockly.Colours.numPadBorder);
+  Blockly.DropDownDiv.setColour(this.sourceBlock_.parentBlock_.getColour(),
+      this.sourceBlock_.getColourTertiary());
   contentDiv.style.width = Blockly.FieldNumber.DROPDOWN_WIDTH + 'px';
 
   this.position_();
@@ -205,12 +211,10 @@ Blockly.FieldNumber.prototype.position_ = function() {
   var position = this.getAbsoluteXY_();
   // If we can fit it, render below the shadow block
   var primaryX = position.x + bBox.width / 2;
-  var primaryY = position.y + bBox.height +
-      Blockly.FieldNumber.DROPDOWN_Y_PADDING;
+  var primaryY = position.y + bBox.height;
   // If we can't fit it, render above the entire parent block
   var secondaryX = primaryX;
-  var secondaryY = position.y - (Blockly.BlockSvg.MIN_BLOCK_Y * scale) -
-      (Blockly.BlockSvg.FIELD_Y_OFFSET * scale);
+  var secondaryY = position.y;
 
   Blockly.DropDownDiv.setBoundsElement(
       this.sourceBlock_.workspace.getParentSvg().parentNode);
@@ -225,12 +229,18 @@ Blockly.FieldNumber.prototype.position_ = function() {
  * @private
  */
 Blockly.FieldNumber.prototype.addButtons_ = function(contentDiv) {
+  var buttonColour = this.sourceBlock_.parentBlock_.getColour();
+  var buttonBorderColour = this.sourceBlock_.parentBlock_.getColourTertiary();
+
   // Add numeric keypad buttons
   var buttons = Blockly.FieldNumber.NUMPAD_BUTTONS;
   for (var i = 0, buttonText; buttonText = buttons[i]; i++) {
     var button = document.createElement('button');
     button.setAttribute('role', 'menuitem');
     button.setAttribute('class', 'blocklyNumPadButton');
+    button.setAttribute('style',
+        'background:' + buttonColour + ';' +
+        'border: 1px solid ' + buttonBorderColour + ';');
     button.title = buttonText;
     button.innerHTML = buttonText;
     Blockly.bindEvent_(button, 'mousedown', button,
@@ -251,6 +261,9 @@ Blockly.FieldNumber.prototype.addButtons_ = function(contentDiv) {
   var eraseButton = document.createElement('button');
   eraseButton.setAttribute('role', 'menuitem');
   eraseButton.setAttribute('class', 'blocklyNumPadButton');
+  eraseButton.setAttribute('style',
+      'background:' + buttonColour + ';' +
+      'border: 1px solid ' + buttonBorderColour + ';');
   eraseButton.title = 'Delete';
 
   var eraseImage = document.createElement('img');
@@ -335,3 +348,5 @@ Blockly.FieldNumber.prototype.onHide_ = function() {
   Blockly.DropDownDiv.content_.removeAttribute('role');
   Blockly.DropDownDiv.content_.removeAttribute('aria-haspopup');
 };
+
+Blockly.Field.register('field_number', Blockly.FieldNumber);

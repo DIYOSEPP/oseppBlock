@@ -26,7 +26,8 @@
 
 goog.provide('Blockly.InsertionMarkerManager');
 
-goog.require('Blockly.Events');
+goog.require('Blockly.BlockAnimations');
+goog.require('Blockly.Events.BlockMove');
 goog.require('Blockly.RenderedConnection');
 
 goog.require('goog.math.Coordinate');
@@ -204,7 +205,8 @@ Blockly.InsertionMarkerManager.prototype.applyConnections = function() {
       // Determine which connection is inferior (lower in the source stack).
       var inferiorConnection = this.localConnection_.isSuperior() ?
           this.closestConnection_ : this.localConnection_;
-      inferiorConnection.getSourceBlock().connectionUiEffect();
+      Blockly.BlockAnimations.connectionUiEffect(
+          inferiorConnection.getSourceBlock());
       // Bring the just-edited stack to the front.
       var rootBlock = this.topBlock_.getRootBlock();
       rootBlock.bringToFront();
@@ -255,10 +257,9 @@ Blockly.InsertionMarkerManager.prototype.createMarkerBlock_ = function(sourceBlo
     result.setInsertionMarker(true, sourceBlock.width);
     if (sourceBlock.mutationToDom) {
       var oldMutationDom = sourceBlock.mutationToDom();
-      result.domToMutation(oldMutationDom);
-    }
-    if (result.mutator) {
-      goog.dom.removeNode(result.mutator.iconGroup_);
+      if (oldMutationDom) {
+        result.domToMutation(oldMutationDom);
+      }
     }
     result.initSvg();
   } finally {

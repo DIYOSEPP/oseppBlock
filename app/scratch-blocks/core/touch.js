@@ -34,6 +34,7 @@ goog.require('goog.events');
 goog.require('goog.events.BrowserFeature');
 goog.require('goog.string');
 
+
 /**
  * Which touch events are we currently paying attention to?
  * @type {DOMString}
@@ -63,7 +64,7 @@ Blockly.longPid_ = 0;
 
 /**
  * Context menus on touch devices are activated using a long-press.
- * Unfortunately the contextmenu touch event is currently (2015) only suported
+ * Unfortunately the contextmenu touch event is currently (2015) only supported
  * by Chrome.  This function is fired on any touchstart event, queues a task,
  * which after about a second opens the context menu.  The tasks is killed
  * if the touch event terminates early.
@@ -153,7 +154,7 @@ Blockly.Touch.getTouchIdentifierFromEvent = function(e) {
 Blockly.Touch.checkTouchIdentifier = function(e) {
   var identifier = Blockly.Touch.getTouchIdentifierFromEvent(e);
 
-  // if (Blockly.touchIdentifier_ )is insufficient because android touch
+  // if (Blockly.touchIdentifier_ )is insufficient because Android touch
   // identifiers may be zero.
   if (Blockly.Touch.touchIdentifier_ != undefined &&
       Blockly.Touch.touchIdentifier_ != null) {
@@ -179,7 +180,7 @@ Blockly.Touch.checkTouchIdentifier = function(e) {
  * @param {!Event} e A touch event.
  */
 Blockly.Touch.setClientFromTouch = function(e) {
-  if (goog.string.startsWith(e.type, 'touch')) {
+  if (Blockly.utils.startsWith(e.type, 'touch')) {
     // Map the touch event's properties to the event.
     var touchPoint = e.changedTouches[0];
     e.clientX = touchPoint.clientX;
@@ -193,8 +194,8 @@ Blockly.Touch.setClientFromTouch = function(e) {
  * @return {boolean} true if it is a mouse or touch event; false otherwise.
  */
 Blockly.Touch.isMouseOrTouchEvent = function(e) {
-  return goog.string.startsWith(e.type, 'touch') ||
-      goog.string.startsWith(e.type, 'mouse');
+  return Blockly.utils.startsWith(e.type, 'touch') ||
+      Blockly.utils.startsWith(e.type, 'mouse');
 };
 
 /**

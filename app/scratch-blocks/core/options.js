@@ -116,21 +116,7 @@ Blockly.Options = function(options) {
     var oneBasedIndex = !!options['oneBasedIndex'];
   }
 
-  var enableRealtime = !!options['realtime'];
-  var realtimeOptions = enableRealtime ? options['realtimeOptions'] : undefined;
-
-  // Colour overrides provided by the injection
-  var colours = options['colours'];
-  if (colours) {
-    for (var colourProperty in colours) {
-      if (colours.hasOwnProperty(colourProperty) &&
-          Blockly.Colours.hasOwnProperty(colourProperty)) {
-        // If a property is in both colours option and Blockly.Colours,
-        // set the Blockly.Colours value to the override.
-        Blockly.Colours[colourProperty] = colours[colourProperty];
-      }
-    }
-  }
+  Blockly.Colours.overrideColours(options['colours']);
 
   this.RTL = rtl;
   this.oneBasedIndex = oneBasedIndex;
@@ -148,8 +134,6 @@ Blockly.Options = function(options) {
   this.languageTree = languageTree;
   this.gridOptions = Blockly.Options.parseGridOptions_(options);
   this.zoomOptions = Blockly.Options.parseZoomOptions_(options);
-  this.enableRealtime = enableRealtime;
-  this.realtimeOptions = realtimeOptions;
   this.toolboxPosition = toolboxPosition;
 };
 

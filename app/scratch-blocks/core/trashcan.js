@@ -27,7 +27,6 @@
 goog.provide('Blockly.Trashcan');
 
 goog.require('goog.dom');
-goog.require('goog.math');
 goog.require('goog.math.Rect');
 
 
@@ -171,13 +170,20 @@ Blockly.Trashcan.prototype.createDom = function() {
       {'id': 'blocklyTrashBodyClipPath' + rnd},
       this.svgGroup_);
   Blockly.utils.createSvgElement('rect',
-      {'width': this.WIDTH_, 'height': this.BODY_HEIGHT_,
-       'y': this.LID_HEIGHT_},
+      {
+        'width': this.WIDTH_,
+        'height': this.BODY_HEIGHT_,
+        'y': this.LID_HEIGHT_
+      },
       clip);
   var body = Blockly.utils.createSvgElement('image',
-      {'width': Blockly.SPRITE.width, 'x': -this.SPRITE_LEFT_,
-       'height': Blockly.SPRITE.height, 'y': -this.SPRITE_TOP_,
-       'clip-path': 'url(#blocklyTrashBodyClipPath' + rnd + ')'},
+      {
+        'width': Blockly.SPRITE.width,
+        'x': -this.SPRITE_LEFT_,
+        'height': Blockly.SPRITE.height,
+        'y': -this.SPRITE_TOP_,
+        'clip-path': 'url(#blocklyTrashBodyClipPath' + rnd + ')'
+      },
       this.svgGroup_);
   body.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
       this.workspace_.options.pathToMedia + Blockly.SPRITE.url);
@@ -188,9 +194,13 @@ Blockly.Trashcan.prototype.createDom = function() {
   Blockly.utils.createSvgElement('rect',
       {'width': this.WIDTH_, 'height': this.LID_HEIGHT_}, clip);
   this.svgLid_ = Blockly.utils.createSvgElement('image',
-      {'width': Blockly.SPRITE.width, 'x': -this.SPRITE_LEFT_,
-       'height': Blockly.SPRITE.height, 'y': -this.SPRITE_TOP_,
-       'clip-path': 'url(#blocklyTrashLidClipPath' + rnd + ')'},
+      {
+        'width': Blockly.SPRITE.width,
+        'x': -this.SPRITE_LEFT_,
+        'height': Blockly.SPRITE.height,
+        'y': -this.SPRITE_TOP_,
+        'clip-path': 'url(#blocklyTrashLidClipPath' + rnd + ')'
+      },
       this.svgGroup_);
   this.svgLid_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
       this.workspace_.options.pathToMedia + Blockly.SPRITE.url);
@@ -298,13 +308,14 @@ Blockly.Trashcan.prototype.setOpen_ = function(state) {
  */
 Blockly.Trashcan.prototype.animateLid_ = function() {
   this.lidOpen_ += this.isOpen ? 0.2 : -0.2;
-  this.lidOpen_ = goog.math.clamp(this.lidOpen_, 0, 1);
+  this.lidOpen_ = Math.min(Math.max(this.lidOpen_, 0), 1);
   var lidAngle = this.lidOpen_ * 45;
   this.svgLid_.setAttribute('transform', 'rotate(' +
       (this.workspace_.RTL ? -lidAngle : lidAngle) + ',' +
       (this.workspace_.RTL ? 4 : this.WIDTH_ - 4) + ',' +
       (this.LID_HEIGHT_ - 2) + ')');
-  var opacity = goog.math.lerp(0.4, 0.8, this.lidOpen_);
+  // Linear interpolation between 0.4 and 0.8.
+  var opacity = 0.4 + this.lidOpen_ * (0.8 - 0.4);
   this.svgGroup_.style.opacity = opacity;
   if (this.lidOpen_ > 0 && this.lidOpen_ < 1) {
     this.lidTask_ = setTimeout(this.animateLid_.bind(this), 20);
