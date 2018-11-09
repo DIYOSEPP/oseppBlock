@@ -111,10 +111,23 @@ Blockly.WorkspaceSvg = function(options, opt_blockDragSurface, opt_wsDragSurface
   this.grid_ = this.options.gridPattern ?
       new Blockly.Grid(options.gridPattern, options.gridOptions) : null;
 
-  this.registerToolboxCategoryCallback(Blockly.VARIABLE_CATEGORY_NAME,
-      Blockly.DataCategory);
-  this.registerToolboxCategoryCallback(Blockly.PROCEDURE_CATEGORY_NAME,
-      Blockly.Procedures.flyoutCategory);
+    //   this.registerToolboxCategoryCallback(Blockly.VARIABLE_CATEGORY_NAME,
+    //       Blockly.DataCategory);
+    //   this.registerToolboxCategoryCallback(Blockly.PROCEDURE_CATEGORY_NAME,
+    //       Blockly.Procedures.flyoutCategory);
+
+    this.registerToolboxCategoryCallback('PROCEDURE',
+        Blockly.InstanceToolbox.flyoutCategoryProcedure);
+    this.registerToolboxCategoryCallback('InstanceVariables',
+        Blockly.InstanceToolbox.flyoutCategoryVariable);
+    this.registerToolboxCategoryCallback('ModuleDisplay',
+        Blockly.InstanceToolbox.flyoutCategoryModuleDisplay);
+    this.registerToolboxCategoryCallback('ModuleINPUT',
+        Blockly.InstanceToolbox.flyoutCategoryModuleInput);
+    this.registerToolboxCategoryCallback('ModuleOUTPUT',
+        Blockly.InstanceToolbox.flyoutCategoryModuleOutput);
+    this.registerToolboxCategoryCallback('ModuleROBOT',
+        Blockly.InstanceToolbox.flyoutCategoryModuleRobot);
 };
 goog.inherits(Blockly.WorkspaceSvg, Blockly.Workspace);
 
