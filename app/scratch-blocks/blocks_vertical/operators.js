@@ -116,12 +116,12 @@ Blockly.Blocks['comparisonoperators'] = {
 Blockly.Blocks['booleanoperators'] = {
     init: function () {
         this.appendValueInput("NUM1")
-            .setCheck("Boolean");
+            .setCheck(["Boolean", "Number"]);
         this.appendDummyInput()
             .appendField(" ")
             .appendField(new Blockly.FieldDropdown([["AND", "&&"], ["OR", "||"]]), "Operators");
         this.appendValueInput("NUM2")
-            .setCheck("Boolean")
+            .setCheck(["Boolean", "Number"])
             .appendField(" ");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
@@ -146,7 +146,7 @@ Blockly.Blocks['booleanoperators'] = {
 Blockly.Blocks['notoperators'] = {
     init: function () {
         this.appendValueInput("NUM2")
-            .setCheck("Boolean")
+            .setCheck(["Boolean", "Number"])
             .appendField("NOT");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
