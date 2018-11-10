@@ -706,6 +706,14 @@ Blockly.BlockSvg.prototype.renderFields_ = function(fieldList, cursorX,
     if (!root) {
       continue;
     }
+    // osepp: a new property(hide) in order to hide the field
+    // If a field has ever been shown,Need to set svg to hide when hiding
+    if (field.hide === true) {
+        root.setAttribute('display', 'none');
+        continue;
+    } else {
+        root.removeAttribute('display');
+    }
     // In blocks with a notch, fields should be bumped to a min X,
     // to avoid overlapping with the notch. Label and image fields are
     // excluded.
@@ -795,7 +803,13 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
   // Previously created row, for special-casing row heights on C- and E- shaped blocks.
   var previousRow;
   for (var i = 0, input; input = inputList[i]; i++) {
-    if (!input.isVisible()) {
+    if ((!input.isVisible()) || (input.hide == true)) {
+      // osepp: a new property(hide) in order to hide the input
+      // osepp:If a input has ever been shown.Need to set svg to hide when hiding
+      var inputShape = input.outlinePath
+          if (inputShape) {
+              inputShape.setAttribute('style', 'visibility: hidden');
+          }
       continue;
     }
     var isSecondInputOnProcedure = this.type == 'procedures_definition' &&
@@ -870,6 +884,8 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     }
     var previousFieldEditable = false;
     for (var j = 0, field; field = input.fieldRow[j]; j++) {
+      // osepp:Ignore fields that need to be hidden
+      if (field.hide === true) continue;
       if (j != 0) {
         input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
       }
