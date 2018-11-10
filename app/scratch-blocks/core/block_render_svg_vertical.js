@@ -149,12 +149,6 @@ Blockly.BlockSvg.START_HAT_HEIGHT = 16;
 Blockly.BlockSvg.ICON_SEPARATOR_HEIGHT = 10 * Blockly.BlockSvg.GRID_UNIT;
 
 /**
- * Path of the top hat's curve.
- * @const
- */
-Blockly.BlockSvg.START_HAT_PATH = 'c 25,-22 71,-22 96,0';
-
-/**
  * SVG path for drawing next/previous notch from left to right.
  * @const
  */
@@ -310,6 +304,13 @@ Blockly.BlockSvg.INPUT_SHAPE_ROUND =
   ' a ' + (4 * Blockly.BlockSvg.GRID_UNIT) + ' ' +
       (4 * Blockly.BlockSvg.GRID_UNIT) + ' 0 0 1 0 -' + (8 * Blockly.BlockSvg.GRID_UNIT) +
   ' z';
+
+/**
+ * Path of the top hat's curve.
+ * @const
+ */
+//Blockly.BlockSvg.START_HAT_PATH = 'c 25,-22 71,-22 96,0';
+Blockly.BlockSvg.START_HAT_PATH = 'm 0,' + Blockly.BlockSvg.CORNER_RADIUS + ' ' + Blockly.BlockSvg.TOP_LEFT_CORNER;
 
 /**
  * Width of empty round input shape.
