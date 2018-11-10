@@ -791,7 +791,7 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
   var hasStatement = false;
   var hasDummy = false;
   var lastType = undefined;
-
+  var maxWidth = 0;
   // Previously created row, for special-casing row heights on C- and E- shaped blocks.
   var previousRow;
   for (var i = 0, input; input = inputList[i]; i++) {
@@ -805,11 +805,15 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     // See github.com/LLK/scratch-blocks/issues/1658
     // In all other cases, statement and value inputs catch all preceding dummy
     // inputs, and cause a line break before following inputs.
+
+    // osepp:Input can force a new row
     if (!isSecondInputOnProcedure &&
         (!lastType || lastType == Blockly.NEXT_STATEMENT ||
-        input.type == Blockly.NEXT_STATEMENT)) {
+        input.type == Blockly.NEXT_STATEMENT || this.getInputsInline() == false)) {
       lastType = input.type;
       row = this.createRowForInput_(input);
+      // osepp:reset maxWidth for new row
+      maxWidth = 0;
       inputRows.push(row);
     } else {
       row = inputRows[inputRows.length - 1];
@@ -856,6 +860,8 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
       input.renderHeight = Math.max(input.renderHeight, paddedHeight);
       input.renderWidth = Math.max(input.renderWidth, paddedWidth);
     }
+    // osepp:sum the width(input) if it sis not a new row
+    if (input.type != Blockly.NEXT_STATEMENT) maxWidth += input.renderWidth;
     row.height = Math.max(row.height, input.renderHeight);
     input.fieldWidth = 0;
     if (inputRows.length == 1) {
@@ -879,7 +885,8 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
       row.height = Math.max(row.height, fieldSize.height);
       previousFieldEditable = field.EDITABLE;
     }
-
+    // osepp:sum the width(field)
+    maxWidth += input.fieldWidth;
     if (row.type != Blockly.BlockSvg.INLINE) {
       if (row.type == Blockly.NEXT_STATEMENT) {
         hasStatement = true;
@@ -893,6 +900,12 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
         fieldValueWidth = Math.max(fieldValueWidth, input.fieldWidth);
       }
     }
+    // osepp:set rightEdge of rowS
+    if (previousRow && previousRow.type == Blockly.NEXT_STATEMENT && row.type != Blockly.NEXT_STATEMENT) {
+        row.height += Blockly.BlockSvg.NOTCH_HEIGHT * 2;
+    }
+    inputRows.rightEdge = Math.max(inputRows.rightEdge, 
+        maxWidth + Blockly.BlockSvg.SEP_SPACE_X * 3);
     previousRow = row;
   }
   // Compute padding for output blocks.
@@ -1286,15 +1299,27 @@ Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps,
     if (row.type == Blockly.BlockSvg.INLINE) {
       // Inline inputs.
       for (var x = 0, input; input = row[x]; x++) {
+        var fieldX = cursorX;
+        var fieldY = cursorY;
         // Align fields vertically within the row.
         // Moves the field to half of the row's height.
         // In renderFields_, the field is further centered
         // by its own rendered height.
         var fieldY = cursorY + row.height / 2;
-
-        var fieldX = Blockly.BlockSvg.getAlignedCursor_(cursorX, input,
-            inputRows.rightEdge);
-
+        
+        // osepp: all rows aligned to the inputRows.rightEdge 
+        //var fieldX = Blockly.BlockSvg.getAlignedCursor_(cursorX, input,
+        //    inputRows.rightEdge);
+        if (input.align === Blockly.ALIGN_RIGHT) {
+            var fieldRightX = inputRows.rightEdge - input.fieldWidth -
+                (2 * Blockly.BlockSvg.SEP_SPACE_X);
+            fieldX += fieldRightX - input.renderWidth - row.paddingStart;
+        } else if (input.align === Blockly.ALIGN_CENTRE) {
+            fieldX = Math.max(
+                inputRows.rightEdge / 2 - input.fieldWidth / 2,
+                fieldX
+            );
+        }
         cursorX = this.renderFields_(input.fieldRow, fieldX, fieldY);
         if (input.type == Blockly.INPUT_VALUE) {
           // Create inline input connection.
@@ -1321,18 +1346,23 @@ Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps,
       // Move to the right edge
       cursorX = Math.max(cursorX, inputRows.rightEdge);
       this.width = Math.max(this.width, cursorX);
-      if (!this.edgeShape_) {
-        // Include corner radius in drawing the horizontal line.
-        steps.push('H', cursorX - Blockly.BlockSvg.CORNER_RADIUS - this.edgeShapeWidth_);
-        steps.push(Blockly.BlockSvg.TOP_RIGHT_CORNER);
+      // osepp:remove corner for consecutive rows
+      if (y == 0 || inputRows[y - 1].type != Blockly.BlockSvg.INLINE) {
+          if (!this.edgeShape_) {
+              // Include corner radius in drawing the horizontal line.
+              steps.push('H', cursorX - Blockly.BlockSvg.CORNER_RADIUS - this.edgeShapeWidth_);
+              steps.push(Blockly.BlockSvg.TOP_RIGHT_CORNER);
+          } else {
+              // Don't include corner radius - no corner (edge shape drawn).
+              steps.push('H', cursorX - this.edgeShapeWidth_);
+          }
+          // Subtract CORNER_RADIUS * 2 to account for the top right corner
+          // and also the bottom right corner. Only move vertically the non-corner length.
+          if (!this.edgeShape_) {
+              steps.push('v', row.height - Blockly.BlockSvg.CORNER_RADIUS * 2);
+          }
       } else {
-        // Don't include corner radius - no corner (edge shape drawn).
-        steps.push('H', cursorX - this.edgeShapeWidth_);
-      }
-      // Subtract CORNER_RADIUS * 2 to account for the top right corner
-      // and also the bottom right corner. Only move vertically the non-corner length.
-      if (!this.edgeShape_) {
-        steps.push('v', row.height - Blockly.BlockSvg.CORNER_RADIUS * 2);
+          steps.push('v', row.height);
       }
     } else if (row.type == Blockly.NEXT_STATEMENT) {
       // Nested statement.
