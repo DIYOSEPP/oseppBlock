@@ -10,7 +10,7 @@ doc=minidom.parse('toolbox.xml')
 
 filetext="""'use strict';
 var blockToolboxXml=
-'<xml xmlns="http://www.w3.org/1999/xhtml">'+
+'<xml id="toolbox-block" xmlns="http://www.w3.org/1999/xhtml">'+
 """
 
 blockToolboxXml=doc.getElementsByTagName("blockToolboxXml")
@@ -25,7 +25,7 @@ filetext+="'  </xml>'+\n''\n"
 
 filetext+="""
 var ModuleToolboxXml=
-'<xml xmlns="http://www.w3.org/1999/xhtml">'+
+'<xml id="toolbox-Modules" xmlns="http://www.w3.org/1999/xhtml">'+
 """
 
 blockToolboxXml=doc.getElementsByTagName("ModuleToolboxXml")

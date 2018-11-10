@@ -1,6 +1,6 @@
 ﻿<xml>
   <blockToolboxXml>
-    <category name="Control" colour="#FFAB19" secondaryColour="#CF8B17">
+    <category name="Control" id="arduino_Control" colour="#FFAB19" secondaryColour="#CF8B17">
       <block type="control_if"></block>
       <block type="control_if">
         <mutation else="1"></mutation>
@@ -10,7 +10,7 @@
       <block type="control_while"></block>
       <block type="control_break"></block>
     </category>
-    <category name="Arduino" colour="#4C97FF" secondaryColour="#3373CC">
+    <category name="Arduino" id="arduino_arduino" colour="#4C97FF" secondaryColour="#3373CC">
       <block type="control_delay">
         <value name="ms">
           <shadow type="math_number">
@@ -123,7 +123,7 @@
       </block>
       <block type="io_pinstate_menu"></block>
     </category>
-    <category name="Operators" colour="#CF8B17" secondaryColour="#CF8B17">
+    <category name="Operators" id="arduino_operators" colour="#CF8B17" secondaryColour="#CF8B17">
       <block type="arithmeticoperators">
         <field name="Operators">+</field>
         <value name="NUM1">
@@ -305,9 +305,9 @@
       </block>
       <block type="math_boolean_menu"></block>
     </category>
-    <category name="Variable" colour="#59C059" secondaryColour="#389438" custom="InstanceVariables"></category>
-    <category name="Procedure" colour="#1f9999" secondaryColour="#2a8c8c" custom="PROCEDURE"></category>
-    <category name="Robot Modules" colour="#2f9999" secondaryColour="#3a8c8c" custom="ModuleROBOT">
+    <category name="Variable" id="arduino_Variable" colour="#59C059" secondaryColour="#389438" custom="InstanceVariables"></category>
+    <category name="Procedure" id="arduino_Procedure" colour="#1f9999" secondaryColour="#2a8c8c" custom="PROCEDURE"></category>
+    <category name="Robot Modules" id="arduino_Robot" colour="#2f9999" secondaryColour="#3a8c8c" custom="ModuleROBOT">
       <block type="instance_TB6612MotorDriver">
         <value name="DIR">
           <shadow type="io_arduino_uno_pin_usable_menu">
@@ -340,7 +340,7 @@
     </block>
     </category>
 
-    <category name="Display Modules" colour="#4C97FF" secondaryColour="#3373CC"  custom="ModuleDisplay">
+    <category name="Display Modules" id="arduino_Display" colour="#4C97FF" secondaryColour="#3373CC"  custom="ModuleDisplay">
       <block type="instance_lcd1602">
         <field name="NAME">lcd1</field>
         <value name="RS">
@@ -399,7 +399,7 @@
         </value>
       </block>
     </category>
-    <category name="Input Modules" colour="#9966FF" secondaryColour="#774DCB"   custom="ModuleINPUT">
+    <category name="Input Modules" id="arduino_input" colour="#9966FF" secondaryColour="#774DCB"   custom="ModuleINPUT">
       <block type="instance_button">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">
@@ -500,7 +500,7 @@
         </value>
       </block>
     </category>
-    <category name="Output Modules" colour="#FFBF00" secondaryColour="#CC9900"  custom="ModuleOUTPUT">
+    <category name="Output Modules" id="arduino_output" colour="#FFBF00" secondaryColour="#CC9900"  custom="ModuleOUTPUT">
       <block type="instance_buzzer">
         <value name="Pin">
           <shadow type="io_arduino_uno_pin_usable_menu">

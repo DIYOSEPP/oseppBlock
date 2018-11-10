@@ -1,7 +1,7 @@
 'use strict';
 var blockToolboxXml=
-'<xml xmlns="http://www.w3.org/1999/xhtml">'+
-'<category colour="#FFAB19" name="Control" secondaryColour="#CF8B17">'+
+'<xml id="toolbox-block" xmlns="http://www.w3.org/1999/xhtml">'+
+'<category colour="#FFAB19" id="arduino_Control" name="Control" secondaryColour="#CF8B17">'+
 '	<block type="control_if"/>'+
 '	<block type="control_if">'+
 '		<mutation else="1"/>'+
@@ -11,7 +11,7 @@ var blockToolboxXml=
 '	<block type="control_while"/>'+
 '	<block type="control_break"/>'+
 '</category>'+
-'<category colour="#4C97FF" name="Arduino" secondaryColour="#3373CC">'+
+'<category colour="#4C97FF" id="arduino_arduino" name="Arduino" secondaryColour="#3373CC">'+
 '	<block type="control_delay">'+
 '		<value name="ms">'+
 '			<shadow type="math_number">'+
@@ -124,7 +124,7 @@ var blockToolboxXml=
 '	</block>'+
 '	<block type="io_pinstate_menu"/>'+
 '</category>'+
-'<category colour="#CF8B17" name="Operators" secondaryColour="#CF8B17">'+
+'<category colour="#CF8B17" id="arduino_operators" name="Operators" secondaryColour="#CF8B17">'+
 '	<block type="arithmeticoperators">'+
 '		<field name="Operators">+</field>'+
 '		<value name="NUM1">'+
@@ -306,9 +306,9 @@ var blockToolboxXml=
 '	</block>'+
 '	<block type="math_boolean_menu"/>'+
 '</category>'+
-'<category colour="#59C059" custom="InstanceVariables" name="Variable" secondaryColour="#389438"/>'+
-'<category colour="#1f9999" custom="PROCEDURE" name="Procedure" secondaryColour="#2a8c8c"/>'+
-'<category colour="#2f9999" custom="ModuleROBOT" name="Robot Modules" secondaryColour="#3a8c8c">'+
+'<category colour="#59C059" custom="InstanceVariables" id="arduino_Variable" name="Variable" secondaryColour="#389438"/>'+
+'<category colour="#1f9999" custom="PROCEDURE" id="arduino_Procedure" name="Procedure" secondaryColour="#2a8c8c"/>'+
+'<category colour="#2f9999" custom="ModuleROBOT" id="arduino_Robot" name="Robot Modules" secondaryColour="#3a8c8c">'+
 '	<block type="instance_TB6612MotorDriver">'+
 '		<value name="DIR">'+
 '			<shadow type="io_arduino_uno_pin_usable_menu">'+
@@ -340,7 +340,7 @@ var blockToolboxXml=
 '		</value>'+
 '	</block>'+
 '</category>'+
-'<category colour="#4C97FF" custom="ModuleDisplay" name="Display Modules" secondaryColour="#3373CC">'+
+'<category colour="#4C97FF" custom="ModuleDisplay" id="arduino_Display" name="Display Modules" secondaryColour="#3373CC">'+
 '	<block type="instance_lcd1602">'+
 '		<field name="NAME">lcd1</field>'+
 '		<value name="RS">'+
@@ -399,7 +399,7 @@ var blockToolboxXml=
 '		</value>'+
 '	</block>'+
 '</category>'+
-'<category colour="#9966FF" custom="ModuleINPUT" name="Input Modules" secondaryColour="#774DCB">'+
+'<category colour="#9966FF" custom="ModuleINPUT" id="arduino_input" name="Input Modules" secondaryColour="#774DCB">'+
 '	<block type="instance_button">'+
 '		<value name="Pin">'+
 '			<shadow type="io_arduino_uno_pin_usable_menu">'+
@@ -498,7 +498,7 @@ var blockToolboxXml=
 '		</value>'+
 '	</block>'+
 '</category>'+
-'<category colour="#FFBF00" custom="ModuleOUTPUT" name="Output Modules" secondaryColour="#CC9900">'+
+'<category colour="#FFBF00" custom="ModuleOUTPUT" id="arduino_output" name="Output Modules" secondaryColour="#CC9900">'+
 '	<block type="instance_buzzer">'+
 '		<value name="Pin">'+
 '			<shadow type="io_arduino_uno_pin_usable_menu">'+
@@ -561,7 +561,7 @@ var blockToolboxXml=
 ''
 
 var ModuleToolboxXml=
-'<xml xmlns="http://www.w3.org/1999/xhtml">'+
+'<xml id="toolbox-Modules" xmlns="http://www.w3.org/1999/xhtml">'+
 '<block type="module_RangeFinder_Ping"/>'+
 '<block type="module_set_TB6612MotorDriver">'+
 '	<value name="pwm">'+

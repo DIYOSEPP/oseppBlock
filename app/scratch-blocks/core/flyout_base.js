@@ -466,6 +466,9 @@ Blockly.Flyout.prototype.hide = function() {
  * @param {!Array|string} xmlList List of blocks to show.
  *     Variables and procedures have a custom set of blocks.
  */
+
+ // osepp:New variables in order to automatically assign pins
+Blockly.Flyout.prototype.Pin_perOrder_for_Block = Blockly.Flyout.prototype.Pin_perOrder_for_Block || [];
 Blockly.Flyout.prototype.show = function(xmlList) {
   this.workspace_.setResizesEnabled(false);
   this.hide();
@@ -490,12 +493,16 @@ Blockly.Flyout.prototype.show = function(xmlList) {
       // available, use apply and concat the array.
       xmlList.splice.apply(xmlList, [i, 1].concat(newList));
       xml = xmlList[i];
+      if (xml == null) break;
     }
     if (xml.tagName) {
       var tagName = xml.tagName.toUpperCase();
       var default_gap = this.horizontalLayout_ ? this.GAP_X : this.GAP_Y;
       if (tagName == 'BLOCK') {
-
+        // osepp:This is a point in time
+        // when the flyout creates a block, the pin buffer is cleared.
+        // Block will create a Pin blocks,it does not know what it belongs to
+        Blockly.Flyout.prototype.Pin_perOrder_for_Block = [];
         // We assume that in a flyout, the same block id (or type if missing id) means
         // the same output BlockSVG.
 
