@@ -656,7 +656,7 @@ Blockly.BlockSvg.prototype.showHelp_ = function() {
   var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
   if (url) {
     // @todo rewrite
-    alert(url);
+    window.open(url);
   }
 };
 
@@ -674,10 +674,8 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
   var block = this;
   var menuOptions = [];
 
-  var isMouseEvent = Blockly.Touch.getTouchIdentifierFromEvent(e) == 'mouse';
   if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
-    menuOptions.push(
-        Blockly.ContextMenu.blockDuplicateOption(block, isMouseEvent));
+    menuOptions.push(Blockly.ContextMenu.blockDuplicateOption(block));
     if (this.isEditable() && this.workspace.options.comments) {
       menuOptions.push(Blockly.ContextMenu.blockCommentOption(block));
     }
@@ -686,6 +684,15 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     this.parentBlock_.showContextMenu_(e);
     return;
   }
+
+  // Option to get help.
+  var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+  var helpOption = { enabled: !!url };
+  helpOption.text = Blockly.Msg.HELP;
+  helpOption.callback = function () {
+      block.showHelp_();
+  };
+  menuOptions.push(helpOption);
 
   // Allow the block to add or modify menuOptions.
   if (this.customContextMenu) {

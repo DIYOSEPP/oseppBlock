@@ -266,8 +266,9 @@ Blockly.ContextMenu.blockDuplicateOption = function(block, isMouseEvent) {
   var duplicateOption = {
     text: Blockly.Msg.DUPLICATE,
     enabled: true,
-    callback:
-        Blockly.scratchBlocksUtils.duplicateAndDragCallback(block, isMouseEvent)
+    callback: function () {
+        Blockly.duplicate_(block);
+    }
   };
   return duplicateOption;
 };
