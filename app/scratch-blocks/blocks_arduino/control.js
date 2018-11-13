@@ -80,6 +80,7 @@ Blockly.Blocks['control_if'] = {
                 conn_do.splice(index, 1);
             }
         }
+        this.rendered=false;
         this.updateShape_();
 
         for (var i = 0; i <= this.elseifCount_; i++) {
@@ -92,6 +93,7 @@ Blockly.Blocks['control_if'] = {
 
         this.initSvg();
         this.render();
+        this.bumpNeighbours_();
     },
     updateShape_: function () {
         // Delete everything.
