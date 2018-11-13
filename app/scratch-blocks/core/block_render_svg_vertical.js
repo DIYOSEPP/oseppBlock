@@ -717,7 +717,9 @@ Blockly.BlockSvg.prototype.renderFields_ = function(fieldList, cursorX,
     // In blocks with a notch, fields should be bumped to a min X,
     // to avoid overlapping with the notch. Label and image fields are
     // excluded.
-    if (this.previousConnection && !(field instanceof Blockly.FieldLabel) &&
+    // osepp: fieldIconButton,
+    // @todo this.previousConnection || previous row
+    if (this.previousConnection && !(field instanceof Blockly.FieldLabel) && !(field instanceof Blockly.FieldIconButton) &&
         !(field instanceof Blockly.FieldImage)) {
       cursorX = this.RTL ?
         Math.min(cursorX, -Blockly.BlockSvg.INPUT_AND_FIELD_MIN_X) :
@@ -874,8 +876,8 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
       input.renderHeight = Math.max(input.renderHeight, paddedHeight);
       input.renderWidth = Math.max(input.renderWidth, paddedWidth);
     }
-    // osepp:sum the width(input) if it sis not a new row
-    if (input.type != Blockly.NEXT_STATEMENT) maxWidth += input.renderWidth;
+    // osepp:sum the width(input) if it is not a new row
+    if (input.type != Blockly.NEXT_STATEMENT) maxWidth += input.renderWidth + (input.renderWidth?Blockly.BlockSvg.SEP_SPACE_X:0);
     row.height = Math.max(row.height, input.renderHeight);
     input.fieldWidth = 0;
     if (inputRows.length == 1) {
@@ -921,7 +923,7 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
         row.height += Blockly.BlockSvg.NOTCH_HEIGHT * 2;
     }
     inputRows.rightEdge = Math.max(inputRows.rightEdge, 
-        maxWidth + Blockly.BlockSvg.SEP_SPACE_X * 3);
+        maxWidth + Blockly.BlockSvg.SEP_SPACE_X * 2);
     previousRow = row;
   }
   // Compute padding for output blocks.
@@ -1327,22 +1329,30 @@ Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps,
         //var fieldX = Blockly.BlockSvg.getAlignedCursor_(cursorX, input,
         //    inputRows.rightEdge);
         if (input.align === Blockly.ALIGN_RIGHT) {
-            var fieldRightX = inputRows.rightEdge - input.fieldWidth -
-                (2 * Blockly.BlockSvg.SEP_SPACE_X);
-            fieldX += fieldRightX - input.renderWidth - row.paddingStart;
+          var fieldRightX = inputRows.rightEdge;
+          // Multiple right-aligned inputs
+          for (var j = x, nextinput; nextinput = row[j]; j++) {
+            if (nextinput.align === Blockly.ALIGN_RIGHT) {
+              fieldRightX -= nextinput.fieldWidth + nextinput.renderWidth;
+              if (nextinput.fieldWidth != 0) fieldRightX -= Blockly.BlockSvg.SEP_SPACE_X;
+              if (nextinput.renderWidth != 0) fieldRightX -= Blockly.BlockSvg.SEP_SPACE_X;
+            }
+          }
+          fieldX = Math.max(fieldX, fieldRightX);
         } else if (input.align === Blockly.ALIGN_CENTRE) {
-            fieldX = Math.max(
-                inputRows.rightEdge / 2 - input.fieldWidth / 2,
-                fieldX
-            );
+          fieldX = Math.max(
+            inputRows.rightEdge / 2 - input.fieldWidth / 2,
+            fieldX
+          );
         }
         cursorX = this.renderFields_(input.fieldRow, fieldX, fieldY);
         if (input.type == Blockly.INPUT_VALUE) {
           // Create inline input connection.
           // In blocks with a notch, inputs should be bumped to a min X,
           // to avoid overlapping with the notch.
-          if (this.previousConnection) {
-            cursorX = Math.max(cursorX, Blockly.BlockSvg.INPUT_AND_FIELD_MIN_X);
+          // osepp: Multiple STATEMENT,Multiple notches
+          if (this.previousConnection||(y&&inputRows[y-1].type == Blockly.NEXT_STATEMENT)) {
+            cursorX = Math.max(cursorX, Blockly.BlockSvg.INPUT_AND_FIELD_MIN_X+(y?inputRows.statementEdge:0));
           }
           connectionX = this.RTL ? -cursorX : cursorX;
           // Attempt to center the connection vertically.

@@ -25,27 +25,108 @@ goog.require('Blockly.Colours');
 goog.require('Blockly.Blocks');
 
 
-
-
-
 Blockly.Blocks['control_if'] = {
     init: function () {
-        this.appendValueInput("IF0")
-            .setCheck(["Boolean", "Number"])
-            .appendField("if");
-        this.appendStatementInput("DO0")
-            .setCheck(null);
-        this.setInputsInline(true);
+        // this.appendValueInput("IF0")
+        //     .setCheck(["Boolean", "Number"])
+        //     .appendField("if");
+        // this.appendStatementInput("DO0")
+        //     .setCheck(null);
+        // this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(Blockly.Colours.cLoop.primary, Blockly.Colours.cLoop.secondary, Blockly.Colours.cLoop.tertiary);
         this.setTooltip('IF A VALUE IS TRUE TO A CONDITION, DO SOMETHING. ELSE IS EXCEPTION');
         this.setHelpUrl('https://www.arduino.cc/en/Reference/If');
-
-        this.setMutator(new Blockly.Mutator(['controls_if_elseif',
-            'controls_if_else']));
+        this.setInputsInline(true);
+        // this.setMutator(new Blockly.Mutator(['controls_if_elseif',
+        //     'controls_if_else']));
         this.elseifCount_ = 0;
         this.elseCount_ = 0;
+        this.updateShape_();
+    },
+    onchange: function (event) {
+        if ((!this.workspace) || (event.type == Blockly.Events.UI)) return;
+        if (event.blockId != this.id) return;
+        if (event.type != Blockly.Events.CHANGE) return;
+
+        var conn_if = [];
+        var conn_do = [];
+        var conn_else = null;
+        for (var i = 0; i <= this.elseifCount_; i++) {
+            var inputIf = this.getInput('IF' + i);
+            var inputDo = this.getInput('DO' + i);
+            conn_if.push(inputIf.connection.targetConnection);
+            conn_do.push(inputDo.connection.targetConnection);
+        }
+        if (this.elseCount_) conn_else = this.getInput('ELSE').connection.targetConnection;
+
+        var index = event.oldValue;
+        var action = event.name;
+        if (action == "a") {
+            if (this.elseCount_) {
+                this.elseifCount_++;
+                conn_if.splice(index, 0, null);
+                conn_do.splice(index, 0, null);
+            } else {
+                this.elseCount_ = 1;
+            }
+        } else if (action == "d") {
+            if (index > this.elseifCount_) {
+                this.elseCount_ = 0;
+            } else if (this.elseifCount_) {
+                this.elseifCount_--;
+                conn_if.splice(index, 1);
+                conn_do.splice(index, 1);
+            }
+        }
+        this.updateShape_();
+
+        for (var i = 0; i <= this.elseifCount_; i++) {
+            var inputIf = this.getInput('IF' + i);
+            var inputDo = this.getInput('DO' + i);
+            inputIf.connection.connect(conn_if[i]);
+            inputDo.connection.connect(conn_do[i]);
+        }
+        if (this.elseCount_) this.getInput('ELSE').connection.connect(conn_else);
+
+        this.initSvg();
+        this.render();
+    },
+    updateShape_: function () {
+        // Delete everything.
+        while (this.inputList[0]) {
+            this.removeInput(this.inputList[0].name);
+        }
+        // Rebuild block.
+        for (var i = 0; i <= this.elseifCount_; i++) {
+            this.appendValueInput('IF' + i)
+                .setCheck(["Boolean", "Number"])
+                .appendField(i == 0 ? 'if' : "else if");
+            if (i && this.workspace && !this.workspace.isFlyout) {
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldIconButton(i, "blockIcon/minus-4-xxl.png", 30, 30, "*"), 'd')
+                    //.appendField(new Blockly.FieldIconButton(i, "blockIcon/plus-button.svg", 30, 30, "*"), 'a')
+                    .setAlign(Blockly.ALIGN_RIGHT);
+            }
+            this.appendStatementInput('DO' + i).appendField("Do");
+        }
+
+        if (this.elseCount_) {
+            this.appendDummyInput().appendField("Else");
+            if (this.workspace && !this.workspace.isFlyout) {
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldIconButton(i, "blockIcon/minus-4-xxl.png", 30, 30, "*"), 'd')
+                    //.appendField(new Blockly.FieldIconButton(i, "blockIcon/plus-button.svg", 30, 30, "*"), 'a')
+                    .setAlign(Blockly.ALIGN_RIGHT);
+            }
+            this.appendStatementInput('ELSE')
+                .appendField("do");
+        }
+        if (this.workspace && !this.workspace.isFlyout) {
+            this.appendDummyInput()
+                .appendField(new Blockly.FieldIconButton(this.elseifCount_+1, "blockIcon/plus-4-xxl.png", 30, 30, "*"), 'a');
+        }
     },
     mutationToDom: function () {
         if (!this.elseifCount_ && !this.elseCount_) {
@@ -97,8 +178,8 @@ Blockly.Blocks['control_if'] = {
         var elseStatementConnection = null;
         while (clauseBlock) {
             switch (clauseBlock.type) {
-                case 'controls_if_elseif':  
-                    this.elseifCount_++;      
+                case 'controls_if_elseif':
+                    this.elseifCount_++;
                 case 'controls_if_if':
                     valueConnections.push(clauseBlock.valueConnection_);
                     statementConnections.push(clauseBlock.statementConnection_);
@@ -146,22 +227,6 @@ Blockly.Blocks['control_if'] = {
             }
             clauseBlock = clauseBlock.nextConnection &&
                 clauseBlock.nextConnection.targetBlock();
-        }
-    },
-    updateShape_: function () {
-        // Delete everything.
-        while (this.inputList[0]) this.removeInput(this.inputList[0].name);
-
-        // Rebuild block.
-        for (var i = 0; i <= this.elseifCount_; i++) {
-            this.appendValueInput('IF' + i)
-                .setCheck(["Boolean", "Number"])
-                .appendField(i==0?'if':Blockly.Msg.CONTROLS_IF_MSG_ELSEIF);
-            this.appendStatementInput('DO' + i);
-        }
-        if (this.elseCount_) {
-            this.appendStatementInput('ELSE')
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSE);
         }
     }
 };
@@ -272,7 +337,7 @@ Blockly.Blocks['control_forloop'] = {
     onchange: function (event) {
         if ((!this.workspace) || (event.type == Blockly.Events.UI)) return;
         if (event.type == Blockly.Events.MOVE) {
-            if ((event.oldParentId != this.id) &&(event.newParentId != this.id)) return;
+            if ((event.oldParentId != this.id) && (event.newParentId != this.id)) return;
             if ((event.newInputName == "init") || (event.oldInputName == "init")) {
                 this.updateInitShape();
                 this.render();
@@ -282,7 +347,7 @@ Blockly.Blocks['control_forloop'] = {
                 this.render();
                 this.bumpNeighbours_();
             }
-        } 
+        }
     },
     updateInitShape: function () {
         var initInput = this.getInput('init');
@@ -315,7 +380,7 @@ Blockly.Blocks['control_forloop'] = {
             field.hide = false;
             field.setVisible(true);
         }
-        
+
         if ((option.indexOf('=') >= 0) && (field.hide == false)) {
             if (input.hide === false) return;
             input.hide = false;
