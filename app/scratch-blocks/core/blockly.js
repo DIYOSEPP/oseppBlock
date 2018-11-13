@@ -68,6 +68,7 @@ goog.require('goog.color');
 goog.require('Blockly.FieldInstanceGetter');
 goog.require('Blockly.FieldInstanceInput');
 goog.require('Blockly.FieldInstanceDropdown');
+goog.require('Blockly.FieldIconButton');
 goog.require('Blockly.InstanceToolbox');
 
 // Turn off debugging when compiled.
