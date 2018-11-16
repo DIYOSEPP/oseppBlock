@@ -207,6 +207,23 @@ var loadWorkspace = function () {
 
     f.dispatchEvent(clickEvent);
 }
+function setLocale(locale) {
+    blockWorkspace.getFlyout().setRecyclingEnabled(false);
+    var xml = Blockly.Xml.workspaceToDom(blockWorkspace);
+    Blockly.ScratchMsgs.setLocale(locale);
+    Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, blockWorkspace);
+    blockWorkspace.getFlyout().setRecyclingEnabled(true);
+}
+
+function initLocal() {
+    var  match = location.search.match(/locale=([^&]+)/);
+    if(match){
+        Blockly.ScratchMsgs.setLocale(match[0]);
+    }else{
+        var lang = navigator.language||navigator.userLanguage;
+        Blockly.ScratchMsgs.setLocale(lang.toLowerCase());
+    }  
+}
 
 function createBlockWorkspace() {
     blockWorkspace = Blockly.inject(document.getElementById("blockly_div"),
@@ -294,7 +311,9 @@ var uploadClick = function () {
 };
 
 
+
 function initWorkspace() {
+    initLocal();
     resizeWorkspaceDiv();
     createBlockWorkspace();
     resizeWorkspaceDiv();
@@ -405,29 +424,29 @@ var takeScreen = function () {
     var newwidth = oldsize[0] + bbox.width - vbox.width + bbox.x;
     var newheight = oldsize[1] + bbox.height - vbox.height + bbox.y;
 
-    var el=document.getElementById('code_area');
-    newwidth+=Math.max(0,el.scrollWidth-el.clientWidth+50);
-    newheight=Math.max(newheight,el.scrollHeight+50);
+    var el = document.getElementById('code_area');
+    newwidth += Math.max(0, el.scrollWidth - el.clientWidth + 50);
+    newheight = Math.max(newheight, el.scrollHeight + 50);
 
-    var msg=document.getElementById('serial_upload_msg');
-    newheight+=msg.clientHeight;
+    var msg = document.getElementById('serial_upload_msg');
+    newheight += msg.clientHeight;
 
     newwidth = Math.ceil(newwidth + 80);
     newheight = Math.ceil(newheight);
-    
+
     wc.setContentSize(Math.max(oldsize[0], newwidth), Math.max(oldsize[1], newheight));
-    var oldcodewith=curwidth;
-    curwidth=el.scrollWidth+50;
+    var oldcodewith = curwidth;
+    curwidth = el.scrollWidth + 50;
     resizeWorkspaceDiv();
-    var now=new Date;
-    var fname=''+now.getTime()+'.png';
+    var now = new Date;
+    var fname = '' + now.getTime() + '.png';
     setTimeout(function () {
         wc.capturePage(function (image) {
             fs.writeFile(fname, image.toPNG(), (err) => {
                 if (err) throw err;
             })
         })
-        curwidth=oldcodewith;
+        curwidth = oldcodewith;
         resizeWorkspaceDiv();
         wc.setContentSize(oldsize[0], oldsize[1]);
     }, 500);

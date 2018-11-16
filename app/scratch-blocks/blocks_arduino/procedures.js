@@ -32,40 +32,40 @@ goog.require('Blockly.constants');
 Blockly.Blocks['instance_procedure'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("void ")
+            .appendField(Blockly.Msg.INSTANCE_PROCEDURE_VOID)
             .appendField(new Blockly.FieldInstanceInput("ProcedureInstance", "", "procedure"), "NAME");
         this.appendStatementInput("statement")
             .setCheck(null);
         this.setInputsInline(true);
         this.setColour('#1f9999', '#2a8c8c', '#287373');
-        this.setTooltip('PROCEDURE IS A SEQUENCE OF PROGRAM INSTRUCTIONS THAT PERFORM A SPECIFIC TASK');
-        this.setHelpUrl('https://en.wikipedia.org/wiki/Subroutine');
+        this.setTooltip(Blockly.Msg.INSTANCE_PROCEDURE_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_PROCEDURE_HELPURL);
     }
 };
 
 Blockly.Blocks['instance_procedure_call'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField('call ')
+            .appendField(Blockly.Msg.INSTANCE_PROCEDURE_CALL_CALL)
             .appendField(new Blockly.FieldInstanceGetter('', ''), "NAME");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour('#2a8c8c', '#2a8c8c', '#287373');
-        this.setTooltip('Execute a sequence of instructions');
-        this.setHelpUrl('https://en.wikipedia.org/wiki/Subroutine');
+        this.setTooltip(Blockly.Msg.INSTANCE_PROCEDURE_CALL_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_PROCEDURE_CALL_HELPURL);
     }
 };
 
 Blockly.Blocks['procedure_return'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("return");
+            .appendField(Blockly.Msg.PROCEDURE_RETURN_RETURN);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour('#2a8c8c', '#2a8c8c', '#287373');
-        this.setTooltip('Terminate a function and return');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Return');
+        this.setTooltip(Blockly.Msg.PROCEDURE_RETURN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.PROCEDURE_RETURN_HELPURL);
     }
 };

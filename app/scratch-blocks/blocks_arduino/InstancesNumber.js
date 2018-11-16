@@ -31,11 +31,18 @@ goog.require('Blockly.constants');
 Blockly.Blocks['instance_create_number'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["int", "int"], ["long", "long"], ["unsigned int", "unsigned int"], ["unsigned long", "unsigned long"], ["char", "char"], ["byte", "byte"], ["float", "float"]]), "TYPE");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["int"], "int"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["long"], "long"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["unsigned int"], "unsigned int"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["unsigned long"], "unsigned long"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["char"], "char"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["byte"], "byte"],
+                [Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION["float"], "float"]]),
+                "TYPE");
         this.appendDummyInput()
-            .appendField(" ")
             .appendField(new Blockly.FieldInstanceInput('NumberInstance'), "NAME")
-            .appendField("=")
+            .appendField(Blockly.Msg.INSTANCE_CREATE_NUMBER)
             .appendField(new Blockly.FieldTextInput('0'), "INITVALUE");
         this.setInputsInline(true);
         this.setColour(
@@ -48,28 +55,12 @@ Blockly.Blocks['instance_create_number'] = {
         var thisBlock = this;
         this.setTooltip(function () {
             var op = thisBlock.getFieldValue('TYPE');
-            var TOOLTIPS = {
-                'int': 'Integers are your primary data-type for number storage.',
-                'long': 'Long variables are extended size variables for number storage, and store 32 bits (4 bytes), from -2,147,483,648 to 2,147,483,647.',
-                'unsigned int': 'only store positive values, yielding a useful range of 0 to 65,535 (2^16) - 1).',
-                'unsigned long': 'Unsigned long variables are extended size variables for number storage, and store 32 bits (4 bytes). Unlike standard longs unsigned longs won\'t store negative numbers, making their range from 0 to 4,294,967,295 (2^32 - 1).',
-                'char': 'A data type that takes up 1 byte of memory that stores a character value',
-                'byte': 'A byte stores an 8-bit unsigned number, from 0 to 255.',
-                'float': 'Datatype for floating-point numbers, a number that has a decimal point.'
-            };
+            var TOOLTIPS = Blockly.Msg.INSTANCE_CREATE_NUMBER_TOOLTIP;
             return TOOLTIPS[op];
         });
         this.setHelpUrl(function () {
             var op = thisBlock.getFieldValue('TYPE');
-            var url = {
-                'int': 'https://www.arduino.cc/en/Reference/Int',
-                'long': 'https://www.arduino.cc/en/Reference/Long',
-                'unsigned int': 'https://www.arduino.cc/en/Reference/UnsignedInt',
-                'unsigned long': 'https://www.arduino.cc/en/Reference/UnsignedLong',
-                'char': 'https://www.arduino.cc/en/Reference/Char',
-                'byte': 'https://www.arduino.cc/en/Reference/Byte',
-                'float': 'https://www.arduino.cc/en/Reference/Float'
-            };
+            var url = Blockly.Msg.INSTANCE_CREATE_NUMBER_HELPURL;
             return url[op];
         });
     }
@@ -83,8 +74,8 @@ Blockly.Blocks['instance_number_getter'] = {
         this.setInputsInline(true);
         this.setOutput(true, ["Number", "NumberInstance"]);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('retrieve value from variable sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Scope');
+        this.setTooltip(Blockly.Msg.INSTANCE_NUMBER_GETTER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_NUMBER_GETTER_HELPURL);
         this.setColour(
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.secondary,
@@ -94,10 +85,18 @@ Blockly.Blocks['instance_number_getter'] = {
 
 Blockly.Blocks['instance_set_number'] = {
     init: function () {
-        var dropdown = new Blockly.FieldDropdown([["=", "="], ["++", "++"], ["- -", "--"], ["+=", "+="], ["- =", "-="], ["*=", "*="], ["/=", "/="], ["%=", "%="]],
-                function (option) {
-                    this.sourceBlock_.updateShape(option);
-                });
+        var dropdown = new Blockly.FieldDropdown([
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["="], "="],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["++"], "++"],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["--"], "--"],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["+="], "+="],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["-="], "-="],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["*="], "*="],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["/="], "/="],
+            [Blockly.Msg.INSTANCE_SET_NUMBER_OPTION["%="], "%="]],
+            function (option) {
+                this.sourceBlock_.updateShape(option);
+            });
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("NumberInstance"), "instance_name")
             .appendField(dropdown, "op");
@@ -110,8 +109,8 @@ Blockly.Blocks['instance_set_number'] = {
             Blockly.Colours.cVariableOperation.primary,
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.tertiary);
-        this.setTooltip('Stores the value to the right of the equal sign in the variable to the left of the equal sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Assignment');
+        this.setTooltip(Blockly.Msg.INSTANCE_SET_NUMBER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_SET_NUMBER_HELPURL);
     },
     afterCreateBeforRender: function () {
         var option = this.getFieldValue("op");
@@ -121,12 +120,12 @@ Blockly.Blocks['instance_set_number'] = {
         var input = this.getInput('VALUE');
         if (!option) return;
         if (option.indexOf('=') >= 0) {
-            if (input.hide===false) return;
+            if (input.hide === false) return;
             input.hide = false;
             input.setVisible(true);
             addShadowNumberToInput(input);
         } else {
-            if (input.hide===true) return;
+            if (input.hide === true) return;
             input.setVisible(false);
             input.hide = true;
         }
@@ -136,10 +135,13 @@ Blockly.Blocks['instance_set_number'] = {
 Blockly.Blocks['instance_create_boolean'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("boolean ")
+            .appendField(Blockly.Msg.INSTANCE_CREATE_BOOLEAN_BOOLEAN)
             .appendField(new Blockly.FieldInstanceInput('BooleanInstance'), "NAME")
-            .appendField("=")
-            .appendField(new Blockly.FieldDropdown([["False", "false"], ["True", "true"]]), "initValue");
+            .appendField(Blockly.Msg.INSTANCE_CREATE_BOOLEAN_ASSIGN)
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.INSTANCE_CREATE_BOOLEAN_OPTION["false"], "false"],
+                [Blockly.Msg.INSTANCE_CREATE_BOOLEAN_OPTION["true"], "true"]
+            ]), "initValue");
         this.setInputsInline(true);
         this.setOutput(true, "booleanInstanceDefine");
         this.setOutputShape(Blockly.OUTPUT_SHAPE_SQUARE);
@@ -147,8 +149,8 @@ Blockly.Blocks['instance_create_boolean'] = {
             Blockly.Colours.cVariableDefine.primary,
             Blockly.Colours.cVariableDefine.secondary,
             Blockly.Colours.cVariableDefine.tertiary);
-        this.setTooltip('A boolean holds one of two values, true or false.');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/BooleanVariables');
+        this.setTooltip(Blockly.Msg.INSTANCE_CREATE_BOOLEAN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_CREATE_BOOLEAN_HELPURL);
     }
 };
 
@@ -156,7 +158,7 @@ Blockly.Blocks['instance_set_boolean'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("BooleanInstance"), "instance_name")
-            .appendField("=");
+            .appendField(Blockly.Msg.INSTANCE_SET_BOOLEAN_ASSIGN);
         this.appendValueInput("VALUE")
             .setCheck("Boolean");
         this.setInputsInline(true);
@@ -166,8 +168,8 @@ Blockly.Blocks['instance_set_boolean'] = {
             Blockly.Colours.cVariableOperation.primary,
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.tertiary);
-        this.setTooltip('Stores the value to the right of the equal sign in the variable to the left of the equal sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Assignment');
+        this.setTooltip(Blockly.Msg.INSTANCE_SET_BOOLEAN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_SET_BOOLEAN_HELPURL);
     }
 };
 
@@ -178,8 +180,8 @@ Blockly.Blocks['instance_boolean_getter'] = {
             .appendField(new Blockly.FieldInstanceGetter('', ''), "NAME");
         this.setInputsInline(true);
         this.setOutput(true, ["Boolean", "BooleanInstance"]);
-        this.setTooltip('retrieve value from variable sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Scope');
+        this.setTooltip(Blockly.Msg.INSTANCE_BOOLEAN_GETTER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_BOOLEAN_GETTER_HELPURL);
         this.setColour(
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.secondary,
@@ -191,9 +193,9 @@ Blockly.Blocks['instance_boolean_getter'] = {
 Blockly.Blocks['instance_create_string'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("string ")
+            .appendField(Blockly.Msg.INSTANCE_CREATE_STRING_STRING)
             .appendField(new Blockly.FieldInstanceInput('StringInstance', 'str1', 'str'), "NAME")
-            .appendField("=")
+            .appendField(Blockly.Msg.INSTANCE_CREATE_STRING_ASSIGN)
             .appendField(new Blockly.FieldTextInput("hello!"), "initValue");
         this.setInputsInline(true);
         this.setOutput(true, "StringInstanceDefine");
@@ -202,8 +204,8 @@ Blockly.Blocks['instance_create_string'] = {
             Blockly.Colours.cVariableDefine.primary,
             Blockly.Colours.cVariableDefine.secondary,
             Blockly.Colours.cVariableDefine.tertiary);
-        this.setTooltip('The String class,allows you to use and manipulate strings');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/StringObject');
+        this.setTooltip(Blockly.Msg.INSTANCE_CREATE_STRING_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_CREATE_STRING_HELPURL);
     }
 };
 
@@ -212,7 +214,7 @@ Blockly.Blocks['instance_set_string'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldInstanceDropdown("StringInstance"), "instance_name")
-            .appendField("=");
+            .appendField(Blockly.Msg.INSTANCE_SET_STRING_ASSIGN);
         this.appendValueInput("VALUE")
             .setCheck("String");
         this.setInputsInline(true);
@@ -222,8 +224,8 @@ Blockly.Blocks['instance_set_string'] = {
             Blockly.Colours.cVariableOperation.primary,
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.tertiary);
-        this.setTooltip('Stores the value to the right of the equal sign in the variable to the left of the equal sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/String');
+        this.setTooltip(Blockly.Msg.INSTANCE_SET_STRING_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_SET_STRING_HELPURL);
     }
 };
 
@@ -234,8 +236,8 @@ Blockly.Blocks['instance_string_getter'] = {
             .appendField(new Blockly.FieldInstanceGetter('', ''), "NAME");
         this.setInputsInline(true);
         this.setOutput(true, ["String", "StringInstance"]);
-        this.setTooltip('retrieve value from variable sign');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/String');
+        this.setTooltip(Blockly.Msg.INSTANCE_STRING_GETTER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_STRING_GETTER_HELPURL);
         this.setColour(
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.secondary,
@@ -247,20 +249,27 @@ Blockly.Blocks['instance_string_getter'] = {
 Blockly.Blocks['instance_create_array'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["int", "int"], ["long", "long"], ["unsigned int", "unsigned int"], ["unsigned long", "unsigned long"], ["char", "char"], ["byte", "byte"], ["float", "float"]]), "TYPE");
+            .appendField(new Blockly.FieldDropdown(
+                [[Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["int"], "int"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["long"], "long"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["unsigned int"], "unsigned int"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["unsigned long"], "unsigned long"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["char"], "char"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["byte"], "byte"],
+                [Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION["float"], "float"]]),
+                "TYPE");
         this.appendDummyInput()
-            .appendField(" ")
             .appendField(new Blockly.FieldInstanceInput('ArrayInstance', 'arr', 'arr'), "NAME")
-            .appendField("[")
+            .appendField('[')
             .appendField(new Blockly.FieldNumber(10, 0), "INITVALUE")
-            .appendField("]");
+            .appendField(']');
         this.setInputsInline(true);
         this.setColour(
             Blockly.Colours.cVariableDefine.primary,
             Blockly.Colours.cVariableDefine.secondary,
             Blockly.Colours.cVariableDefine.tertiary);
-        this.setTooltip('An array is a collection of variables that are accessed with an index number');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Array');
+        this.setTooltip(Blockly.Msg.INSTANCE_CREATE_ARRAY_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_CREATE_ARRAY_HELPURL);
 
         //this.setMutator(new Blockly.Mutator(['instance_array_number']));
 
@@ -331,7 +340,8 @@ Blockly.Blocks['instance_array_number'] = {
             .appendField(new Blockly.FieldTextInput("0"), "initValue");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip('');
+        this.setTooltip(Blockly.Msg.INSTANCE_ARRAY_NUMBER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_ARRAY_NUMBER_HELPURL);
         this.contextMenu = false;
     }
 };
@@ -349,7 +359,8 @@ Blockly.Blocks['instance_array_array'] = {
         this.appendDummyInput()
             .appendField('arrayName', 'NAME');
         this.setNextStatement(true);
-        this.setTooltip('');
+        this.setTooltip(Blockly.Msg.INSTANCE_ARRAY_ARRAY_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_ARRAY_ARRAY_HELPURL);
         this.contextMenu = false;
     }
 };
@@ -372,8 +383,8 @@ Blockly.Blocks['instance_set_array'] = {
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.tertiary);
-        this.setTooltip('assign a value to an array');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Array');
+        this.setTooltip(Blockly.Msg.INSTANCE_SET_ARRAY_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_SET_ARRAY_HELPURL);
     }
 };
 
@@ -388,8 +399,8 @@ Blockly.Blocks['instance_array_getter'] = {
             .appendField("]");
         this.setInputsInline(true);
         this.setOutput(true, ["Number", "NumberInstance"]);
-        this.setTooltip('retrieve a value from an array');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Array');
+        this.setTooltip(Blockly.Msg.INSTANCE_ARRAY_GETTER_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_ARRAY_GETTER_HELPURL);
         this.setColour(
             Blockly.Colours.cVariableOperation.secondary,
             Blockly.Colours.cVariableOperation.secondary,

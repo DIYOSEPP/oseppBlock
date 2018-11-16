@@ -32,17 +32,17 @@ Blockly.Blocks['controlsetuploop'] = {
     init: function () {
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("Arduino Program");
+            .appendField(Blockly.Msg.CONTROLSETUPLOOP_ARDUINO_PROGRAM);
         this.appendStatementInput("SETUPSTACK")
             .setCheck(null)
-            .appendField("Setup");
+            .appendField(Blockly.Msg.CONTROLSETUPLOOP_SETUPSTACKSETUP);
         this.appendStatementInput("LOOPSTACK")
             .setCheck(null)
-            .appendField("Loop");
+            .appendField(Blockly.Msg.CONTROLSETUPLOOP_LOOPSTACKLOOP);
         this.setInputsInline(true);
         this.setColour('#006468');
-        this.setTooltip('Arduino program structure,do setup once and do loop foreven');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/HomePage');
+        this.setTooltip(Blockly.Msg.CONTROLSETUPLOOP_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.CONTROLSETUPLOOP_HELPURL);
     }
 };
 
@@ -50,7 +50,7 @@ Blockly.Blocks['io_readdigitalpin'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("digitalRead");
+            .appendField(Blockly.Msg.IO_READDIGITALPIN_PINDIGITALREAD);
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(
@@ -58,8 +58,8 @@ Blockly.Blocks['io_readdigitalpin'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('READ THE VALUES FROM A SPECIFIC DIGITAL PIN, EITHER HIGH OR LOW');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/DigitalRead');
+        this.setTooltip(Blockly.Msg.IO_READDIGITALPIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_READDIGITALPIN_HELPURL);
     }
 };
 
@@ -67,7 +67,7 @@ Blockly.Blocks['io_readanalogpin'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("analogRead");
+            .appendField(Blockly.Msg.IO_READANALOGPIN_PINANALOGREAD);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(
@@ -75,8 +75,8 @@ Blockly.Blocks['io_readanalogpin'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('READ THE VALUES(0-1023) FROM SPECIFIED ANALOG PIN');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/AnalogRead');
+        this.setTooltip(Blockly.Msg.IO_READANALOGPIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_READANALOGPIN_HELPURL);
     }
 };
 
@@ -84,10 +84,9 @@ Blockly.Blocks['io_writedigitalpin'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("digitalWrite");
+            .appendField(Blockly.Msg.IO_WRITEDIGITALPIN_PINDIGITALWRITE);
         this.appendValueInput("value")
-            .setCheck("Boolean")
-            .appendField(" ");
+            .setCheck("Boolean");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -95,18 +94,17 @@ Blockly.Blocks['io_writedigitalpin'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('WRITE A HIGH OR LOW VALUE TO A DIGITAL PIN');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/DigitalWrite');
+        this.setTooltip(Blockly.Msg.IO_WRITEDIGITALPIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_WRITEDIGITALPIN_HELPURL);
     }
 };
 Blockly.Blocks['io_writeanalogpin'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("analogWrite");
+            .appendField(Blockly.Msg.IO_WRITEANALOGPIN_PINANALOGWRITE);
         this.appendValueInput("value")
-            .setCheck("Number")
-            .appendField(" ");
+            .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -114,8 +112,8 @@ Blockly.Blocks['io_writeanalogpin'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('WRITE AS AN ANALOG VALUE(0-255) TO A PIN.');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/AnalogWrite');
+        this.setTooltip(Blockly.Msg.IO_WRITEANALOGPIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_WRITEANALOGPIN_HELPURL);
     }
 };
 
@@ -123,10 +121,13 @@ Blockly.Blocks['io_pinmode'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("pinMode");
+            .appendField(Blockly.Msg.IO_PINMODE_PINPINMODE);
         this.appendDummyInput()
-            .appendField(" ")
-            .appendField(new Blockly.FieldDropdown([["OUTPUT", "OUTPUT"], ["INPUT", "INPUT"], ["INPUT_PULLUP", "INPUT_PULLUP"]]), "mode");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.IO_PINMODE_OPTION_OUTPUT, "OUTPUT"], 
+                [Blockly.Msg.IO_PINMODE_OPTION_INPUT, "INPUT"], 
+                [Blockly.Msg.IO_PINMODE_OPTION_INPUT_PULLUP, "INPUT_PULLUP"]]), 
+                "mode");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -134,8 +135,8 @@ Blockly.Blocks['io_pinmode'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('CONFIGURES THE SPECIFIC PIN TO BEHAVE EITHER AS AN INPUT OR OUTPUT');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/PinMode');
+        this.setTooltip(Blockly.Msg.IO_PINMODE_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_PINMODE_HELPURL);
     }
 };
 
@@ -150,8 +151,8 @@ Blockly.Blocks['io_arduino_uno_digitalpin_menu'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_ARDUINO_UNO_DIGITALPIN_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_ARDUINO_UNO_DIGITALPIN_MENU_HELPURL);
     }
 };
 Blockly.Blocks['io_arduino_uno_analogpin_menu'] = {
@@ -165,8 +166,8 @@ Blockly.Blocks['io_arduino_uno_analogpin_menu'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_ARDUINO_UNO_ANALOGPIN_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_ARDUINO_UNO_ANALOGPIN_MENU_HELPURL);
     }
 };
 
@@ -181,15 +182,15 @@ Blockly.Blocks['io_arduino_uno_pwmpin_menu'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_ARDUINO_UNO_PWMPIN_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_ARDUINO_UNO_PWMPIN_MENU_HELPURL);
     }
 };
 
 Blockly.Blocks['io_pinstate_menu'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "state");
+            .appendField(new Blockly.FieldDropdown([[Blockly.Msg.IO_PINSTATE_MENU_OPTION_HIGH, "HIGH"], [Blockly.Msg.IO_PINSTATE_MENU_OPTION_LOW, "LOW"]]), "state");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(
@@ -197,8 +198,8 @@ Blockly.Blocks['io_pinstate_menu'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_PINSTATE_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_PINSTATE_MENU_HELPURL);
     }
 };
 
@@ -206,10 +207,9 @@ Blockly.Blocks['io_tone'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("tone");
+            .appendField(Blockly.Msg.IO_TONE_PINTONE);
         this.appendValueInput("frequency")
-            .setCheck("Number")
-            .appendField(" ");
+            .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -217,8 +217,8 @@ Blockly.Blocks['io_tone'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('GENERATES A SPECIFIC TONE SOUND');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Tone');
+        this.setTooltip(Blockly.Msg.IO_TONE_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_TONE_HELPURL);
     }
 };
 
@@ -233,8 +233,8 @@ Blockly.Blocks['io_tone_menu'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_TONE_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_TONE_MENU_HELPURL);
     }
 };
 
@@ -242,7 +242,7 @@ Blockly.Blocks['io_notone'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("noTone");
+            .appendField(Blockly.Msg.IO_NOTONE_PINNOTONE);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -250,21 +250,20 @@ Blockly.Blocks['io_notone'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('STOPS THE TONE() SOUND');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/NoTone');
+        this.setTooltip(Blockly.Msg.IO_NOTONE_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_NOTONE_HELPURL);
     }
 };
 Blockly.Blocks['io_pulsein'] = {
     init: function () {
         this.appendValueInput("Pin")
             .setCheck("Number")
-            .appendField("pulseIn");
+            .appendField(Blockly.Msg.IO_PULSEIN_PINPULSEIN);
         this.appendValueInput("value")
-            .setCheck("Boolean")
-            .appendField(" ");
+            .setCheck("Boolean");
         this.appendValueInput("timeout")
             .setCheck("Number")
-            .appendField("Timeout");
+            .appendField(Blockly.Msg.IO_PULSEIN_TIMEOUTTIMEOUT);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(
@@ -272,16 +271,16 @@ Blockly.Blocks['io_pulsein'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('READS A PULSE (EITHER HIGH OR LOW) ON A PIN');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/PulseIn');
+        this.setTooltip(Blockly.Msg.IO_PULSEIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_PULSEIN_HELPURL);
     }
 };
 Blockly.Blocks['instance_serial'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Serial.begin(")
+            .appendField(Blockly.Msg.INSTANCE_SERIAL_SERIALBEGIN)
             .appendField(new Blockly.FieldDropdown([["1200", "1200"], ["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["14400", "14400"], ["19200", "19200"], ["28800", "28800"], ["38400", "38400"], ["57600", "57600"], ["115200", "115200"], ["128000", "128000"]]), "Bandrate")
-            .appendField(")");
+            .appendField(Blockly.Msg.INSTANCE_SERIAL);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -289,8 +288,8 @@ Blockly.Blocks['instance_serial'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('SETS THE DATA RATE IN BITS PER SECOND (BAUD) FOR SERIAL DATA TRANSMISSION');
-        this.setHelpUrl('https://www.arduino.cc/en/Serial/Begin');
+        this.setTooltip(Blockly.Msg.INSTANCE_SERIAL_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_SERIAL_HELPURL);
     }
 };
 
@@ -298,8 +297,10 @@ Blockly.Blocks['serial_print'] = {
     init: function () {
         this.appendValueInput("value")
             .setCheck(["String", "Number", "Boolean"])
-            .appendField("Serial")
-            .appendField(new Blockly.FieldDropdown([["print", "print"], ["println", "println"]]), "action");
+            .appendField(Blockly.Msg.SERIAL_PRINT_VALUESERIAL)
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.SERIAL_PRINT_OPTION_PRINT, "print"], 
+                [Blockly.Msg.SERIAL_PRINT_OPTION_PRINTLN, "println"]]), "action");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -307,14 +308,14 @@ Blockly.Blocks['serial_print'] = {
             Blockly.Colours.cArduinoStatement.primary,
             Blockly.Colours.cArduinoStatement.secondary,
             Blockly.Colours.cArduinoStatement.tertiary);
-        this.setTooltip('PRINT A VARIABLE TO THE SERIAL PORT');
-        this.setHelpUrl('https://www.arduino.cc/en/Serial/Print');
+        this.setTooltip(Blockly.Msg.SERIAL_PRINT_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.SERIAL_PRINT_HELPURL);
     }
 };
 Blockly.Blocks['serial_available'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Serial.available");
+            .appendField(Blockly.Msg.SERIAL_AVAILABLE_SERIAL_AVAILABLE);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(
@@ -322,15 +323,15 @@ Blockly.Blocks['serial_available'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('GET THE NUMBER OF BYTES (CHARACTERS) AVAILABLE FOR READING FROM THE SERIAL PORT');
-        this.setHelpUrl('https://www.arduino.cc/en/Serial/Available');
+        this.setTooltip(Blockly.Msg.SERIAL_AVAILABLE_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.SERIAL_AVAILABLE_HELPURL);
     }
 };
 
 Blockly.Blocks['serial_read'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Serial.read");
+            .appendField(Blockly.Msg.SERIAL_READ_SERIAL_READ);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(
@@ -338,8 +339,8 @@ Blockly.Blocks['serial_read'] = {
             Blockly.Colours.cArduinoInput.secondary,
             Blockly.Colours.cArduinoInput.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('READS INCOMING SERIAL DATA');
-        this.setHelpUrl('https://www.arduino.cc/en/Serial/Read');
+        this.setTooltip(Blockly.Msg.SERIAL_READ_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.SERIAL_READ_HELPURL);
     }
 };
 
@@ -362,7 +363,7 @@ Blockly.Blocks.defaultPin = function (theblock, deftext) {
     }
 
     var ss = deftext.split(':');
-    used=used.concat(Blockly.Flyout.prototype.Pin_perOrder_for_Block);
+    used = used.concat(Blockly.Flyout.prototype.Pin_perOrder_for_Block);
 
     if (ss[1]) {
         var pins = ss[1].split(',');
@@ -432,8 +433,8 @@ Blockly.Blocks['io_arduino_uno_pin_usable_menu'] = {
             .appendField(new Blockly.FieldDropdown(Blockly.Blocks.genMenu, pinChangeValidator), "Pin");
         this.setInputsInline(true);
         this.setOutput(true, "Pin");
-        this.setTooltip('digital pin set');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.IO_ARDUINO_UNO_PIN_USABLE_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.IO_ARDUINO_UNO_PIN_USABLE_MENU_HELPURL);
         this.setColour(
             Blockly.Colours.cInstanceDefine.secondary,
             Blockly.Colours.cInstanceDefine.secondary,
@@ -448,6 +449,6 @@ Blockly.Blocks['io_arduino_uno_pin_usable_menu'] = {
             field.setValue(value);
             Blockly.Flyout.prototype.Pin_perOrder_for_Block.push(value);
         }
-        return 
+        return
     }
 };

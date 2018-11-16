@@ -33,262 +33,6 @@ goog.provide('Blockly.Msg.en');
 
 goog.require('Blockly.Msg');
 
-// Control blocks
-Blockly.Msg.CONTROL_FOREVER = 'forever';
-Blockly.Msg.CONTROL_REPEAT = 'repeat %1';
-Blockly.Msg.CONTROL_IF = 'if %1 then';
-Blockly.Msg.CONTROL_ELSE = 'else';
-Blockly.Msg.CONTROL_STOP = 'stop';
-Blockly.Msg.CONTROL_STOP_ALL = 'all';
-Blockly.Msg.CONTROL_STOP_THIS = 'this script';
-Blockly.Msg.CONTROL_STOP_OTHER = 'other scripts in sprite';
-Blockly.Msg.CONTROL_WAIT = 'wait %1 seconds';
-Blockly.Msg.CONTROL_WAITUNTIL = 'wait until %1';
-Blockly.Msg.CONTROL_REPEATUNTIL = 'repeat until %1';
-Blockly.Msg.CONTROL_WHILE = 'while %1';
-Blockly.Msg.CONTROL_FOREACH = 'for each %1 in %2';
-Blockly.Msg.CONTROL_STARTASCLONE = 'when I start as a clone';
-Blockly.Msg.CONTROL_CREATECLONEOF = 'create clone of %1';
-Blockly.Msg.CONTROL_CREATECLONEOF_MYSELF = 'myself';
-Blockly.Msg.CONTROL_DELETETHISCLONE = 'delete this clone';
-Blockly.Msg.CONTROL_COUNTER = 'counter';
-Blockly.Msg.CONTROL_INCRCOUNTER = 'increment counter';
-Blockly.Msg.CONTROL_CLEARCOUNTER = 'clear counter';
-Blockly.Msg.CONTROL_ALLATONCE = 'all at once';
-
-// Data blocks
-Blockly.Msg.DATA_SETVARIABLETO = 'set %1 to %2';
-Blockly.Msg.DATA_CHANGEVARIABLEBY = 'change %1 by %2';
-Blockly.Msg.DATA_SHOWVARIABLE = 'show variable %1';
-Blockly.Msg.DATA_HIDEVARIABLE = 'hide variable %1';
-Blockly.Msg.DATA_ADDTOLIST = 'add %1 to %2';
-Blockly.Msg.DATA_DELETEOFLIST = 'delete %1 of %2';
-Blockly.Msg.DATA_DELETEALLOFLIST = 'delete all of %1';
-Blockly.Msg.DATA_INSERTATLIST = 'insert %1 at %2 of %3';
-Blockly.Msg.DATA_REPLACEITEMOFLIST = 'replace item %1 of %2 with %3';
-Blockly.Msg.DATA_ITEMOFLIST = 'item %1 of %2';
-Blockly.Msg.DATA_ITEMNUMOFLIST = 'item # of %1 in %2';
-Blockly.Msg.DATA_LENGTHOFLIST = 'length of %1';
-Blockly.Msg.DATA_LISTCONTAINSITEM = '%1 contains %2?';
-Blockly.Msg.DATA_SHOWLIST = 'show list %1';
-Blockly.Msg.DATA_HIDELIST = 'hide list %1';
-Blockly.Msg.DATA_INDEX_ALL = 'all';
-Blockly.Msg.DATA_INDEX_LAST = 'last';
-Blockly.Msg.DATA_INDEX_RANDOM = 'random';
-
-// Event blocks
-Blockly.Msg.EVENT_WHENFLAGCLICKED = 'when %1 clicked';
-Blockly.Msg.EVENT_WHENTHISSPRITECLICKED = 'when this sprite clicked';
-Blockly.Msg.EVENT_WHENSTAGECLICKED = 'when stage clicked';
-Blockly.Msg.EVENT_WHENTOUCHINGOBJECT = 'when this sprite touches %1';
-Blockly.Msg.EVENT_WHENBROADCASTRECEIVED = 'when I receive %1';
-Blockly.Msg.EVENT_WHENBACKDROPSWITCHESTO = 'when backdrop switches to %1';
-Blockly.Msg.EVENT_WHENGREATERTHAN = 'when %1 > %2';
-Blockly.Msg.EVENT_WHENGREATERTHAN_TIMER = 'timer';
-Blockly.Msg.EVENT_WHENGREATERTHAN_LOUDNESS = 'loudness';
-Blockly.Msg.EVENT_BROADCAST = 'broadcast %1';
-Blockly.Msg.EVENT_BROADCASTANDWAIT = 'broadcast %1 and wait';
-Blockly.Msg.EVENT_WHENKEYPRESSED = 'when %1 key pressed';
-Blockly.Msg.EVENT_WHENKEYPRESSED_SPACE = 'space';
-Blockly.Msg.EVENT_WHENKEYPRESSED_LEFT = 'left arrow';
-Blockly.Msg.EVENT_WHENKEYPRESSED_RIGHT = 'right arrow';
-Blockly.Msg.EVENT_WHENKEYPRESSED_DOWN = 'down arrow';
-Blockly.Msg.EVENT_WHENKEYPRESSED_UP = 'up arrow';
-Blockly.Msg.EVENT_WHENKEYPRESSED_ANY = 'any';
-
-// Looks blocks
-Blockly.Msg.LOOKS_SAYFORSECS = 'say %1 for %2 seconds';
-Blockly.Msg.LOOKS_SAY = 'say %1';
-Blockly.Msg.LOOKS_HELLO = 'Hello!';
-Blockly.Msg.LOOKS_THINKFORSECS = 'think %1 for %2 seconds';
-Blockly.Msg.LOOKS_THINK = 'think %1';
-Blockly.Msg.LOOKS_HMM = 'Hmm...';
-Blockly.Msg.LOOKS_SHOW = 'show';
-Blockly.Msg.LOOKS_HIDE = 'hide';
-Blockly.Msg.LOOKS_HIDEALLSPRITES = 'hide all sprites';
-Blockly.Msg.LOOKS_EFFECT_COLOR = 'color';
-Blockly.Msg.LOOKS_EFFECT_FISHEYE = 'fisheye';
-Blockly.Msg.LOOKS_EFFECT_WHIRL = 'whirl';
-Blockly.Msg.LOOKS_EFFECT_PIXELATE = 'pixelate';
-Blockly.Msg.LOOKS_EFFECT_MOSAIC = 'mosaic';
-Blockly.Msg.LOOKS_EFFECT_BRIGHTNESS = 'brightness';
-Blockly.Msg.LOOKS_EFFECT_GHOST = 'ghost';
-Blockly.Msg.LOOKS_CHANGEEFFECTBY = 'change %1 effect by %2';
-Blockly.Msg.LOOKS_SETEFFECTTO = 'set %1 effect to %2';
-Blockly.Msg.LOOKS_CLEARGRAPHICEFFECTS = 'clear graphic effects';
-Blockly.Msg.LOOKS_CHANGESIZEBY = 'change size by %1';
-Blockly.Msg.LOOKS_SETSIZETO = 'set size to %1 %';
-Blockly.Msg.LOOKS_SIZE = 'size';
-Blockly.Msg.LOOKS_CHANGESTRETCHBY = 'change stretch by %1';
-Blockly.Msg.LOOKS_SETSTRETCHTO = 'set stretch to %1 %';
-Blockly.Msg.LOOKS_SWITCHCOSTUMETO = 'switch costume to %1';
-Blockly.Msg.LOOKS_NEXTCOSTUME = 'next costume';
-Blockly.Msg.LOOKS_SWITCHBACKDROPTO = 'switch backdrop to %1';
-Blockly.Msg.LOOKS_GOTOFRONTBACK = 'go to %1 layer';
-Blockly.Msg.LOOKS_GOTOFRONTBACK_FRONT = 'front';
-Blockly.Msg.LOOKS_GOTOFRONTBACK_BACK = 'back';
-Blockly.Msg.LOOKS_GOFORWARDBACKWARDLAYERS = 'go %1 %2 layers';
-Blockly.Msg.LOOKS_GOFORWARDBACKWARDLAYERS_FORWARD = 'forward';
-Blockly.Msg.LOOKS_GOFORWARDBACKWARDLAYERS_BACKWARD = 'backward';
-Blockly.Msg.LOOKS_BACKDROPNUMBERNAME = 'backdrop %1';
-Blockly.Msg.LOOKS_COSTUMENUMBERNAME = 'costume %1';
-Blockly.Msg.LOOKS_NUMBERNAME_NUMBER = 'number';
-Blockly.Msg.LOOKS_NUMBERNAME_NAME = 'name';
-Blockly.Msg.LOOKS_SWITCHBACKDROPTOANDWAIT = 'switch backdrop to %1 and wait';
-Blockly.Msg.LOOKS_NEXTBACKDROP_BLOCK = 'next backdrop';
-Blockly.Msg.LOOKS_NEXTBACKDROP = 'next backdrop';
-Blockly.Msg.LOOKS_PREVIOUSBACKDROP = 'previous backdrop';
-Blockly.Msg.LOOKS_RANDOMBACKDROP = 'random backdrop';
-
-// Motion blocks
-Blockly.Msg.MOTION_MOVESTEPS = 'move %1 steps';
-Blockly.Msg.MOTION_TURNLEFT = 'turn %1 %2 degrees';
-Blockly.Msg.MOTION_TURNRIGHT = 'turn %1 %2 degrees';
-Blockly.Msg.MOTION_POINTINDIRECTION = 'point in direction %1';
-Blockly.Msg.MOTION_POINTTOWARDS = 'point towards %1';
-Blockly.Msg.MOTION_POINTTOWARDS_POINTER = 'mouse-pointer';
-Blockly.Msg.MOTION_GOTO = 'go to %1';
-Blockly.Msg.MOTION_GOTO_POINTER = 'mouse-pointer';
-Blockly.Msg.MOTION_GOTO_RANDOM = 'random position';
-Blockly.Msg.MOTION_GOTOXY = 'go to x: %1 y: %2';
-Blockly.Msg.MOTION_GLIDESECSTOXY = 'glide %1 secs to x: %2 y: %3';
-Blockly.Msg.MOTION_GLIDETO = 'glide %1 secs to %2';
-Blockly.Msg.MOTION_GLIDETO_POINTER = 'mouse-pointer';
-Blockly.Msg.MOTION_GLIDETO_RANDOM = 'random position';
-Blockly.Msg.MOTION_CHANGEXBY = 'change x by %1';
-Blockly.Msg.MOTION_SETX = 'set x to %1';
-Blockly.Msg.MOTION_CHANGEYBY = 'change y by %1';
-Blockly.Msg.MOTION_SETY = 'set y to %1';
-Blockly.Msg.MOTION_IFONEDGEBOUNCE = 'if on edge, bounce';
-Blockly.Msg.MOTION_SETROTATIONSTYLE = 'set rotation style %1';
-Blockly.Msg.MOTION_SETROTATIONSTYLE_LEFTRIGHT = 'left-right';
-Blockly.Msg.MOTION_SETROTATIONSTYLE_DONTROTATE = 'don\'t rotate';
-Blockly.Msg.MOTION_SETROTATIONSTYLE_ALLAROUND = 'all around';
-Blockly.Msg.MOTION_XPOSITION = 'x position';
-Blockly.Msg.MOTION_YPOSITION = 'y position';
-Blockly.Msg.MOTION_DIRECTION = 'direction';
-Blockly.Msg.MOTION_SCROLLRIGHT = 'scroll right %1';
-Blockly.Msg.MOTION_SCROLLUP = 'scroll up %1';
-Blockly.Msg.MOTION_ALIGNSCENE = 'align scene %1';
-Blockly.Msg.MOTION_ALIGNSCENE_BOTTOMLEFT = 'bottom-left';
-Blockly.Msg.MOTION_ALIGNSCENE_BOTTOMRIGHT = 'bottom-right';
-Blockly.Msg.MOTION_ALIGNSCENE_MIDDLE = 'middle';
-Blockly.Msg.MOTION_ALIGNSCENE_TOPLEFT = 'top-left';
-Blockly.Msg.MOTION_ALIGNSCENE_TOPRIGHT = 'top-right';
-Blockly.Msg.MOTION_XSCROLL = 'x scroll';
-Blockly.Msg.MOTION_YSCROLL = 'y scroll';
-Blockly.Msg.MOTION_STAGE_SELECTED = 'Stage selected: no motion blocks';
-
-// Operators blocks
-Blockly.Msg.OPERATORS_ADD = '%1 + %2';
-Blockly.Msg.OPERATORS_SUBTRACT = '%1 - %2';
-Blockly.Msg.OPERATORS_MULTIPLY = '%1 * %2';
-Blockly.Msg.OPERATORS_DIVIDE = '%1 / %2';
-Blockly.Msg.OPERATORS_RANDOM = 'pick random %1 to %2';
-Blockly.Msg.OPERATORS_GT = '%1 > %2';
-Blockly.Msg.OPERATORS_LT = '%1 < %2';
-Blockly.Msg.OPERATORS_EQUALS = '%1 = %2';
-Blockly.Msg.OPERATORS_AND = '%1 and %2';
-Blockly.Msg.OPERATORS_OR = '%1 or %2';
-Blockly.Msg.OPERATORS_NOT = 'not %1';
-Blockly.Msg.OPERATORS_JOIN = 'join %1 %2';
-Blockly.Msg.OPERATORS_JOIN_APPLE = 'apple';
-Blockly.Msg.OPERATORS_JOIN_BANANA = 'banana';
-Blockly.Msg.OPERATORS_LETTEROF = 'letter %1 of %2';
-Blockly.Msg.OPERATORS_LETTEROF_APPLE = 'a';
-Blockly.Msg.OPERATORS_LENGTH = 'length of %1';
-Blockly.Msg.OPERATORS_CONTAINS = '%1 contains %2?';
-Blockly.Msg.OPERATORS_MOD = '%1 mod %2';
-Blockly.Msg.OPERATORS_ROUND = 'round %1';
-Blockly.Msg.OPERATORS_MATHOP = '%1 of %2';
-Blockly.Msg.OPERATORS_MATHOP_ABS = 'abs';
-Blockly.Msg.OPERATORS_MATHOP_FLOOR = 'floor';
-Blockly.Msg.OPERATORS_MATHOP_CEILING = 'ceiling';
-Blockly.Msg.OPERATORS_MATHOP_SQRT = 'sqrt';
-Blockly.Msg.OPERATORS_MATHOP_SIN = 'sin';
-Blockly.Msg.OPERATORS_MATHOP_COS = 'cos';
-Blockly.Msg.OPERATORS_MATHOP_TAN = 'tan';
-Blockly.Msg.OPERATORS_MATHOP_ASIN = 'asin';
-Blockly.Msg.OPERATORS_MATHOP_ACOS = 'acos';
-Blockly.Msg.OPERATORS_MATHOP_ATAN = 'atan';
-Blockly.Msg.OPERATORS_MATHOP_LN = 'ln';
-Blockly.Msg.OPERATORS_MATHOP_LOG = 'log';
-Blockly.Msg.OPERATORS_MATHOP_EEXP = 'e ^';
-Blockly.Msg.OPERATORS_MATHOP_10EXP = '10 ^';
-
-// Procedures blocks
-Blockly.Msg.PROCEDURES_DEFINITION = 'define %1';
-
-// Sensing blocks
-Blockly.Msg.SENSING_TOUCHINGOBJECT = 'touching %1?';
-Blockly.Msg.SENSING_TOUCHINGOBJECT_POINTER = 'mouse-pointer';
-Blockly.Msg.SENSING_TOUCHINGOBJECT_EDGE = 'edge';
-Blockly.Msg.SENSING_TOUCHINGCOLOR = 'touching color %1?';
-Blockly.Msg.SENSING_COLORISTOUCHINGCOLOR = 'color %1 is touching %2?';
-Blockly.Msg.SENSING_DISTANCETO = 'distance to %1';
-Blockly.Msg.SENSING_DISTANCETO_POINTER = 'mouse-pointer';
-Blockly.Msg.SENSING_ASKANDWAIT = 'ask %1 and wait';
-Blockly.Msg.SENSING_ASK_TEXT = 'What\'s your name?';
-Blockly.Msg.SENSING_ANSWER = 'answer';
-Blockly.Msg.SENSING_KEYPRESSED = 'key %1 pressed?';
-Blockly.Msg.SENSING_MOUSEDOWN = 'mouse down?';
-Blockly.Msg.SENSING_MOUSEX = 'mouse x';
-Blockly.Msg.SENSING_MOUSEY = 'mouse y';
-Blockly.Msg.SENSING_SETDRAGMODE = 'set drag mode %1';
-Blockly.Msg.SENSING_SETDRAGMODE_DRAGGABLE = 'draggable';
-Blockly.Msg.SENSING_SETDRAGMODE_NOTDRAGGABLE = 'not draggable';
-Blockly.Msg.SENSING_LOUDNESS = 'loudness';
-Blockly.Msg.SENSING_LOUD = 'loud?';
-Blockly.Msg.SENSING_TIMER = 'timer';
-Blockly.Msg.SENSING_RESETTIMER = 'reset timer';
-Blockly.Msg.SENSING_OF = '%1 of %2';
-Blockly.Msg.SENSING_OF_XPOSITION = 'x position';
-Blockly.Msg.SENSING_OF_YPOSITION = 'y position';
-Blockly.Msg.SENSING_OF_DIRECTION = 'direction';
-Blockly.Msg.SENSING_OF_COSTUMENUMBER = 'costume #';
-Blockly.Msg.SENSING_OF_COSTUMENAME = 'costume name';
-Blockly.Msg.SENSING_OF_SIZE = 'size';
-Blockly.Msg.SENSING_OF_VOLUME = 'volume';
-Blockly.Msg.SENSING_OF_BACKDROPNUMBER = 'backdrop #';
-Blockly.Msg.SENSING_OF_BACKDROPNAME = 'backdrop name';
-Blockly.Msg.SENSING_OF_STAGE = 'Stage';
-Blockly.Msg.SENSING_CURRENT = 'current %1';
-Blockly.Msg.SENSING_CURRENT_YEAR = 'year';
-Blockly.Msg.SENSING_CURRENT_MONTH = 'month';
-Blockly.Msg.SENSING_CURRENT_DATE = 'date';
-Blockly.Msg.SENSING_CURRENT_DAYOFWEEK = 'day of week';
-Blockly.Msg.SENSING_CURRENT_HOUR = 'hour';
-Blockly.Msg.SENSING_CURRENT_MINUTE = 'minute';
-Blockly.Msg.SENSING_CURRENT_SECOND = 'second';
-Blockly.Msg.SENSING_DAYSSINCE2000 = 'days since 2000';
-Blockly.Msg.SENSING_USERNAME = 'username';
-Blockly.Msg.SENSING_USERID = 'user id';
-
-// Sound blocks
-Blockly.Msg.SOUND_PLAY = 'start sound %1';
-Blockly.Msg.SOUND_PLAYUNTILDONE = 'play sound %1 until done';
-Blockly.Msg.SOUND_STOPALLSOUNDS = 'stop all sounds';
-Blockly.Msg.SOUND_SETEFFECTO = 'set %1 effect to %2';
-Blockly.Msg.SOUND_CHANGEEFFECTBY = 'change %1 effect by %2';
-Blockly.Msg.SOUND_CLEAREFFECTS = 'clear sound effects';
-Blockly.Msg.SOUND_EFFECTS_PITCH = 'pitch';
-Blockly.Msg.SOUND_EFFECTS_PAN = 'pan left/right';
-Blockly.Msg.SOUND_CHANGEVOLUMEBY = 'change volume by %1';
-Blockly.Msg.SOUND_SETVOLUMETO = 'set volume to %1%';
-Blockly.Msg.SOUND_VOLUME = 'volume';
-Blockly.Msg.SOUND_RECORD = 'record...';
-
-// Category labels
-Blockly.Msg.CATEGORY_MOTION = 'Motion';
-Blockly.Msg.CATEGORY_LOOKS = 'Looks';
-Blockly.Msg.CATEGORY_SOUND = 'Sound';
-Blockly.Msg.CATEGORY_EVENTS = 'Events';
-Blockly.Msg.CATEGORY_CONTROL = 'Control';
-Blockly.Msg.CATEGORY_SENSING = 'Sensing';
-Blockly.Msg.CATEGORY_OPERATORS = 'Operators';
-Blockly.Msg.CATEGORY_VARIABLES = 'Variables';
-Blockly.Msg.CATEGORY_MYBLOCKS = 'My Blocks';
-
 // Context menus
 Blockly.Msg.DUPLICATE = 'Duplicate';
 Blockly.Msg.DELETE = 'Delete';
@@ -343,9 +87,661 @@ Blockly.Msg.DEFAULT_LIST_ITEM = 'thing';
 Blockly.Msg.DELETE_LIST = 'Delete the "%1" list';
 Blockly.Msg.RENAME_LIST = 'Rename list';
 
-// Broadcast Messages
-// @todo Remove these once fully managed by Scratch VM / Scratch GUI
-Blockly.Msg.NEW_BROADCAST_MESSAGE = 'New message';
-Blockly.Msg.NEW_BROADCAST_MESSAGE_TITLE = 'New message name:';
-Blockly.Msg.BROADCAST_MODAL_TITLE = 'New Message';
-Blockly.Msg.DEFAULT_BROADCAST_MESSAGE_NAME = 'message1';
+// // Broadcast Messages
+// // @todo Remove these once fully managed by Scratch VM / Scratch GUI
+// Blockly.Msg.NEW_BROADCAST_MESSAGE = 'New message';
+// Blockly.Msg.NEW_BROADCAST_MESSAGE_TITLE = 'New message name:';
+// Blockly.Msg.BROADCAST_MODAL_TITLE = 'New Message';
+// Blockly.Msg.DEFAULT_BROADCAST_MESSAGE_NAME = 'message1';
+
+
+Blockly.Msg.CONTROL_IF_TOOLTIP = 'IF A VALUE IS TRUE TO A CONDITION, DO SOMETHING. ELSE IS EXCEPTION';
+Blockly.Msg.CONTROL_IF_HELPURL = 'https://www.arduino.cc/en/Reference/If';
+Blockly.Msg.CONTROL_IF_IF = 'if';
+Blockly.Msg.CONTROL_IF_ELSE = 'else';
+Blockly.Msg.CONTROL_IF_ELSE_IF = 'else if';
+Blockly.Msg.CONTROL_IF_DO = 'Do';
+
+Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = '';
+Blockly.Msg.CONTROLS_IF_ELSEIF_HELPURL = '';
+Blockly.Msg.CONTROLS_IF_ELSEIF_TITLE_ELSEIF = 'else if';
+
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = '';
+Blockly.Msg.CONTROLS_IF_ELSE_HELPURL = '';
+Blockly.Msg.CONTROLS_IF_ELSE_TITLE_ELSE = 'else';
+
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = '';
+Blockly.Msg.CONTROLS_IF_IF_HELPURL = '';
+Blockly.Msg.CONTROLS_IF_IF_TITLE_IF = 'if';
+
+Blockly.Msg.CONTROL_FORLOOP_TOOLTIP = 'THE "FOR" STATEMENT IS USED TO REPEAT AN ACTION WITHIN THIS BLOCK IF SET CONDITIONS ARE TRUE.s';
+Blockly.Msg.CONTROL_FORLOOP_HELPURL = 'https://www.arduino.cc/en/Reference/For';
+Blockly.Msg.CONTROL_FORLOOP_INITFOR = 'for(';
+Blockly.Msg.CONTROL_FORLOOP_INITNUMBER = '=';
+Blockly.Msg.CONTROL_FORLOOP_CONDITION = ';';
+Blockly.Msg.CONTROL_FORLOOP_STEP = ';';
+Blockly.Msg.CONTROL_FORLOOP_STEP_OPTION_INC = '++';
+Blockly.Msg.CONTROL_FORLOOP_STEP_OPTION_DEC = '- -';
+Blockly.Msg.CONTROL_FORLOOP_STEP_OPTION_INCN = '+=';
+Blockly.Msg.CONTROL_FORLOOP_STEP_OPTION_DECN = '- =';
+Blockly.Msg.CONTROL_FORLOOP_STEP_OPTION_EQ = '=';
+Blockly.Msg.CONTROL_FORLOOP_ENDING = ')';
+
+Blockly.Msg.CONTROL_WHILE_TOOLTIP = 'WHILE A VALUE IS TRUE, THEN A LOOP OCCURS';
+Blockly.Msg.CONTROL_WHILE_HELPURL = 'https://www.arduino.cc/en/Reference/While';
+Blockly.Msg.CONTROL_WHILE_CONDITIONWHILE = 'while';
+
+Blockly.Msg.CONTROL_BREAK_TOOLTIP = 'BREAK IS USED TO EXIT FROM LOOPS';
+Blockly.Msg.CONTROL_BREAK_HELPURL = 'https://www.arduino.cc/en/Reference/Break';
+Blockly.Msg.CONTROL_BREAK_BREAK = 'break';
+
+Blockly.Msg.CONTROL_DELAY_TOOLTIP = 'PAUSE THE PROGRAM FOR THE AMOUNT OF TIME (IN MILLISECONDS)';
+Blockly.Msg.CONTROL_DELAY_HELPURL = 'https://www.arduino.cc/en/Reference/Delay';
+Blockly.Msg.CONTROL_DELAY_MSDELAY = 'delay';
+Blockly.Msg.CONTROL_DELAY_MILLISECONDS = 'Milliseconds';
+
+Blockly.Msg.CONTROL_DELAYMICROSECONDS_TOOLTIP = 'PAUSE THE PROGRAM FOR THE AMOUNT OF TIME (1000 Microseconds = 1 sec)';
+Blockly.Msg.CONTROL_DELAYMICROSECONDS_HELPURL = 'https://www.arduino.cc/en/Reference/DelayMicroseconds';
+Blockly.Msg.CONTROL_DELAYMICROSECONDS_USDELAY = 'delay';
+Blockly.Msg.CONTROL_DELAYMICROSECONDS_MICROSECONDS = 'Microseconds';
+
+Blockly.Msg.CONTROL_MILLIS_TOOLTIP = 'RETURNS THE NUMBER OF MILLISECONDS (1 sec = 1000 milliseconds) SINCE THE ARDUINO BOARD BEGAN RUNNING THE CURRENT PROGRAM';
+Blockly.Msg.CONTROL_MILLIS_HELPURL = 'https://www.arduino.cc/en/Reference/Millis';
+Blockly.Msg.CONTROL_MILLIS_MILLIS = 'Millis';
+
+Blockly.Msg.CONTROL_MICROS_TOOLTIP = 'RETURNS THE NUMBER OF MICROSECONDS (1 sec = 1,000,000 microseconds) SINCE THE ARDUINO BOARD BEGAN RUNNING THE CURRENT PROGRAM';
+Blockly.Msg.CONTROL_MICROS_HELPURL = 'https://www.arduino.cc/en/Reference/Micros';
+Blockly.Msg.CONTROL_MICROS_MICROS = 'Micros';
+
+
+Blockly.Msg.ARITHMETICOPERATORS_TOOLTIP = {
+    '+': 'These operators return the sum of the two operands',
+    '-': 'These operators return the difference of the two operands',
+    '*': 'These operators return the product of the two operands',
+    '/': 'These operators return the quotient (respectively) of the two operands',
+    '%': 'Calculates the remainder when one integer is divided by another.'
+};
+
+Blockly.Msg.ARITHMETICOPERATORS_HELPURL = {
+    '+': 'https://www.arduino.cc/en/Reference/Arithmetic',
+    '-': 'https://www.arduino.cc/en/Reference/Arithmetic',
+    '*': 'https://www.arduino.cc/en/Reference/Arithmetic',
+    '/': 'https://www.arduino.cc/en/Reference/Arithmetic',
+    '%': 'https://www.arduino.cc/en/Reference/Modulo'
+};
+Blockly.Msg.ARITHMETICOPERATORS_OPTION_PLUS = '+';
+Blockly.Msg.ARITHMETICOPERATORS_OPTION_MINUS = '-';
+Blockly.Msg.ARITHMETICOPERATORS_OPTION_MUL = '*';
+Blockly.Msg.ARITHMETICOPERATORS_OPTION_DIV = '/';
+Blockly.Msg.ARITHMETICOPERATORS_OPTION_MOD = '%';
+
+
+
+Blockly.Msg.NEGATIVEOPERATORS_TOOLTIP = 'Return negative number';
+Blockly.Msg.NEGATIVEOPERATORS_HELPURL = '';
+Blockly.Msg.NEGATIVEOPERATORS_NUM2NEGATIVE = 'Negative';
+
+Blockly.Msg.COMPARISONOPERATORS_TOOLTIP = {
+    ' == ': 'x == y(x is equal to y) ? ',
+    ' != ': 'x != y(x is not equal to y) ? ',
+    ' < ': 'x < y(x is less than y) ? ',
+    ' > ': 'x > y(x is greater than y) ? ',
+    ' <= ': 'x <= y(x is less than or equal to y) ? ',
+    ' >= ': 'x >= y(x is greater than or equal to y) ? '
+};
+
+Blockly.Msg.COMPARISONOPERATORS_HELPURL = {
+    ' == ': '',
+    ' != ': '',
+    ' < ': '',
+    ' > ': '',
+    ' <= ': '',
+    ' >= ': ''
+};
+Blockly.Msg.COMPARISONOPERATORS_OPTION_EQ = "==";
+Blockly.Msg.COMPARISONOPERATORS_OPTION_NE = "!=";
+Blockly.Msg.COMPARISONOPERATORS_OPTION_LT = "<";
+Blockly.Msg.COMPARISONOPERATORS_OPTION_GT = ">";
+Blockly.Msg.COMPARISONOPERATORS_OPTION_LE = "<=";
+Blockly.Msg.COMPARISONOPERATORS_OPTION_GE = ">=";
+
+
+Blockly.Msg.BOOLEANOPERATORS_TOOLTIP = {
+    ' && ': 'True only if both operands are true',
+    ' || ': 'True if either operand is true'
+};
+
+Blockly.Msg.BOOLEANOPERATORS_HELPURL = {
+    ' && ': 'https://www.arduino.cc/en/Reference/Boolean',
+    ' || ': 'https://www.arduino.cc/en/Reference/Boolean'
+};
+Blockly.Msg.BOOLEANOPERATORS_OPTION_AND = 'AND';
+Blockly.Msg.BOOLEANOPERATORS_OPTION_OR = 'OR';
+
+
+Blockly.Msg.NOTOPERATORS_TOOLTIP = 'True if the operand is false';
+Blockly.Msg.NOTOPERATORS_HELPURL = 'https://www.arduino.cc/en/Reference/Boolean';
+Blockly.Msg.NOTOPERATORS_NUM2NOT = 'NOT';
+
+
+Blockly.Msg.MATHMINMAX_TOOLTIP = {
+    'min': 'Calculates the minimum of two numbers',
+    'max': 'Calculates the maximum of two numbers'
+};
+Blockly.Msg.MATHMINMAX_HELPURL = {
+    'min': 'https://www.arduino.cc/en/Reference/Min',
+    'max': 'https://www.arduino.cc/en/Reference/Max'
+};
+Blockly.Msg.MATHMINMAX_OPTION_MIN = 'min';
+Blockly.Msg.MATHMINMAX_OPTION_MAX = 'max';
+
+Blockly.Msg.MATHMINMAX_NUM1 = 'of';
+Blockly.Msg.MATHMINMAX_NUM2 = 'or';
+
+Blockly.Msg.MATHOPERATORS_TOOLTIP = {
+    'abs': 'Computes the absolute value of a number',
+    'sqrt': 'Calculates the square root of a number',
+    'sin': 'Calculates the sine of an angle(in radians).The result will be between - 1 and 1.',
+    'cos': 'Calculates the cos of an angle(in radians).The result will be between - 1 and 1.',
+    'tan': 'Calculates the tangent of an angle(in radians).The result will be between negative infinity and infinity.'
+};
+Blockly.Msg.MATHOPERATORS_HELPURL = {
+    'abs': 'https://www.arduino.cc/en/Reference/Abs',
+    'sqrt': 'https://www.arduino.cc/en/Reference/Sqrt',
+    'sin': 'https://www.arduino.cc/en/Reference/Sin',
+    'cos': 'https://www.arduino.cc/en/Reference/Cos',
+    'tan': 'https://www.arduino.cc/en/Reference/Tan'
+};
+Blockly.Msg.MATHOPERATORS_NUMOF = 'of';
+
+Blockly.Msg.MATHOPERATORS_OPTION_ABS = 'abs';
+Blockly.Msg.MATHOPERATORS_OPTION_SQRT = 'sqrt';
+Blockly.Msg.MATHOPERATORS_OPTION_SIN = 'sin';
+Blockly.Msg.MATHOPERATORS_OPTION_COS = 'cos';
+Blockly.Msg.MATHOPERATORS_OPTION_TAN = 'tan';
+
+
+Blockly.Msg.MATHCONSTRAIN_TOOLTIP = 'Constrains a number to be within a range';
+Blockly.Msg.MATHCONSTRAIN_HELPURL = 'https://www.arduino.cc/en/Reference/Constrain';
+Blockly.Msg.MATHCONSTRAIN_XCONSTRAIN = 'constrain';
+Blockly.Msg.MATHCONSTRAIN_ARANGE = 'range';
+Blockly.Msg.MATHCONSTRAIN_BTO = 'to';
+
+
+Blockly.Msg.MATHMAP_TOOLTIP = 'Re-maps a number from one range to another';
+Blockly.Msg.MATHMAP_HELPURL = 'https://www.arduino.cc/en/Reference/Map';
+Blockly.Msg.MATHMAP_XMAP = 'map';
+Blockly.Msg.MATHMAP_FLFROM = 'from';
+Blockly.Msg.MATHMAP_FH = ',';
+Blockly.Msg.MATHMAP_TLTO = 'to';
+Blockly.Msg.MATHMAP_TH = ',';
+
+Blockly.Msg.MATHRANDOM_TOOLTIP = 'generates pseudo-random numbers';
+Blockly.Msg.MATHRANDOM_HELPURL = 'https://www.arduino.cc/en/Reference/Random';
+Blockly.Msg.MATHRANDOM_LRANDOM_FROM = 'random from';
+Blockly.Msg.MATHRANDOM_HTO = 'to';
+
+Blockly.Msg.MATH_BOOLEAN_MENU_TOOLTIP = '';
+Blockly.Msg.MATH_BOOLEAN_MENU_HELPURL = '';
+
+Blockly.Msg.MATH_BOOLEAN_MENU_OPTION_TRUE = 'True';
+Blockly.Msg.MATH_BOOLEAN_MENU_OPTION_FALSE = 'False';
+
+
+Blockly.Msg.CONTROLSETUPLOOP_TOOLTIP = 'Arduino program structure,do setup once and do loop foreven';
+Blockly.Msg.CONTROLSETUPLOOP_HELPURL = 'https://www.arduino.cc/en/Reference/HomePage';
+Blockly.Msg.CONTROLSETUPLOOP_ARDUINO_PROGRAM = 'Arduino Program';
+Blockly.Msg.CONTROLSETUPLOOP_SETUPSTACKSETUP = 'Setup';
+Blockly.Msg.CONTROLSETUPLOOP_LOOPSTACKLOOP = 'Loop';
+
+Blockly.Msg.IO_READDIGITALPIN_TOOLTIP = 'READ THE VALUES FROM A SPECIFIC DIGITAL PIN, EITHER HIGH OR LOW';
+Blockly.Msg.IO_READDIGITALPIN_HELPURL = 'https://www.arduino.cc/en/Reference/DigitalRead';
+Blockly.Msg.IO_READDIGITALPIN_PINDIGITALREAD = 'digitalRead';
+
+Blockly.Msg.IO_READANALOGPIN_TOOLTIP = 'READ THE VALUES(0-1023) FROM SPECIFIED ANALOG PIN';
+Blockly.Msg.IO_READANALOGPIN_HELPURL = 'https://www.arduino.cc/en/Reference/AnalogRead';
+Blockly.Msg.IO_READANALOGPIN_PINANALOGREAD = 'analogRead';
+
+Blockly.Msg.IO_WRITEDIGITALPIN_TOOLTIP = 'WRITE A HIGH OR LOW VALUE TO A DIGITAL PIN';
+Blockly.Msg.IO_WRITEDIGITALPIN_HELPURL = 'https://www.arduino.cc/en/Reference/DigitalWrite';
+Blockly.Msg.IO_WRITEDIGITALPIN_PINDIGITALWRITE = 'digitalWrite';
+
+Blockly.Msg.IO_WRITEANALOGPIN_TOOLTIP = 'WRITE AS AN ANALOG VALUE(0-255) TO A PIN.';
+Blockly.Msg.IO_WRITEANALOGPIN_HELPURL = 'https://www.arduino.cc/en/Reference/AnalogWrite';
+Blockly.Msg.IO_WRITEANALOGPIN_PINANALOGWRITE = 'analogWrite';
+
+Blockly.Msg.IO_PINMODE_TOOLTIP = 'CONFIGURES THE SPECIFIC PIN TO BEHAVE EITHER AS AN INPUT OR OUTPUT';
+Blockly.Msg.IO_PINMODE_HELPURL = 'https://www.arduino.cc/en/Reference/PinMode';
+Blockly.Msg.IO_PINMODE_PINPINMODE = 'pinMode';
+Blockly.Msg.IO_PINMODE_OPTION_OUTPUT = 'OUTPUT';
+Blockly.Msg.IO_PINMODE_OPTION_INPUT = 'INPUT';
+Blockly.Msg.IO_PINMODE_OPTION_INPUT_PULLUP = 'INPUT_PULLUP';
+
+
+
+Blockly.Msg.IO_ARDUINO_UNO_DIGITALPIN_MENU_TOOLTIP = '';
+Blockly.Msg.IO_ARDUINO_UNO_DIGITALPIN_MENU_HELPURL = '';
+
+Blockly.Msg.IO_ARDUINO_UNO_ANALOGPIN_MENU_TOOLTIP = '';
+Blockly.Msg.IO_ARDUINO_UNO_ANALOGPIN_MENU_HELPURL = '';
+
+Blockly.Msg.IO_ARDUINO_UNO_PWMPIN_MENU_TOOLTIP = '';
+Blockly.Msg.IO_ARDUINO_UNO_PWMPIN_MENU_HELPURL = '';
+
+Blockly.Msg.IO_PINSTATE_MENU_TOOLTIP = '';
+Blockly.Msg.IO_PINSTATE_MENU_HELPURL = '';
+Blockly.Msg.IO_PINSTATE_MENU_OPTION_HIGH = 'HIGH';
+Blockly.Msg.IO_PINSTATE_MENU_OPTION_LOW = 'LOW';
+
+
+
+Blockly.Msg.IO_TONE_TOOLTIP = 'GENERATES A SPECIFIC TONE SOUND';
+Blockly.Msg.IO_TONE_HELPURL = 'https://www.arduino.cc/en/Reference/Tone';
+Blockly.Msg.IO_TONE_PINTONE = 'tone';
+
+
+Blockly.Msg.IO_TONE_MENU_TOOLTIP = '';
+Blockly.Msg.IO_TONE_MENU_HELPURL = '';
+
+Blockly.Msg.IO_NOTONE_TOOLTIP = 'STOPS THE TONE() SOUND';
+Blockly.Msg.IO_NOTONE_HELPURL = 'https://www.arduino.cc/en/Reference/NoTone';
+Blockly.Msg.IO_NOTONE_PINNOTONE = 'noTone';
+
+Blockly.Msg.IO_PULSEIN_TOOLTIP = 'READS A PULSE (EITHER HIGH OR LOW) ON A PIN';
+Blockly.Msg.IO_PULSEIN_HELPURL = 'https://www.arduino.cc/en/Reference/PulseIn';
+Blockly.Msg.IO_PULSEIN_PINPULSEIN = 'pulseIn';
+Blockly.Msg.IO_PULSEIN_TIMEOUTTIMEOUT = 'Timeout';
+
+Blockly.Msg.INSTANCE_SERIAL_TOOLTIP = 'SETS THE DATA RATE IN BITS PER SECOND (BAUD) FOR SERIAL DATA TRANSMISSION';
+Blockly.Msg.INSTANCE_SERIAL_HELPURL = 'https://www.arduino.cc/en/Serial/Begin';
+Blockly.Msg.INSTANCE_SERIAL_SERIALBEGIN = 'Serial.begin(';
+Blockly.Msg.INSTANCE_SERIAL = ')';
+
+Blockly.Msg.SERIAL_PRINT_TOOLTIP = 'PRINT A VARIABLE TO THE SERIAL PORT';
+Blockly.Msg.SERIAL_PRINT_HELPURL = 'https://www.arduino.cc/en/Serial/Print';
+Blockly.Msg.SERIAL_PRINT_VALUESERIAL = 'Serial';
+Blockly.Msg.SERIAL_PRINT_OPTION_PRINT = 'print';
+Blockly.Msg.SERIAL_PRINT_OPTION_PRINTLN = 'println';
+
+Blockly.Msg.SERIAL_AVAILABLE_TOOLTIP = 'GET THE NUMBER OF BYTES (CHARACTERS) AVAILABLE FOR READING FROM THE SERIAL PORT';
+Blockly.Msg.SERIAL_AVAILABLE_HELPURL = 'https://www.arduino.cc/en/Serial/Available';
+Blockly.Msg.SERIAL_AVAILABLE_SERIAL_AVAILABLE = 'Serial.available';
+
+Blockly.Msg.SERIAL_READ_TOOLTIP = 'READS INCOMING SERIAL DATA';
+Blockly.Msg.SERIAL_READ_HELPURL = 'https://www.arduino.cc/en/Serial/Read';
+Blockly.Msg.SERIAL_READ_SERIAL_READ = 'Serial.read';
+
+Blockly.Msg.IO_ARDUINO_UNO_PIN_USABLE_MENU_TOOLTIP = 'digital pin set';
+Blockly.Msg.IO_ARDUINO_UNO_PIN_USABLE_MENU_HELPURL = '';
+
+Blockly.Msg.INSTANCE_CREATE_NUMBER_TOOLTIP = {
+    'int': 'Integers are your primary data-type for number storage.',
+    'long': 'Long variables are extended size variables for number storage, and store 32 bits (4 bytes), from -2,147,483,648 to 2,147,483,647.',
+    'unsigned int': 'only store positive values, yielding a useful range of 0 to 65,535 (2^16) - 1).',
+    'unsigned long': 'Unsigned long variables are extended size variables for number storage, and store 32 bits (4 bytes). Unlike standard longs unsigned longs won\'t store negative numbers, making their range from 0 to 4,294,967,295 (2^32 - 1).',
+    'char': 'A data type that takes up 1 byte of memory that stores a character value',
+    'byte': 'A byte stores an 8-bit unsigned number, from 0 to 255.',
+    'float': 'Datatype for floating-point numbers, a number that has a decimal point.'
+};
+
+Blockly.Msg.INSTANCE_CREATE_NUMBER_HELPURL = {
+    'int': 'https://www.arduino.cc/en/Reference/Int',
+    'long': 'https://www.arduino.cc/en/Reference/Long',
+    'unsigned int': 'https://www.arduino.cc/en/Reference/UnsignedInt',
+    'unsigned long': 'https://www.arduino.cc/en/Reference/UnsignedLong',
+    'char': 'https://www.arduino.cc/en/Reference/Char',
+    'byte': 'https://www.arduino.cc/en/Reference/Byte',
+    'float': 'https://www.arduino.cc/en/Reference/Float'
+};
+Blockly.Msg.INSTANCE_CREATE_NUMBER_OPTION = {
+    'int': 'int',
+    'long': 'long',
+    'unsigned int': 'unsigned int',
+    'unsigned long': 'unsigned long',
+    'char': 'char',
+    'byte': 'byte',
+    'float': 'float'
+};
+Blockly.Msg.INSTANCE_CREATE_NUMBER = '=';
+
+Blockly.Msg.INSTANCE_NUMBER_GETTER_TOOLTIP = 'retrieve value from variable sign';
+Blockly.Msg.INSTANCE_NUMBER_GETTER_HELPURL = 'https://www.arduino.cc/en/Reference/Scope';
+
+Blockly.Msg.INSTANCE_SET_NUMBER_TOOLTIP = 'Stores the value to the right of the equal sign in the variable to the left of the equal sign';
+Blockly.Msg.INSTANCE_SET_NUMBER_HELPURL = 'https://www.arduino.cc/en/Reference/Assignment';
+
+Blockly.Msg.INSTANCE_SET_NUMBER_OPTION = {
+    '=': '=',
+    '++': '++',
+    '--': '- -',
+    '+=': '+=',
+    '-=': '- =',
+    '*=': '*=',
+    '/=': '/=',
+    '%=': '%='
+};
+
+
+Blockly.Msg.INSTANCE_CREATE_BOOLEAN_TOOLTIP = 'A boolean holds one of two values, true or false.';
+Blockly.Msg.INSTANCE_CREATE_BOOLEAN_HELPURL = 'https://www.arduino.cc/en/Reference/BooleanVariables';
+Blockly.Msg.INSTANCE_CREATE_BOOLEAN_BOOLEAN = 'boolean ';
+Blockly.Msg.INSTANCE_CREATE_BOOLEAN_ASSIGN = '=';
+Blockly.Msg.INSTANCE_CREATE_BOOLEAN_OPTION = {
+    "false": "False",
+    "true": "True"
+};
+
+
+Blockly.Msg.INSTANCE_SET_BOOLEAN_TOOLTIP = 'Stores the value to the right of the equal sign in the variable to the left of the equal sign';
+Blockly.Msg.INSTANCE_SET_BOOLEAN_HELPURL = 'https://www.arduino.cc/en/Reference/Assignment';
+Blockly.Msg.INSTANCE_SET_BOOLEAN_ASSIGN = '=';
+
+Blockly.Msg.INSTANCE_BOOLEAN_GETTER_TOOLTIP = 'retrieve value from variable sign';
+Blockly.Msg.INSTANCE_BOOLEAN_GETTER_HELPURL = 'https://www.arduino.cc/en/Reference/Scope';
+
+Blockly.Msg.INSTANCE_CREATE_STRING_TOOLTIP = 'The String class,allows you to use and manipulate strings';
+Blockly.Msg.INSTANCE_CREATE_STRING_HELPURL = 'https://www.arduino.cc/en/Reference/StringObject';
+Blockly.Msg.INSTANCE_CREATE_STRING_STRING = 'string ';
+Blockly.Msg.INSTANCE_CREATE_STRING_ASSIGN = '=';
+
+
+Blockly.Msg.INSTANCE_SET_STRING_TOOLTIP = 'Stores the value to the right of the equal sign in the variable to the left of the equal sign';
+Blockly.Msg.INSTANCE_SET_STRING_HELPURL = 'https://www.arduino.cc/en/Reference/String';
+Blockly.Msg.INSTANCE_SET_STRING_ASSIGN = '=';
+
+Blockly.Msg.INSTANCE_STRING_GETTER_TOOLTIP = 'retrieve value from variable sign';
+Blockly.Msg.INSTANCE_STRING_GETTER_HELPURL = 'https://www.arduino.cc/en/Reference/String';
+
+Blockly.Msg.INSTANCE_CREATE_ARRAY_TOOLTIP = 'An array is a collection of variables that are accessed with an index number';
+Blockly.Msg.INSTANCE_CREATE_ARRAY_HELPURL = 'https://www.arduino.cc/en/Reference/Array';
+Blockly.Msg.INSTANCE_CREATE_ARRAY_OPTION = {
+    'int': 'int array',
+    'long': 'long array',
+    'unsigned int': 'unsigned int array',
+    'unsigned long': 'unsigned long array',
+    'char': 'char array',
+    'byte': 'byte array',
+    'float': 'float array'
+};
+
+
+Blockly.Msg.INSTANCE_ARRAY_NUMBER_TOOLTIP = '';
+Blockly.Msg.INSTANCE_ARRAY_NUMBER_HELPURL = '';
+
+Blockly.Msg.INSTANCE_ARRAY_ARRAY_TOOLTIP = '';
+Blockly.Msg.INSTANCE_ARRAY_ARRAY_HELPURL = '';
+
+Blockly.Msg.INSTANCE_SET_ARRAY_TOOLTIP = 'assign a value to an array';
+Blockly.Msg.INSTANCE_SET_ARRAY_HELPURL = 'https://www.arduino.cc/en/Reference/Array';
+
+
+Blockly.Msg.INSTANCE_ARRAY_GETTER_TOOLTIP = 'retrieve a value from an array';
+Blockly.Msg.INSTANCE_ARRAY_GETTER_HELPURL = 'https://www.arduino.cc/en/Reference/Array';
+
+Blockly.Msg.INSTANCE_RGB_TOOLTIP = '';
+Blockly.Msg.INSTANCE_RGB_HELPURL = '';
+Blockly.Msg.INSTANCE_RGB_NAME = 'RGB Module';
+Blockly.Msg.INSTANCE_RGB_R = 'R=';
+Blockly.Msg.INSTANCE_RGB_G = 'G=';
+Blockly.Msg.INSTANCE_RGB_B = 'B=';
+
+Blockly.Msg.MODULE_SET_RGB_TOOLTIP = 'CLICK A COLOR TO CHANGE RGB LED COLOR';
+Blockly.Msg.MODULE_SET_RGB_HELPURL = '';
+Blockly.Msg.MODULE_SET_RGB_SET = 'set';
+Blockly.Msg.MODULE_SET_RGB_TO = '=';
+
+Blockly.Msg.RGBTOCOLOR_TOOLTIP = 'CHOOSE INDIVIDUAL (RED, GREEN, BLUE)RGB LED LEADS ';
+Blockly.Msg.RGBTOCOLOR_HELPURL = '';
+Blockly.Msg.RGBTOCOLOR_R = 'R';
+Blockly.Msg.RGBTOCOLOR_G = 'G';
+Blockly.Msg.RGBTOCOLOR_B = 'B';
+
+Blockly.Msg.INSTANCE_LED_TOOLTIP = 'The LED module allows easy plug and play configuration to your Arduino\'s I/O lines. The LED can be controlled through a PWM signal or a digital high/ low output';
+Blockly.Msg.INSTANCE_LED_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/68-led-modules';
+Blockly.Msg.INSTANCE_LED_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_SET_LED_TOOLTIP = 'SET AN LED HIGH OR LOW (ON OR OFF)';
+Blockly.Msg.MODULE_SET_LED_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/68-led-modules';
+Blockly.Msg.MODULE_SET_LED_SET = 'set';
+
+Blockly.Msg.INSTANCE_BUTTON_TOOLTIP = 'The push button module allows detection in states of high or low from the onboard momentary push button.';
+Blockly.Msg.INSTANCE_BUTTON_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/76-push-button-module';
+Blockly.Msg.INSTANCE_BUTTON_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_READ_BUTTON_TOOLTIP = 'DETECT IF BUTTON IS PRESSED';
+Blockly.Msg.MODULE_READ_BUTTON_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/76-push-button-module';
+Blockly.Msg.MODULE_READ_BUTTON_PRESSED = 'Pressed';
+
+Blockly.Msg.INSTANCE_LCD1602_TOOLTIP = 'The LCD display is a 16 character by 2 line (16*2) LCD display';
+Blockly.Msg.INSTANCE_LCD1602_HELPURL = 'https://osepp.com/electronic-modules/breakout-boards/13-16-2-lcd-display';
+Blockly.Msg.INSTANCE_LCD1602_LCD1602 = 'Lcd1602 ';
+Blockly.Msg.INSTANCE_LCD1602_RS = 'RS Pin';
+Blockly.Msg.INSTANCE_LCD1602_EN = 'EN Pin';
+Blockly.Msg.INSTANCE_LCD1602_D4 = 'D4 Pin';
+Blockly.Msg.INSTANCE_LCD1602_D5 = 'D5 Pin';
+Blockly.Msg.INSTANCE_LCD1602_D6 = 'D6 Pin';
+Blockly.Msg.INSTANCE_LCD1602_D7 = 'D7 Pin';
+
+Blockly.Msg.MODULE_LCD_PRINT_TOOLTIP = 'DISPLAYS TO THE LCD DISPLAY';
+Blockly.Msg.MODULE_LCD_PRINT_HELPURL = 'https://www.arduino.cc/en/Reference/LiquidCrystalPrint';
+Blockly.Msg.MODULE_LCD_PRINT_VALUEPRINT = 'print';
+
+Blockly.Msg.MODULE_LCD_CLEAR_TOOLTIP = 'REFRESH (CLEAR) THE LCD DISPLAY';
+Blockly.Msg.MODULE_LCD_CLEAR_HELPURL = 'https://www.arduino.cc/en/Reference/LiquidCrystalClear';
+Blockly.Msg.MODULE_LCD_CLEAR_CLEAR = 'clear';
+
+Blockly.Msg.MODULE_LCD_GOTO_TOOLTIP = 'SET THE ROW AND COLUMN OF THE LCD DISPLAY';
+Blockly.Msg.MODULE_LCD_GOTO_HELPURL = 'https://www.arduino.cc/en/Reference/LiquidCrystalSetCursor';
+Blockly.Msg.MODULE_LCD_GOTO_GOTO = 'Goto';
+Blockly.Msg.MODULE_LCD_GOTO_COLUMNX = 'X';
+Blockly.Msg.MODULE_LCD_GOTO_LINEY = 'Y';
+
+Blockly.Msg.INSTANCE_BUZZER_TOOLTIP = 'The Piezo sensor acts both as an output buzzer device and an input device measuring sound pressure.';
+Blockly.Msg.INSTANCE_BUZZER_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/72-piezo-sensor-module';
+Blockly.Msg.INSTANCE_BUZZER_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_SET_BUZZER_TOOLTIP = 'TURN THE BUZZER HIGH OR LOW (ON OR OFF)';
+Blockly.Msg.MODULE_SET_BUZZER_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/72-piezo-sensor-module';
+Blockly.Msg.MODULE_SET_BUZZER_SET = 'set';
+
+Blockly.Msg.INSTANCE_SPEAKER_TOOLTIP = '';
+Blockly.Msg.INSTANCE_SPEAKER_HELPURL = '';
+Blockly.Msg.INSTANCE_SPEAKER_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_BUZZER_PLAYTONE_TOOLTIP = 'PLAY A NOTE FROM THE SPEAKER';
+Blockly.Msg.MODULE_BUZZER_PLAYTONE_HELPURL = 'https://www.arduino.cc/en/Reference/Tone';
+Blockly.Msg.MODULE_BUZZER_PLAYTONE_FREQUENCYPLAY = 'play';
+
+Blockly.Msg.MODULE_BUZZER_NOTONE_TOOLTIP = 'STOP THE SPEAKER';
+Blockly.Msg.MODULE_BUZZER_NOTONE_HELPURL = 'https://www.arduino.cc/en/Reference/NoTone';
+Blockly.Msg.MODULE_BUZZER_NOTONE_STOP = 'stop';
+
+Blockly.Msg.INSTANCE_FANMOTOR_TOOLTIP = 'The fan motor controller board allows speed and direction control of a low power DC motor.';
+Blockly.Msg.INSTANCE_FANMOTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module';
+Blockly.Msg.INSTANCE_FANMOTOR_FANMOTOR = 'Fan Motor';
+Blockly.Msg.INSTANCE_FANMOTOR_INA = 'INA';
+Blockly.Msg.INSTANCE_FANMOTOR_INB = 'INB';
+
+Blockly.Msg.MODULE_SET_FANMOTOR_TOOLTIP = 'CHOOSE THE SPEED AND DIRECTION OF FAN MOTOR';
+Blockly.Msg.MODULE_SET_FANMOTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module';
+Blockly.Msg.MODULE_SET_FANMOTOR_OPTION={
+    'f':'forward',
+    'b':'backward',
+    's':'stop'
+};
+
+Blockly.Msg.INSTANCE_SERVO_TOOLTIP = 'servos have integrated gears and a shaft that can be precisely controlled. Standard servos allow the shaft to be positioned at various angles, usually between 0 and 180 degrees';
+Blockly.Msg.INSTANCE_SERVO_HELPURL = 'https://www.arduino.cc/en/Reference/Servo';
+Blockly.Msg.INSTANCE_SERVO_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_SERVO_WRITE_TOOLTIP = 'WRITE A SPECIFIC ANGLE FOR THE SERVO MOTOR';
+Blockly.Msg.MODULE_SERVO_WRITE_HELPURL = 'https://www.arduino.cc/en/Reference/ServoWrite';
+Blockly.Msg.MODULE_SERVO_WRITE_ANGLEWRITE = 'write';
+
+Blockly.Msg.INSTANCE_STEPPER_TOOLTIP = '';
+Blockly.Msg.INSTANCE_STEPPER_HELPURL = 'https://www.arduino.cc/en/Reference/Stepper';
+Blockly.Msg.INSTANCE_STEPPER_STEPPER_MOTOR = 'Stepper Motor';
+Blockly.Msg.INSTANCE_STEPPER_PIN_NUMBER = 'Pin Number';
+Blockly.Msg.INSTANCE_STEPPER_PIN_NUMBER_OPTION = {
+    'F': 'FourPin',
+    'T': 'TwoPin'
+};
+Blockly.Msg.INSTANCE_STEPPER_PIN1INA = 'INA';
+Blockly.Msg.INSTANCE_STEPPER_PIN2INB = 'INB';
+Blockly.Msg.INSTANCE_STEPPER_PIN3INC = 'INC';
+Blockly.Msg.INSTANCE_STEPPER_PIN4IND = 'IND';
+Blockly.Msg.INSTANCE_STEPPER_STEPS_PER_REVOLUTION = 'Steps per revolution';
+Blockly.Msg.INSTANCE_STEPPER_SPEED_RPM = 'speed(rpm)';
+
+Blockly.Msg.MODULE_STEPPER_MOVE_TOOLTIP = 'INPUT THE STEPPER MOTORS STEP AMOUNT';
+Blockly.Msg.MODULE_STEPPER_MOVE_HELPURL = 'https://www.arduino.cc/en/Reference/StepperStep';
+Blockly.Msg.MODULE_STEPPER_MOVE_STEPSTEP = 'step';
+
+Blockly.Msg.MODULE_STEPPER_SPEED_TOOLTIP = 'SET THE SPEED OF THE STEPPER MOTOR';
+Blockly.Msg.MODULE_STEPPER_SPEED_HELPURL = 'https://www.arduino.cc/en/Reference/StepperSetSpeed';
+Blockly.Msg.MODULE_STEPPER_SPEED_SPEEDSETSPEED = 'setSpeed';
+
+Blockly.Msg.INSTANCE_PIR_TOOLTIP = 'The Passive Infrared sensor detects changes in motion within its environmen';
+Blockly.Msg.INSTANCE_PIR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/73-passive-infrared-sensor-pir-module';
+Blockly.Msg.INSTANCE_PIR_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_PIR_GET_TOOLTIP = 'DETECT IF THE PIR SENSOR WAS TRIGGERED';
+Blockly.Msg.MODULE_PIR_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/73-passive-infrared-sensor-pir-module';
+Blockly.Msg.MODULE_PIR_GET_TRIGGED = 'Trigged';
+
+Blockly.Msg.INSTANCE_POTENTIOMETER_TOOLTIP = 'The potentiometer module is able to adjust and read variations in voltage.';
+Blockly.Msg.INSTANCE_POTENTIOMETER_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/74-potentiometer-module';
+Blockly.Msg.INSTANCE_POTENTIOMETER_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_POTENTIOMETER_GET_TOOLTIP = 'READ THE KNOB (POTENTIOMETER) VALUE(0-1023)';
+Blockly.Msg.MODULE_POTENTIOMETER_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/74-potentiometer-module';
+Blockly.Msg.MODULE_POTENTIOMETER_GET_VALUE = 'value';
+
+Blockly.Msg.INSTANCE_SLIDER_TOOLTIP = '';
+Blockly.Msg.INSTANCE_SLIDER_HELPURL = '';
+Blockly.Msg.INSTANCE_SLIDER_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_SLIDER_GET_TOOLTIP = 'READ THE SLIDER VALUE(0-1023)';
+Blockly.Msg.MODULE_SLIDER_GET_HELPURL = '';
+Blockly.Msg.MODULE_SLIDER_GET_VALUE = 'value';
+
+Blockly.Msg.INSTANCE_LIGHTSENSOR_TOOLTIP = '';
+Blockly.Msg.INSTANCE_LIGHTSENSOR_HELPURL = '';
+Blockly.Msg.INSTANCE_LIGHTSENSOR_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_LIGHTSENSOR_GET_TOOLTIP = 'READ THE LIGHT VALUE(0-1023) FROM THE LIGHT SENSOR';
+Blockly.Msg.MODULE_LIGHTSENSOR_GET_HELPURL = '';
+Blockly.Msg.MODULE_LIGHTSENSOR_GET_VALUE = 'value';
+
+Blockly.Msg.INSTANCE_LM35_TOOLTIP = 'LM35 Temperature sensor uses the LM35 integrated circuit. Can be used in numerous weather detection applications for home automation / weather monitoring.';
+Blockly.Msg.INSTANCE_LM35_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/79-lm35-temperature-sensor-module';
+Blockly.Msg.INSTANCE_LM35_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_LM35_GET_TOOLTIP = 'READ THE TEMPERATURE IN CELSIUS FROM THE TEMPERATURE SENSOR';
+Blockly.Msg.MODULE_LM35_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/79-lm35-temperature-sensor-module';
+Blockly.Msg.MODULE_LM35_GET_CELSIUS = 'Celsius';
+
+Blockly.Msg.INSTANCE_SOUNDSENSOR_TOOLTIP = 'The sound sensor is the perfect sensor to detect environmental variations in noise.';
+Blockly.Msg.INSTANCE_SOUNDSENSOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/78-sound-sensor-module';
+Blockly.Msg.INSTANCE_SOUNDSENSOR_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_SOUNDSENSOR_GET_TOOLTIP = 'READ THE SOUND VOLUME(0-1023) FROM THE SOUND SENSOR';
+Blockly.Msg.MODULE_SOUNDSENSOR_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/78-sound-sensor-module';
+Blockly.Msg.MODULE_SOUNDSENSOR_GET_VALUE = 'value';
+
+Blockly.Msg.INSTANCE_ULTRASONIC_TOOLTIP = 'An ultrasonic transmitter and receiver sensor all in one.';
+Blockly.Msg.INSTANCE_ULTRASONIC_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/62-osepp-ultrasonic-sensor-module';
+Blockly.Msg.INSTANCE_ULTRASONIC_TRIGPIN = 'trig pin';
+Blockly.Msg.INSTANCE_ULTRASONIC_ECHOPIN = 'echo pin';
+
+Blockly.Msg.MODULE_ULTRASONIC_GET_TOOLTIP = 'READ THE DISTANCE IN MILLIMETERS OF THE ULTRASONIC SENSOR';
+Blockly.Msg.MODULE_ULTRASONIC_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/62-osepp-ultrasonic-sensor-module';
+Blockly.Msg.MODULE_ULTRASONIC_GET_MM = 'mm of';
+
+Blockly.Msg.INSTANCE_4DTOUCH_TOOLTIP = 'Capacitive touch Module';
+Blockly.Msg.INSTANCE_4DTOUCH_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/53-4-digit-touch-sensor-module';
+Blockly.Msg.INSTANCE_4DTOUCH_OUT1 = 'OUT1';
+Blockly.Msg.INSTANCE_4DTOUCH_OUT2 = 'OUT2';
+Blockly.Msg.INSTANCE_4DTOUCH_OUT3 = 'OUT3';
+Blockly.Msg.INSTANCE_4DTOUCH_OUT4 = 'OUT4';
+
+Blockly.Msg.MODULE_4DTOUCH_GET_TOOLTIP = 'DETECT IF TOUCH SENSOR IS PRESSED';
+Blockly.Msg.MODULE_4DTOUCH_GET_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/53-4-digit-touch-sensor-module';
+Blockly.Msg.MODULE_4DTOUCH_GET_PRESSED = 'Pressed';
+
+Blockly.Msg.INSTANCE_FLAME_TOOLTIP = 'detect variations in light wavelength (such as fire flame detection) in the range of 760nm-1100 nm';
+Blockly.Msg.INSTANCE_FLAME_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module';
+Blockly.Msg.INSTANCE_FLAME_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_READ_FLAME_TOOLTIP = 'DETECT VALUE OF FLAME SENSOR';
+Blockly.Msg.MODULE_READ_FLAME_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/60-flame-sensor-module';
+Blockly.Msg.MODULE_READ_FLAME_VALUE = 'Value';
+
+Blockly.Msg.INSTANCE_IRDETECTOR_TOOLTIP = 'Obstacle avoidance module';
+Blockly.Msg.INSTANCE_IRDETECTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/64-ir-detector';
+Blockly.Msg.INSTANCE_IRDETECTOR_ONPIN = 'on Pin';
+
+Blockly.Msg.MODULE_READ_IRDETECTOR_TOOLTIP = 'Detects when objects are within the calibrated range';
+Blockly.Msg.MODULE_READ_IRDETECTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/64-ir-detector';
+Blockly.Msg.MODULE_READ_IRDETECTOR_TRIGGED = 'Trigged';
+
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_TOOLTIP = 'Capacitive touch Module';
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_HELPURL = '';
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR = 'DIR';
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_PWM = 'PWM';
+
+Blockly.Msg.MODULE_SET_TB6612MOTORDRIVER_TOOLTIP = 'CHOOSE THE SPEED AND DIRECTION OF MOTOR';
+Blockly.Msg.MODULE_SET_TB6612MOTORDRIVER_HELPURL = '';
+Blockly.Msg.MODULE_SET_TB6612MOTORDRIVER_OPTION = {
+    'f': 'forward',
+    'b': 'backward',
+    's': 'stop'
+};
+
+Blockly.Msg.INSTANCE_RANGEFINDER_TOOLTIP = 'An ultrasonic transmitter and receiver sensor all in one.';
+Blockly.Msg.INSTANCE_RANGEFINDER_HELPURL = '';
+Blockly.Msg.INSTANCE_RANGEFINDER_PINON = 'on Pin';
+
+Blockly.Msg.MODULE_RANGEFINDER_PING_TOOLTIP = 'READ THE DISTANCE IN MILLIMETERS OF THE ULTRASONIC SENSOR';
+Blockly.Msg.MODULE_RANGEFINDER_PING_HELPURL = '';
+Blockly.Msg.MODULE_RANGEFINDER_PING_MM = 'mm of';
+
+Blockly.Msg.INSTANCE_OSEPPREMOTE_TOOLTIP = '';
+Blockly.Msg.INSTANCE_OSEPPREMOTE_HELPURL = '';
+Blockly.Msg.INSTANCE_OSEPPREMOTE_REMOTE_UPDATE = 'Remote Update';
+
+Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_TOOLTIP = 'DETECT IF REMOTE BUTTON IS PRESSED';
+Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_HELPURL = '';
+Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_REMOTE = 'Remote';
+Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_PRESSED = 'Pressed';
+
+Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_TOOLTIP = 'Get the value of the remote remote channel';
+Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_HELPURL = '';
+Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_REMOTE = 'Remote';
+Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION = {
+    '0': 'Left X',
+    '1': 'Left Y',
+    '2': 'Right X',
+    '3': 'Right Y',
+    '4': 'Gravity X',
+    '5': 'Gravity Y',
+    '6': 'Gravity Z'
+};
+
+Blockly.Msg.MODULE_OSEPPREMOTE_ISTIMEOUT_TOOLTIP = 'DETECT IF REMOTE IS TIMEOUT';
+Blockly.Msg.MODULE_OSEPPREMOTE_ISTIMEOUT_HELPURL = '';
+Blockly.Msg.MODULE_OSEPPREMOTE_ISTIMEOUT_REMOTE_TIMEOUT = 'Remote Timeout';
+
+
+
+Blockly.Msg.INSTANCE_PROCEDURE_TOOLTIP = 'PROCEDURE IS A SEQUENCE OF PROGRAM INSTRUCTIONS THAT PERFORM A SPECIFIC TASK';
+Blockly.Msg.INSTANCE_PROCEDURE_HELPURL = 'https://en.wikipedia.org/wiki/Subroutine';
+Blockly.Msg.INSTANCE_PROCEDURE_VOID = 'void ';
+
+Blockly.Msg.INSTANCE_PROCEDURE_CALL_TOOLTIP = 'Execute a sequence of instructions';
+Blockly.Msg.INSTANCE_PROCEDURE_CALL_HELPURL = 'https://en.wikipedia.org/wiki/Subroutine';
+Blockly.Msg.INSTANCE_PROCEDURE_CALL_CALL = 'call ';
+
+Blockly.Msg.PROCEDURE_RETURN_TOOLTIP = 'Terminate a function and return';
+Blockly.Msg.PROCEDURE_RETURN_HELPURL = 'https://www.arduino.cc/en/Reference/Return';
+Blockly.Msg.PROCEDURE_RETURN_RETURN = 'return';

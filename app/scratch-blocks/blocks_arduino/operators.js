@@ -31,11 +31,15 @@ Blockly.Blocks['arithmeticoperators'] = {
         this.appendValueInput("NUM1")
             .setCheck("Number");
         this.appendDummyInput()
-            .appendField(" ")
-            .appendField(new Blockly.FieldDropdown([["+", "+"], ["-", "-"], ["*", "*"], ["/", "/"], ["%", "%"]]), "Operators");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.ARITHMETICOPERATORS_OPTION_PLUS, "+"],
+                [Blockly.Msg.ARITHMETICOPERATORS_OPTION_MINUS, "-"],
+                [Blockly.Msg.ARITHMETICOPERATORS_OPTION_MUL, "*"],
+                [Blockly.Msg.ARITHMETICOPERATORS_OPTION_DIV, "/"],
+                [Blockly.Msg.ARITHMETICOPERATORS_OPTION_MOD, "%"]])
+                , "Operators");
         this.appendValueInput("NUM2")
-            .setCheck("Number")
-            .appendField(" ");
+            .setCheck("Number");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
@@ -44,19 +48,13 @@ Blockly.Blocks['arithmeticoperators'] = {
         var thisBlock = this;
         this.setTooltip(function () {
             var op = thisBlock.getFieldValue('Operators');
-            var TOOLTIPS = {
-                '+': 'These operators return the sum of the two operands',
-                '-': 'These operators return the difference of the two operands',
-                '*': 'These operators return the product of the two operands',
-                '/': 'These operators return the quotient (respectively) of the two operands',
-                '%': 'Calculates the remainder when one integer is divided by another.'
-            };
+            var TOOLTIPS = Blockly.Msg.ARITHMETICOPERATORS_TOOLTIP;
             return TOOLTIPS[op];
         });
         this.setHelpUrl(function () {
             var op = thisBlock.getFieldValue('Operators');
-            if (op == '%') return 'https://www.arduino.cc/en/Reference/Modulo';
-            return 'https://www.arduino.cc/en/Reference/Arithmetic'
+            var urls = Blockly.Msg.ARITHMETICOPERATORS_HELPURL;
+            return urls[op];
         });
     }
 };
@@ -65,12 +63,13 @@ Blockly.Blocks['negativeoperators'] = {
     init: function () {
         this.appendValueInput("NUM2")
             .setCheck("Number")
-            .appendField("Negative");
+            .appendField(Blockly.Msg.NEGATIVEOPERATORS_NUM2NEGATIVE);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Return negative number');
+        this.setTooltip(Blockly.Msg.NEGATIVEOPERATORS_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.NEGATIVEOPERATORS_HELPURL);
     }
 };
 
@@ -81,11 +80,16 @@ Blockly.Blocks['comparisonoperators'] = {
         this.appendValueInput("NUM1")
             .setCheck(["Boolean", "Number"]);
         this.appendDummyInput()
-            .appendField(" ")
-            .appendField(new Blockly.FieldDropdown([["==", "=="], ["!=", "!="], ["<", "<"], [">", ">"], ["<=", "<="], [">=", ">="]]), "Operators");
+            .appendField(new Blockly.FieldDropdown(
+                [[Blockly.Msg.COMPARISONOPERATORS_OPTION_EQ, "=="],
+                [Blockly.Msg.COMPARISONOPERATORS_OPTION_NE, "!="],
+                [Blockly.Msg.COMPARISONOPERATORS_OPTION_LT, "<"],
+                [Blockly.Msg.COMPARISONOPERATORS_OPTION_GT, ">"],
+                [Blockly.Msg.COMPARISONOPERATORS_OPTION_LE, "<="],
+                [Blockly.Msg.COMPARISONOPERATORS_OPTION_GE, ">="]]),
+                "Operators");
         this.appendValueInput("NUM2")
-            .setCheck(["Boolean", "Number"])
-            .appendField(" ");
+            .setCheck(["Boolean", "Number"]);
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
@@ -94,20 +98,13 @@ Blockly.Blocks['comparisonoperators'] = {
         var thisBlock = this;
         this.setTooltip(function () {
             var op = thisBlock.getFieldValue('Operators');
-            var TOOLTIPS = {
-                '==': 'x == y (x is equal to y)?',
-                '!=': 'x != y (x is not equal to y)?',
-                '<': 'x <  y (x is less than y)?',
-                '>': 'x >  y (x is greater than y)?',
-                '<=': 'x <= y (x is less than or equal to y)?',
-                '>=': 'x >= y (x is greater than or equal to y)?'
-            };
+            var TOOLTIPS = Blockly.Msg.COMPARISONOPERATORS_TOOLTIP;
             return TOOLTIPS[op];
         });
         this.setHelpUrl(function () {
             var op = thisBlock.getFieldValue('Operators');
-            if (op == '%') return 'https://www.arduino.cc/en/Reference/Modulo';
-            return 'https://www.arduino.cc/en/Reference/Arithmetic'
+            var urls = Blockly.Msg.COMPARISONOPERATORS_HELPURL;
+            return urls[op];
         });
     }
 };
@@ -118,11 +115,12 @@ Blockly.Blocks['booleanoperators'] = {
         this.appendValueInput("NUM1")
             .setCheck(["Boolean", "Number"]);
         this.appendDummyInput()
-            .appendField(" ")
-            .appendField(new Blockly.FieldDropdown([["AND", "&&"], ["OR", "||"]]), "Operators");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.BOOLEANOPERATORS_OPTION_AND, "&&"],
+                [Blockly.Msg.BOOLEANOPERATORS_OPTION_OR, "||"]]),
+                "Operators");
         this.appendValueInput("NUM2")
-            .setCheck(["Boolean", "Number"])
-            .appendField(" ");
+            .setCheck(["Boolean", "Number"]);
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
@@ -131,13 +129,14 @@ Blockly.Blocks['booleanoperators'] = {
         var thisBlock = this;
         this.setTooltip(function () {
             var op = thisBlock.getFieldValue('Operators');
-            var TOOLTIPS = {
-                '&&': 'True only if both operands are true',
-                '||': 'True if either operand is true',
-            };
+            var TOOLTIPS = Blockly.Msg.BOOLEANOPERATORS_TOOLTIP
             return TOOLTIPS[op];
         });
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Boolean');
+        this.setHelpUrl(function () {
+            var op = thisBlock.getFieldValue('Operators');
+            var urls = Blockly.Msg.BOOLEANOPERATORS_HELPURL;
+            return urls[op];
+        });
     }
 };
 
@@ -147,25 +146,28 @@ Blockly.Blocks['notoperators'] = {
     init: function () {
         this.appendValueInput("NUM2")
             .setCheck(["Boolean", "Number"])
-            .appendField("NOT");
+            .appendField(Blockly.Msg.NOTOPERATORS_NUM2NOT);
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('True if the operand is false');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Boolean');
+        this.setTooltip(Blockly.Msg.NOTOPERATORS_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.NOTOPERATORS_HELPURL);
     }
 };
 Blockly.Blocks['mathminmax'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["min", "min"], ["max", "max"]]), "OPERATOR");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.MATHMINMAX_OPTION_MIN, "min"],
+                [Blockly.Msg.MATHMINMAX_OPTION_MAX, "max"]]),
+                "OPERATOR");
         this.appendValueInput("NUM1")
             .setCheck("Number")
-            .appendField("of");
+            .appendField(Blockly.Msg.MATHMINMAX_NUM1);
         this.appendValueInput("NUM2")
             .setCheck("Number")
-            .appendField("or");
+            .appendField(Blockly.Msg.MATHMINMAX_NUM2);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
@@ -173,17 +175,14 @@ Blockly.Blocks['mathminmax'] = {
 
         var thisBlock = this;
         this.setTooltip(function () {
-            var op = thisBlock.getFieldValue('Operators');
-            var TOOLTIPS = {
-                'min': 'Calculates the minimum of two numbers',
-                'max': 'Calculates the maximum of two numbers',
-            };
+            var op = thisBlock.getFieldValue('OPERATOR');
+            var TOOLTIPS = Blockly.Msg.MATHMINMAX_TOOLTIP;
             return TOOLTIPS[op];
         });
         this.setHelpUrl(function () {
-            var op = thisBlock.getFieldValue('Operators');
-            if (op == 'min') return 'https://www.arduino.cc/en/Reference/Min';
-            return 'https://www.arduino.cc/en/Reference/Max'
+            var op = thisBlock.getFieldValue('OPERATOR');
+            var urls = Blockly.Msg.MATHMINMAX_HELPURL;
+            return urls[op];
         });
     }
 };
@@ -191,10 +190,16 @@ Blockly.Blocks['mathminmax'] = {
 Blockly.Blocks['mathoperators'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["abs", "abs"], ["sqrt", "sqrt"], ["sin", "sin"], ["cos", "cos"], ["tan", "tan"]]), "OPERATOR");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.MATHOPERATORS_OPTION_ABS, "abs"], 
+                [Blockly.Msg.MATHOPERATORS_OPTION_SQRT, "sqrt"], 
+                [Blockly.Msg.MATHOPERATORS_OPTION_SIN, "sin"], 
+                [Blockly.Msg.MATHOPERATORS_OPTION_COS, "cos"], 
+                [Blockly.Msg.MATHOPERATORS_OPTION_TAN, "tan"]]), 
+                "OPERATOR");
         this.appendValueInput("NUM")
             .setCheck("Number")
-            .appendField("of");
+            .appendField(Blockly.Msg.MATHOPERATORS_NUMOF);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
@@ -203,24 +208,12 @@ Blockly.Blocks['mathoperators'] = {
         var thisBlock = this;
         this.setTooltip(function () {
             var op = thisBlock.getFieldValue('OPERATOR');
-            var TOOLTIPS = {
-                'abs': 'Computes the absolute value of a number',
-                'sqrt': 'Calculates the square root of a number',
-                'sin': 'Calculates the sine of an angle (in radians). The result will be between -1 and 1.',
-                'cos': 'Calculates the cos of an angle (in radians). The result will be between -1 and 1.',
-                'tan': 'Calculates the tangent of an angle (in radians). The result will be between negative infinity and infinity.'
-            };
+            var TOOLTIPS = Blockly.Msg.MATHOPERATORS_TOOLTIP;
             return TOOLTIPS[op];
         });
         this.setHelpUrl(function () {
             var op = thisBlock.getFieldValue('OPERATOR');
-            var url = {
-                'abs': 'https://www.arduino.cc/en/Reference/Abs',
-                'sqrt': 'https://www.arduino.cc/en/Reference/Sqrt',
-                'sin': 'https://www.arduino.cc/en/Reference/Sin',
-                'cos': 'https://www.arduino.cc/en/Reference/Cos',
-                'tan': 'https://www.arduino.cc/en/Reference/Tan'
-            };
+            var url = Blockly.Msg.MATHOPERATORS_HELPURL;
             return url[op];
         });
     }
@@ -230,19 +223,19 @@ Blockly.Blocks['mathconstrain'] = {
     init: function () {
         this.appendValueInput("X")
             .setCheck("Number")
-            .appendField("constrain");
+            .appendField(Blockly.Msg.MATHCONSTRAIN_XCONSTRAIN);
         this.appendValueInput("A")
             .setCheck("Number")
-            .appendField("range");
+            .appendField(Blockly.Msg.MATHCONSTRAIN_ARANGE);
         this.appendValueInput("B")
             .setCheck("Number")
-            .appendField("to");
+            .appendField(Blockly.Msg.MATHCONSTRAIN_BTO);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Constrains a number to be within a range');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Constrain');
+        this.setTooltip(Blockly.Msg.MATHCONSTRAIN_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.MATHCONSTRAIN_HELPURL);
     }
 };
 
@@ -250,25 +243,25 @@ Blockly.Blocks['mathmap'] = {
     init: function () {
         this.appendValueInput("X")
             .setCheck("Number")
-            .appendField("map");
+            .appendField(Blockly.Msg.MATHMAP_XMAP);
         this.appendValueInput("FL")
             .setCheck("Number")
-            .appendField("from");
+            .appendField(Blockly.Msg.MATHMAP_FLFROM);
         this.appendValueInput("FH")
             .setCheck(null)
-            .appendField(",");
+            .appendField(Blockly.Msg.MATHMAP_FH);
         this.appendValueInput("TL")
             .setCheck("Number")
-            .appendField("to");
+            .appendField(Blockly.Msg.MATHMAP_TLTO);
         this.appendValueInput("TH")
             .setCheck("Number")
-            .appendField(",");
+            .appendField(Blockly.Msg.MATHMAP_TH);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('Re-maps a number from one range to another');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Map');
+        this.setTooltip(Blockly.Msg.MATHMAP_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.MATHMAP_HELPURL);
     }
 };
 
@@ -277,29 +270,32 @@ Blockly.Blocks['mathrandom'] = {
     init: function () {
         this.appendValueInput("L")
             .setCheck("Number")
-            .appendField("random from");
+            .appendField(Blockly.Msg.MATHRANDOM_LRANDOM_FROM);
         this.appendValueInput("H")
             .setCheck("Number")
-            .appendField("to");
+            .appendField(Blockly.Msg.MATHRANDOM_HTO);
         this.setInputsInline(true);
         this.setOutput(true, "Number");
         this.setColour(Blockly.Colours.cMathOperation.primary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip('generates pseudo-random numbers');
-        this.setHelpUrl('https://www.arduino.cc/en/Reference/Random');
+        this.setTooltip(Blockly.Msg.MATHRANDOM_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.MATHRANDOM_HELPURL);
     }
 };
 
 Blockly.Blocks['math_boolean_menu'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["True", "true"], ["False", "false"]]), "state");
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.MATH_BOOLEAN_MENU_OPTION_TRUE, "true"], 
+                [Blockly.Msg.MATH_BOOLEAN_MENU_OPTION_FALSE, "false"]]),
+                 "state");
         this.setInputsInline(true);
         this.setOutput(true, "Boolean");
         this.setColour(Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.secondary, Blockly.Colours.cMathOperation.tertiary);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_HEXAGONAL);
-        this.setTooltip('');
-        this.setHelpUrl('');
+        this.setTooltip(Blockly.Msg.MATH_BOOLEAN_MENU_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.MATH_BOOLEAN_MENU_HELPURL);
     }
 };
 
