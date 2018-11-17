@@ -81,9 +81,9 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
         '/': 'https://www.arduino.cc/en/Reference/Arithmetic',
         '%': 'https://www.arduino.cc/en/Reference/Modulo'
     },
-    'ARITHMETICOPERATORS_OPTION_PLUS': '加',
-    'ARITHMETICOPERATORS_OPTION_MINUS': '减',
-    'ARITHMETICOPERATORS_OPTION_MUL': '乘',
+    'ARITHMETICOPERATORS_OPTION_PLUS': '加上',
+    'ARITHMETICOPERATORS_OPTION_MINUS': '减去',
+    'ARITHMETICOPERATORS_OPTION_MUL': '乘以',
     'ARITHMETICOPERATORS_OPTION_DIV': '除以',
     'ARITHMETICOPERATORS_OPTION_MOD': '模除',
 
@@ -159,8 +159,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
         'cos': 'https://www.arduino.cc/en/Reference/Cos',
         'tan': 'https://www.arduino.cc/en/Reference/Tan'
     },
-    'MATHOPERATORS_NUMOF': 'of',
-
+    'MATHOPERATORS_NUMOF': '',
     'MATHOPERATORS_OPTION_ABS': '绝对值',
     'MATHOPERATORS_OPTION_SQRT': '平方根',
     'MATHOPERATORS_OPTION_SIN': '正弦',
@@ -240,17 +239,17 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
 
     'IO_TONE_TOOLTIP': '在指定引脚上产生一个固定频率的音调',
     'IO_TONE_HELPURL': 'https://www.arduino.cc/en/Reference/Tone',
-    'IO_TONE_PINTONE': '发音',
+    'IO_TONE_PINTONE': '播放',
 
 
     'IO_TONE_MENU_TOOLTIP': '',
     'IO_TONE_MENU_HELPURL': '',
 
-    'IO_NOTONE_TOOLTIP': '停止由发音方块产生的声音',
+    'IO_NOTONE_TOOLTIP': '停止由播放积木产生的声音',
     'IO_NOTONE_HELPURL': 'https://www.arduino.cc/en/Reference/NoTone',
-    'IO_NOTONE_PINNOTONE': '停止发音',
+    'IO_NOTONE_PINNOTONE': '停止播放',
 
-    'IO_PULSEIN_TOOLTIP': '读取脉冲长度',
+    'IO_PULSEIN_TOOLTIP': '捕获引脚上呈现高/低电平的时间(微秒)',
     'IO_PULSEIN_HELPURL': 'https://www.arduino.cc/en/Reference/PulseIn',
     'IO_PULSEIN_PINPULSEIN': '脉冲长度',
     'IO_PULSEIN_TIMEOUTTIMEOUT': '超时',
@@ -266,7 +265,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'SERIAL_PRINT_OPTION_PRINT': '打印',
     'SERIAL_PRINT_OPTION_PRINTLN': '打印并换行',
 
-    'SERIAL_AVAILABLE_TOOLTIP': '返回串口接收到的数据长度(字节)',
+    'SERIAL_AVAILABLE_TOOLTIP': '返回串口接收到的数据(字节)长度',
     'SERIAL_AVAILABLE_HELPURL': 'https://www.arduino.cc/en/Serial/Available',
     'SERIAL_AVAILABLE_SERIAL_AVAILABLE': '串口有数据',
 
@@ -432,7 +431,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'MODULE_LCD_CLEAR_HELPURL': 'https://www.arduino.cc/en/Reference/LiquidCrystalClear',
     'MODULE_LCD_CLEAR_CLEAR': '清屏',
 
-    'MODULE_LCD_GOTO_TOOLTIP': 'SET THE ROW AND COLUMN OF THE LCD DISPLAY将光标移动到指定的行(0到1)和列(0到15)',
+    'MODULE_LCD_GOTO_TOOLTIP': '将光标移动到指定的行(0到1)和列(0到15)',
     'MODULE_LCD_GOTO_HELPURL': 'https://www.arduino.cc/en/Reference/LiquidCrystalSetCursor',
     'MODULE_LCD_GOTO_GOTO': '定位到',
     'MODULE_LCD_GOTO_COLUMNX': '列',
@@ -466,10 +465,10 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
 
     'MODULE_SET_FANMOTOR_TOOLTIP': '设置风扇的转速(0到255)和方向,或者停止',
     'MODULE_SET_FANMOTOR_HELPURL': 'https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module',
-    'MODULE_SET_FANMOTOR_OPTION':{
-        'f':'正转',
-        'b':'反转',
-        's':'停止'
+    'MODULE_SET_FANMOTOR_OPTION': {
+        'f': '正转',
+        'b': '反转',
+        's': '停止'
     },
     'INSTANCE_SERVO_TOOLTIP': '定义一个舵机,你可以控制它的角度,通常为 0 到 180 度',
     'INSTANCE_SERVO_HELPURL': 'https://www.arduino.cc/en/Reference/Servo',
@@ -586,9 +585,13 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'MODULE_READ_IRDETECTOR_HELPURL': 'https://osepp.com/electronic-modules/sensor-modules/64-ir-detector',
     'MODULE_READ_IRDETECTOR_TRIGGED': '触发',
 
-    'INSTANCE_TB6612MOTORDRIVER_TOOLTIP': 'TB6612提供两个通道的马达驱动,你需要两个模块来定义它',
+    'INSTANCE_TB6612MOTORDRIVER_TOOLTIP': 'TB6612提供两个通道的马达驱动,每个通道都需要一个积木来定义它.',
     'INSTANCE_TB6612MOTORDRIVER_HELPURL': '',
     'INSTANCE_TB6612MOTORDRIVER_DIR': 'DIR接在',
+    'INSTANCE_TB6612MOTORDRIVER_DIR_OPTION': {
+        "f": "正转",
+        "b": "反转"
+    },
     'INSTANCE_TB6612MOTORDRIVER_PWM': 'PWM接在',
 
     'MODULE_SET_TB6612MOTORDRIVER_TOOLTIP': '设置马达的转速和方向',
@@ -637,13 +640,23 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'INSTANCE_PROCEDURE_HELPURL': 'https://en.wikipedia.org/wiki/Subroutine',
     'INSTANCE_PROCEDURE_VOID': '子程序',
 
-    'INSTANCE_PROCEDURE_CALL_TOOLTIP': 'Execute a sequence of instructions',
+    'INSTANCE_PROCEDURE_CALL_TOOLTIP': '跳转到子程序中执行,子程序返回后继续往下执行',
     'INSTANCE_PROCEDURE_CALL_HELPURL': 'https://en.wikipedia.org/wiki/Subroutine',
     'INSTANCE_PROCEDURE_CALL_CALL': '调用子程序',
 
     'PROCEDURE_RETURN_TOOLTIP': '从一个过程中提前返回,只能用在过程中',
     'PROCEDURE_RETURN_HELPURL': 'https://www.arduino.cc/en/Reference/Return',
     'PROCEDURE_RETURN_RETURN': '提前从子程序返回',
+
+    'CATEGORY_CONTROL': '控制',
+    'CATEGORY_ARDUINO': '硬件',
+    'CATEGORY_OPERATORS': '数学',
+    'CATEGORY_VARIABLE': '变量',
+    'CATEGORY_PROCEDURE': '子程序',
+    'CATEGORY_ROBOTMODULES': '机器人',
+    'CATEGORY_DISPLAYMODULES': '显示模块',
+    'CATEGORY_INPUTMODULES': '输入模块',
+    'CATEGORY_OUTPUTMODULES': '输出模块',
 
     "DUPLICATE": "复制",
     "DELETE": "删除",

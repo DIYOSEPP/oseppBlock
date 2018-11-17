@@ -54,6 +54,10 @@ Blockly.ScratchMsgs.currentLocale_ = 'en';
  */
 Blockly.ScratchMsgs.setLocale = function(locale) {
   if (Object.keys(Blockly.ScratchMsgs.locales).includes(locale)) {
+    // osepp:Save default to default locale 
+    if(!Object.keys(Blockly.ScratchMsgs.locales).includes(Blockly.ScratchMsgs.currentLocale_)){
+      Blockly.ScratchMsgs.locales[Blockly.ScratchMsgs.currentLocale_]=Object.assign({}, Blockly.Msg);
+    }
     Blockly.ScratchMsgs.currentLocale_ = locale;
     Blockly.Msg = Object.assign({}, Blockly.Msg, Blockly.ScratchMsgs.locales[locale]);
   } else {

@@ -53,3 +53,4 @@ release
 app/build.py
 oseppBlock-*-*/*
 app.zip
+.vscode/

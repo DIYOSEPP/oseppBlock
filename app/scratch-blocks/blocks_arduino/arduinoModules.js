@@ -1023,7 +1023,9 @@ Blockly.Blocks['instance_TB6612MotorDriver'] = {
         this.appendValueInput("DIR")
             .setCheck("Pin")
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(new Blockly.FieldDropdown([["Forward", "f"], ["Backward", "b"]]), "frb")
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR_OPTION['f'], "f"], 
+                [Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR_OPTION['b'], "b"]]), "frb")
             .appendField(Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR);
         this.appendValueInput("PWM")
             .setCheck("Pin")

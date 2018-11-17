@@ -94,6 +94,15 @@ Blockly.Msg.RENAME_LIST = 'Rename list';
 // Blockly.Msg.BROADCAST_MODAL_TITLE = 'New Message';
 // Blockly.Msg.DEFAULT_BROADCAST_MESSAGE_NAME = 'message1';
 
+Blockly.Msg.CATEGORY_CONTROL = 'Control';
+Blockly.Msg.CATEGORY_ARDUINO = 'Arduino';
+Blockly.Msg.CATEGORY_OPERATORS = 'Operators';
+Blockly.Msg.CATEGORY_VARIABLE = 'Variable';
+Blockly.Msg.CATEGORY_PROCEDURE = 'Procedure';
+Blockly.Msg.CATEGORY_ROBOTMODULES = 'Robot Modules';
+Blockly.Msg.CATEGORY_DISPLAYMODULES = 'Display Modules';
+Blockly.Msg.CATEGORY_INPUTMODULES = 'Input Modules';
+Blockly.Msg.CATEGORY_OUTPUTMODULES = 'Output Modules';
 
 Blockly.Msg.CONTROL_IF_TOOLTIP = 'IF A VALUE IS TRUE TO A CONDITION, DO SOMETHING. ELSE IS EXCEPTION';
 Blockly.Msg.CONTROL_IF_HELPURL = 'https://www.arduino.cc/en/Reference/If';
@@ -564,10 +573,10 @@ Blockly.Msg.INSTANCE_FANMOTOR_INB = 'INB';
 
 Blockly.Msg.MODULE_SET_FANMOTOR_TOOLTIP = 'CHOOSE THE SPEED AND DIRECTION OF FAN MOTOR';
 Blockly.Msg.MODULE_SET_FANMOTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/59-fan-motor-module';
-Blockly.Msg.MODULE_SET_FANMOTOR_OPTION={
-    'f':'forward',
-    'b':'backward',
-    's':'stop'
+Blockly.Msg.MODULE_SET_FANMOTOR_OPTION = {
+    'f': 'forward',
+    'b': 'backward',
+    's': 'stop'
 };
 
 Blockly.Msg.INSTANCE_SERVO_TOOLTIP = 'servos have integrated gears and a shaft that can be precisely controlled. Standard servos allow the shaft to be positioned at various angles, usually between 0 and 180 degrees';
@@ -685,9 +694,13 @@ Blockly.Msg.MODULE_READ_IRDETECTOR_TOOLTIP = 'Detects when objects are within th
 Blockly.Msg.MODULE_READ_IRDETECTOR_HELPURL = 'https://osepp.com/electronic-modules/sensor-modules/64-ir-detector';
 Blockly.Msg.MODULE_READ_IRDETECTOR_TRIGGED = 'Trigged';
 
-Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_TOOLTIP = 'Capacitive touch Module';
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_TOOLTIP = '';
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_HELPURL = '';
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR = 'DIR';
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR_OPTION={
+    "f":"Forward",
+    "b":"Backward"
+};
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_PWM = 'PWM';
 
 Blockly.Msg.MODULE_SET_TB6612MOTORDRIVER_TOOLTIP = 'CHOOSE THE SPEED AND DIRECTION OF MOTOR';
