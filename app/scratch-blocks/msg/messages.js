@@ -94,6 +94,26 @@ Blockly.Msg.RENAME_LIST = 'Rename list';
 // Blockly.Msg.BROADCAST_MODAL_TITLE = 'New Message';
 // Blockly.Msg.DEFAULT_BROADCAST_MESSAGE_NAME = 'message1';
 
+Blockly.Msg.ButtonNewWorkspace = 'New Workspace';
+Blockly.Msg.ButtonSaveBlocksToFile = 'Save Blocks To File';
+Blockly.Msg.ButtonLoadBlocksFromFile = 'load blocks from file';
+Blockly.Msg.ButtonUndo = 'Undo';
+Blockly.Msg.ButtonRedo = 'Redo';
+Blockly.Msg.ButtonSendCodeToArduinoIde = 'Send code to arduino ide';
+Blockly.Msg.ButtonVerify = 'Verify';
+Blockly.Msg.ButtonUpLoad = 'Upload';
+Blockly.Msg.ButtonToogleSerial = 'toggle serial message box open/close';
+Blockly.Msg.ButtonConnectSerial = 'connect serial port';
+Blockly.Msg.ButtonResetUno = 'reset uno';
+Blockly.Msg.ButtonSendMsg = 'send text to uno';
+Blockly.Msg.LabelArduinoUnoOn = "Arduino Uno on";
+Blockly.Msg.LabelNoLineEnding = "No line ending";
+Blockly.Msg.LabelNewline = "Newline";
+Blockly.Msg.LabelCarriageReturn = "Carriage return";
+Blockly.Msg.LabelBothNLCR = "Both NL&CR";
+
+
+
 Blockly.Msg.CATEGORY_CONTROL = 'Control';
 Blockly.Msg.CATEGORY_ARDUINO = 'Arduino';
 Blockly.Msg.CATEGORY_OPERATORS = 'Operators';
@@ -697,9 +717,9 @@ Blockly.Msg.MODULE_READ_IRDETECTOR_TRIGGED = 'Trigged';
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_TOOLTIP = '';
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_HELPURL = '';
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR = 'DIR';
-Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR_OPTION={
-    "f":"Forward",
-    "b":"Backward"
+Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_DIR_OPTION = {
+    "f": "Forward",
+    "b": "Backward"
 };
 Blockly.Msg.INSTANCE_TB6612MOTORDRIVER_PWM = 'PWM';
 

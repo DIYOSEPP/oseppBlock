@@ -353,17 +353,17 @@
         <div id="codediv" style="width: 300px;">
             <div class="upload_buttons">
                 <ul id="code_menu" style="display: none;">
-                    <li title="send code to arduino ide">
+                    <li title="send code to arduino ide" localeID="ButtonSendCodeToArduinoIde">
                         <svg class="svg_icon" id="send_to_arduino_ide">
                             <use xlink:href="#svg_sendtoarduino" width="35px" height="35px"></use>
                         </svg>
                     </li>
-                    <li title="verify">
+                    <li title="verify" localeID="ButtonVerify">
                         <svg class="svg_icon" id="verify">
                             <use xlink:href="#svg_verify" width="35px" height="35px"></use>
                         </svg>
                     </li>
-                    <li title="upload">
+                    <li title="upload" localeID="ButtonUpLoad">
                         <svg class="svg_icon" id="upload">
                             <use xlink:href="#svg_upload" width="35px" height="35px"></use>
                         </svg>
@@ -372,33 +372,33 @@
                 </ul>
 
                 <ul>
-                        <li title="new workspace">
-                            <svg class="svg_icon" id="new">
-                                <use xlink:href="#svg_newfile" width="35px" height="35px"></use>
-                            </svg>
-                        </li>
-                        <li title="save blocks to file">
-                            <svg class="svg_icon" id="save">
-                                <use xlink:href="#svg_savefile" width="35px" height="35px"></use>
-                            </svg>
-                        </li>
-                        <li title="load blocks from file">
-                            <svg class="svg_icon" id="load">
-                                <use xlink:href="#svg_loadfile" width="35px" height="35px"></use>
-                            </svg>
-                        </li>
-                        <li style="padding-top: 10px"></li>
-                        <li id="undo" title="undo">
-                            <svg class="svg_icon">
-                                <use xlink:href="#svg_undo" width="35px" height="35px"></use>
-                            </svg>
-                        </li>
-                        <li id="redo" title="redo">
-                            <svg class="svg_icon">
-                                <use xlink:href="#svg_redo" width="35px" height="35px"></use>
-                            </svg>
-                        </li>
-                    </ul>
+                    <li title="new workspace" localeID="ButtonNewWorkspace">
+                        <svg class="svg_icon" id="new">
+                            <use xlink:href="#svg_newfile" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li title="save blocks to file" localeID="ButtonSaveBlocksToFile">
+                        <svg class="svg_icon" id="save">
+                            <use xlink:href="#svg_savefile" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li title="load blocks from file" localeID="ButtonLoadBlocksFromFile">
+                        <svg class="svg_icon" id="load">
+                            <use xlink:href="#svg_loadfile" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li style="padding-top: 10px"></li>
+                    <li id="undo" title="undo" localeID="ButtonUndo">
+                        <svg class="svg_icon">
+                            <use xlink:href="#svg_undo" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                    <li id="redo" title="redo" localeID="ButtonRedo">
+                        <svg class="svg_icon">
+                            <use xlink:href="#svg_redo" width="35px" height="35px"></use>
+                        </svg>
+                    </li>
+                </ul>
             </div>
             <div id="silderdiv">
             </div>
@@ -413,14 +413,14 @@
     <div id="serial_upload_msg" class="serial_upload_msg_close" style="display: none;">
         <div id="msgBar" style="width: 100%">
             <ul style="float: left">
-                <li id="toggle_serial_box" title="toggle serial message box open/close">
+                <li id="toggle_serial_box" title="toggle serial message box open/close" localeID="ButtonToogleSerial">
                     <svg class="svg_icon">
                         <use xlink:href="#svg_arraw" transform="rotate(90,20,20) translate(13,17)" width="25px" height="20px"></use>
                         <use xlink:href="#svg_arraw" transform="rotate(270,20,20) translate(13,17)" width="25px" height="20px"></use>
                     </svg>
                 </li>
                 <li class="hideifsmallscreen">
-                    <span>Arduino Uno on</span>
+                    <span localeID="LabelArduinoUnoOn">Arduino Uno on</span>
                 </li>
                 <li>
                     <span class="select-editable">
@@ -454,12 +454,12 @@
                         <input id="SelectBandrate" type="text" />
                     </span>
                 </li>
-                <li title="connect serial port">
+                <li title="connect serial port" localeID="ButtonConnectSerial">
                     <svg id="connect" class="svg_icon svg_disable">
                         <use xlink:href="#svg_connect" width="30px" height="30px" transform="translate(0,5)"></use>
                     </svg>
                 </li>
-                <li title="reset uno">
+                <li title="reset uno" localeID="ButtonResetUno">
                     <svg class="svg_icon svg_hide" id="reset">
                         <use xlink:href="#svg_resetuno" width="26px" height="26px" transform="translate(0,7)"></use>
                     </svg>
@@ -468,13 +468,13 @@
             <ul style="float: right;">
                 <li>
                     <select id="line_ending" class="svg_hide">
-                        <option>No line ending</option>
-                        <option>Newline</option>
-                        <option>Carriage return</option>
-                        <option>Both NL&CR</option>
+                        <option localeID="LabelNoLineEnding" value="no">No line ending</option>
+                        <option localeID="LabelNewline" value="n">Newline</option>
+                        <option localeID="LabelCarriageReturn" value="r">Carriage return</option>
+                        <option localeID="LabelBothNLCR" value="nr">Both NL&CR</option>
                     </select>
                 </li>
-                <li title="send text to uno">
+                <li title="send text to uno" localeID="ButtonSendMsg">
                     <svg id="send" class="svg_icon svg_hide">
                         <use xlink:href="#svg_sendtext" width="30px" height="30px" transform="translate(0,5)"></use>
                     </svg>

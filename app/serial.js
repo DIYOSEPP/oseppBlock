@@ -604,13 +604,13 @@ var initSerialUI = function () {
             var line_ending = document.getElementById("line_ending").value;
             if (!text) return;
             switch (line_ending) {
-                case "Newline":
+                case 'n':
                     text += "\n";
                     break;
-                case "Carriage return":
+                case 'r':
                     text += "\r";
                     break;
-                case "Both NL&CR":
+                case 'nr':
                     text += "\n\r";
             }
             serial_send(text);

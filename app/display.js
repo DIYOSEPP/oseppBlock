@@ -207,6 +207,25 @@ var loadWorkspace = function () {
 
     f.dispatchEvent(clickEvent);
 }
+function setLocaleUI() {
+    var trans = document.querySelectorAll('[localeID]');
+    for (var i = 0, t; t = trans[i]; i++) {
+        var key = t.attributes.localeID.value;
+        if (!Blockly.Msg[key]) continue;
+        switch (t.tagName.toLowerCase()) {
+            case 'li':
+                t.title = Blockly.Msg[key];
+                break;
+            case 'span':
+            case 'option':
+                t.innerText = Blockly.Msg[key];
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 function setLocale(locale) {
     blockWorkspace.getFlyout().setRecyclingEnabled(false);
     var xml = Blockly.Xml.workspaceToDom(blockWorkspace);
@@ -214,16 +233,19 @@ function setLocale(locale) {
     Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, blockWorkspace);
     blockWorkspace.updateToolbox(Blockly.Xml.textToDom(blockToolboxXml));
     blockWorkspace.getFlyout().setRecyclingEnabled(true);
+    setLocaleUI();
 }
 
+
 function initLocal() {
-    var  match = location.search.match(/locale=([^&]+)/);
-    if(match){
+    var match = location.search.match(/locale=([^&]+)/);
+    if (match) {
         Blockly.ScratchMsgs.setLocale(match[0]);
-    }else{
-        var lang = navigator.language||navigator.userLanguage;
+    } else {
+        var lang = navigator.language || navigator.userLanguage;
         Blockly.ScratchMsgs.setLocale(lang.toLowerCase());
-    }  
+    }
+    setLocaleUI();
 }
 
 function createBlockWorkspace() {

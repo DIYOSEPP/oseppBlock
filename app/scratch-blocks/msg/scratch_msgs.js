@@ -644,9 +644,30 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'INSTANCE_PROCEDURE_CALL_HELPURL': 'https://en.wikipedia.org/wiki/Subroutine',
     'INSTANCE_PROCEDURE_CALL_CALL': '调用子程序',
 
-    'PROCEDURE_RETURN_TOOLTIP': '从一个过程中提前返回,只能用在过程中',
+    'PROCEDURE_RETURN_TOOLTIP': '从一个过程中提前返回,只能用在子程序中',
     'PROCEDURE_RETURN_HELPURL': 'https://www.arduino.cc/en/Reference/Return',
     'PROCEDURE_RETURN_RETURN': '提前从子程序返回',
+
+
+    'ButtonNewWorkspace': '清空工作区的积木',
+    'ButtonSaveBlocksToFile': '保存积木到文件',
+    'ButtonLoadBlocksFromFile': '从文件中导入积木',
+    'ButtonUndo': '撤销',
+    'ButtonRedo': '重做',
+    'ButtonSendCodeToArduinoIde': '启动arduino ide,将代码发送到arduino ide的工作区编辑',
+    'ButtonVerify': '校验,尝试编译程序',
+    'ButtonUpLoad': '编译并上传程序到UNO',
+    'ButtonToogleSerial': '展开/折叠串口控制台',
+    'ButtonConnectSerial': '打开串口',
+    'ButtonResetUno': '复位UNO',
+    'ButtonSendMsg': '从串口发送消息',
+    'LabelArduinoUnoOn': 'Arduino Uno在',
+
+    'LabelNoLineEnding': "没有结束符",
+    'LabelNewline': "换行",
+    'LabelCarriageReturn': "回车",
+    'LabelBothNLCR': "回车+换行",
+
 
     'CATEGORY_CONTROL': '控制',
     'CATEGORY_ARDUINO': '硬件',
