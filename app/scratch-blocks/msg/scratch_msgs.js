@@ -277,9 +277,9 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'IO_ARDUINO_UNO_PIN_USABLE_MENU_HELPURL': '',
 
     'INSTANCE_CREATE_NUMBER_TOOLTIP': {
-        'int': '整形变量,最常用的变量数据类型,在arduino uno中,占用2个字节,范围: -32768 到 32767.',
-        'long': '长整形变量,占用4个字节,范围: -2,147,483,648 到 2,147,483,647.',
-        'unsigned int': '无符号整形变量,占用2个字节,范围: 0 到 65,535 (2^16) - 1).',
+        'int': '整型变量,最常用的变量数据类型,在arduino uno中,占用2个字节,范围: -32768 到 32767.',
+        'long': '长整型变量,占用4个字节,范围: -2,147,483,648 到 2,147,483,647.',
+        'unsigned int': '无符号整型变量,占用2个字节,范围: 0 到 65,535 (2^16) - 1).',
         'unsigned long': '无符号长整型变量,占用4个字节,范围: 0 到 4,294,967,295 (2^32 - 1).',
         'char': '字符变量,占用一个字节',
         'byte': '字节变量,占用一个字节,范围: 0 到 255.',
@@ -296,9 +296,9 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
         'float': 'https://www.arduino.cc/en/Reference/Float'
     },
     'INSTANCE_CREATE_NUMBER_OPTION': {
-        'int': '整形变量',
-        'long': '长整形变量',
-        'unsigned int': '无符号整形变量',
+        'int': '整型变量',
+        'long': '长整型变量',
+        'unsigned int': '无符号整型变量',
         'unsigned long': '无符号长整型变量',
         'char': '字符变量',
         'byte': '字节变量',
@@ -356,9 +356,9 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'INSTANCE_CREATE_ARRAY_TOOLTIP': '数组是变量的集合,你可以使用索引来取出其中一个变量',
     'INSTANCE_CREATE_ARRAY_HELPURL': 'https://www.arduino.cc/en/Reference/Array',
     'INSTANCE_CREATE_ARRAY_OPTION': {
-        'int': '整形数组',
-        'long': '长整形数组',
-        'unsigned int': '无符号整形数组',
+        'int': '整型数组',
+        'long': '长整型数组',
+        'unsigned int': '无符号整型数组',
         'unsigned long': '无符号长整型数组',
         'char': '字符数组',
         'byte': '字节数组',

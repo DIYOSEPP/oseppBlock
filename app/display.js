@@ -240,7 +240,7 @@ function setLocale(locale) {
 function initLocal() {
     var match = location.search.match(/locale=([^&]+)/);
     if (match) {
-        Blockly.ScratchMsgs.setLocale(match[0]);
+        Blockly.ScratchMsgs.setLocale(match[1]);
     } else {
         var lang = navigator.language || navigator.userLanguage;
         Blockly.ScratchMsgs.setLocale(lang.toLowerCase());
