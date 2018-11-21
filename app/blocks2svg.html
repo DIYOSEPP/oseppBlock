@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>oseppBlock</title>
+    <link rel="icon" href="media/osepp.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="prettify/arduino.css">
+    <script src="prettify/prettify.js"></script>
+    <!--free 
+    <script src="scratch-blocks/blockly_compressed_vertical.js"></script>
+    <script src="scratch-blocks/blocks_compressed_arduino.js"></script>
+    <script src="scratch-blocks/arduino_compressed.js"></script>
+    free-->
+    <!--delete-->
+    <script src="scratch-blocks/blockly_uncompressed_vertical.js"></script>
+    <script src="scratch-blocks/blocks_common/colour.js"></script>
+    <script src="scratch-blocks/blocks_common/math.js"></script>
+    <script src="scratch-blocks/blocks_common/text.js"></script>
+    <script src="scratch-blocks/blocks_arduino/control.js"></script>
+    <script src="scratch-blocks/blocks_arduino/operators.js"></script>
+    <script src="scratch-blocks/blocks_arduino/InputOutput.js"></script>
+    <script src="scratch-blocks/blocks_arduino/InstancesNumber.js"></script>
+    <script src="scratch-blocks/blocks_arduino/arduinoModules.js"></script>
+    <script src="scratch-blocks/blocks_arduino/procedures.js"></script>
+
+    <script src="scratch-blocks/generators/arduino.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_common.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_control.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_operators.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_inputoutput.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_instance.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_modules.js"></script>
+    <script src="scratch-blocks/generators/arduino/blocks_procedure.js"></script>
+    <!--delete-->
+
+    <script src="scratch-blocks/msg/messages.js"></script>
+    <script src="scratch-blocks/msg/scratch_msgs.js"></script>
+
+    <script src="display.js"></script>
+</head>
+
+<body>
+    <div style="display:none">
+        <xml xmlns="http://www.w3.org/1999/xhtml" id="blockDom">
+            <variables></variables>
+            <block type="instance_TB6612MotorDriver" id="Nd4(difuS2#zO/GFxMVy" x="-496" y="-289">
+                <field name="NAME">LF</field>
+                <field name="frb">b</field>
+                <value name="DIR">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="8AJ.3yP?FS`h1Z9=;R,r">
+                        <field name="Pin">8</field><data>digital:12,8,7,4</data>
+                    </shadow>
+                </value>
+                <value name="PWM">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="LOdUy`F-gnS-n}2xvYp!">
+                        <field name="Pin">3</field><data>pwm:11,3,6,5</data>
+                    </shadow>
+                </value>
+            </block>
+            <block type="instance_TB6612MotorDriver" id="jzr{-nOSZ4cepNfmh;8p" x="-236" y="-285">
+                <field name="NAME">RF</field>
+                <field name="frb">b</field>
+                <value name="DIR">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="!YYo=VSIS`c[@Z0{HCj^">
+                        <field name="Pin">12</field><data>digital:12,8,7,4</data>
+                    </shadow>
+                </value>
+                <value name="PWM">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="He=]s[n.9_s(s,N,fKFU">
+                        <field name="Pin">11</field><data>pwm:11,3,6,5</data>
+                    </shadow>
+                </value>
+            </block>
+            <block type="instance_TB6612MotorDriver" id="pmXA-*#Lw*8i7uK2UpAv" x="-496" y="-106">
+                <field name="NAME">LB</field>
+                <field name="frb">b</field>
+                <value name="DIR">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="-seQ:m0K;)*d|z/YajtK">
+                        <field name="Pin">4</field><data>digital:12,8,7,4</data>
+                    </shadow>
+                </value>
+                <value name="PWM">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="g~#c,8wlSkDMW{SJH%!i">
+                        <field name="Pin">5</field><data>pwm:11,3,6,5</data>
+                    </shadow>
+                </value>
+            </block>
+            <block type="instance_TB6612MotorDriver" id="G#.dYH1w-*RBUGUCwgc@" x="-233" y="-107">
+                <field name="NAME">RB</field>
+                <field name="frb">b</field>
+                <value name="DIR">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="?{;,9_BBpap2$~$Zh*}B">
+                        <field name="Pin">7</field><data>digital:12,8,7,4</data>
+                    </shadow>
+                </value>
+                <value name="PWM">
+                    <shadow type="io_arduino_uno_pin_usable_menu" id="-Yi@2|?^X)UuPcKO^`P!">
+                        <field name="Pin">6</field><data>pwm:11,3,6,5</data>
+                    </shadow>
+                </value>
+            </block>
+            <block type="controlsetuploop" id="0Pm,bA]n(lvf-KMSt%{`" deletable="false" x="-496" y="50">
+                <statement name="SETUPSTACK">
+                    <block type="instance_serial" id="R0-Mp2oIW9pBj_;0rkg]">
+                        <field name="Bandrate">115200</field>
+                    </block>
+                </statement>
+                <statement name="LOOPSTACK">
+                    <block type="control_if" id="4Jq?,!H^/r*$e$h~I%Z#">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                            <block type="module_OseppRemote_isTimeout" id="u!)tYH;1PzeIv[F.s;u1">
+                                <value name="time">
+                                    <shadow type="math_whole_number" id="[g{l!nTdLjTCSmEywhQ*">
+                                        <field name="NUM">500</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </value>
+                        <statement name="DO0">
+                            <block type="module_set_TB6612MotorDriver" id="GMh.,=k;iI,rEJ?L}P5b">
+                                <field name="NAME">LB</field>
+                                <field name="dir">s</field>
+                                <value name="pwm">
+                                    <shadow type="math_whole_number" id="F3l?dx8{!855Yx*YtnsD">
+                                        <field name="NUM">150</field>
+                                    </shadow>
+                                </value>
+                                <next>
+                                    <block type="module_set_TB6612MotorDriver" id="P|W58%a-iY2YYKZUcs/^">
+                                        <field name="NAME">LF</field>
+                                        <field name="dir">s</field>
+                                        <value name="pwm">
+                                            <shadow type="math_whole_number" id="M`,1fGDHiB^Xr)+~kXUV">
+                                                <field name="NUM">150</field>
+                                            </shadow>
+                                        </value>
+                                        <next>
+                                            <block type="module_set_TB6612MotorDriver" id="`H85+O1yI$t:KNDI`+Yc">
+                                                <field name="NAME">RB</field>
+                                                <field name="dir">s</field>
+                                                <value name="pwm">
+                                                    <shadow type="math_whole_number" id="lGe#EEXTNhTNUqPsJ{MH">
+                                                        <field name="NUM">150</field>
+                                                    </shadow>
+                                                </value>
+                                                <next>
+                                                    <block type="module_set_TB6612MotorDriver" id="H*MYe63u-R[2X*#ps9A-">
+                                                        <field name="NAME">RF</field>
+                                                        <field name="dir">s</field>
+                                                        <value name="pwm">
+                                                            <shadow type="math_whole_number" id="fSa{u?[T-baa;SwSqz3?">
+                                                                <field name="NUM">150</field>
+                                                            </shadow>
+                                                        </value>
+                                                    </block>
+                                                </next>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </statement>
+                        <statement name="ELSE">
+                            <block type="instance_set_number" id="yZ]`[1/8AMi{R(,qV#(0">
+                                <field name="instance_name">LS</field>
+                                <field name="op">=</field>
+                                <value name="VALUE">
+                                    <shadow type="math_number" id="QQ+1nt8vZPCv7M2X`)1*">
+                                        <field name="NUM">0</field>
+                                    </shadow>
+                                    <block type="arithmeticoperators" id="/f!7ve:ud1RJ1tUsT#nA">
+                                        <field name="Operators">+</field>
+                                        <value name="NUM1">
+                                            <shadow type="math_number" id="=z_]sCc#`HT3y7c9!POb">
+                                                <field name="NUM">0</field>
+                                            </shadow>
+                                            <block type="module_OseppRemote_Channel" id="qVWeOH1HE6B;q(VJgqh3">
+                                                <field name="CHANNEL">1</field>
+                                            </block>
+                                        </value>
+                                        <value name="NUM2">
+                                            <shadow type="math_number" id="%QzT7(L]RqJK)@zsS*O8">
+                                                <field name="NUM">0</field>
+                                            </shadow>
+                                            <block type="module_OseppRemote_Channel" id="chVx}|7U#/d$i;2z|f2(">
+                                                <field name="CHANNEL">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                </value>
+                                <next>
+                                    <block type="instance_set_number" id="%X4j0l/E.zkWJSdIOiDN">
+                                        <field name="instance_name">RS</field>
+                                        <field name="op">=</field>
+                                        <value name="VALUE">
+                                            <shadow type="math_number" id="Q=GHg](_a{MYDt:qS*iJ">
+                                                <field name="NUM">0</field>
+                                            </shadow>
+                                            <block type="arithmeticoperators" id="W)Lt{yN-x~peRAN0kKd,">
+                                                <field name="Operators">-</field>
+                                                <value name="NUM1">
+                                                    <shadow type="math_number" id="+v3_4cE7(]b!-r6qcs?B">
+                                                        <field name="NUM">0</field>
+                                                    </shadow>
+                                                    <block type="module_OseppRemote_Channel" id="lwzH$Sdgy0^IhRH/,z*i">
+                                                        <field name="CHANNEL">1</field>
+                                                    </block>
+                                                </value>
+                                                <value name="NUM2">
+                                                    <shadow type="math_number" id=".~Vj!wD@lWTsmo:Y8W*Y">
+                                                        <field name="NUM">0</field>
+                                                    </shadow>
+                                                    <block type="module_OseppRemote_Channel" id="=wU:!`MsQZ71`lsNXV_r">
+                                                        <field name="CHANNEL">0</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                        </value>
+                                        <next>
+                                            <block type="module_set_TB6612MotorDriver" id="n`:j}QMK_=(,,]|y0zA]">
+                                                <field name="NAME">LB</field>
+                                                <field name="dir">f</field>
+                                                <value name="pwm">
+                                                    <shadow type="math_whole_number" id="]gJNvLs-c,]L:hm-*QR4">
+                                                        <field name="NUM">150</field>
+                                                    </shadow>
+                                                    <block type="instance_number_getter" id="0U2Yve({fk/=Nw:^[5dM">
+                                                        <field name="NAME">LS</field>
+                                                    </block>
+                                                </value>
+                                                <next>
+                                                    <block type="module_set_TB6612MotorDriver" id="deZ)yLIj*x[mX9W$JTvd">
+                                                        <field name="NAME">LF</field>
+                                                        <field name="dir">f</field>
+                                                        <value name="pwm">
+                                                            <shadow type="math_whole_number" id="i.:ric/W/FWNTn$~TnDN">
+                                                                <field name="NUM">150</field>
+                                                            </shadow>
+                                                            <block type="instance_number_getter" id="[|.QGRwv|_q8{rlkCJ)k">
+                                                                <field name="NAME">LS</field>
+                                                            </block>
+                                                        </value>
+                                                        <next>
+                                                            <block type="module_set_TB6612MotorDriver" id="Z+YE.7IlM.J2xdPziH]-">
+                                                                <field name="NAME">RB</field>
+                                                                <field name="dir">f</field>
+                                                                <value name="pwm">
+                                                                    <shadow type="math_whole_number" id="-f%bIYh{tNp=.9;Wm[{o">
+                                                                        <field name="NUM">150</field>
+                                                                    </shadow>
+                                                                    <block type="instance_number_getter" id="]XUSka1^E/Q2B2RJZ.$w">
+                                                                        <field name="NAME">RS</field>
+                                                                    </block>
+                                                                </value>
+                                                                <next>
+                                                                    <block type="module_set_TB6612MotorDriver" id="/9b0JsQR=WMMpN7RR:Vr">
+                                                                        <field name="NAME">RF</field>
+                                                                        <field name="dir">f</field>
+                                                                        <value name="pwm">
+                                                                            <shadow type="math_whole_number" id="*#T%+f!dC./5e*brRM}L">
+                                                                                <field name="NUM">150</field>
+                                                                            </shadow>
+                                                                            <block type="instance_number_getter" id="@x39=ndOP|f)^x:7ZVI[">
+                                                                                <field name="NAME">RS</field>
+                                                                            </block>
+                                                                        </value>
+                                                                    </block>
+                                                                </next>
+                                                            </block>
+                                                        </next>
+                                                    </block>
+                                                </next>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </statement>
+                    </block>
+                </statement>
+            </block>
+            <block type="instance_create_number" id="7tPF3*[#~}V!._^eOzih" x="-61" y="211">
+                <field name="TYPE">int</field>
+                <field name="NAME">LS</field>
+                <field name="INITVALUE">0</field>
+            </block>
+            <block type="instance_create_number" id="I^uK@m?{p`9n%XkCE{TX" x="-60" y="271">
+                <field name="TYPE">int</field>
+                <field name="NAME">RS</field>
+                <field name="INITVALUE">0</field>
+            </block>
+        </xml>
+    </div>
+    <div id="blockly_div" style="left: 0;top: 0;width: 100%;height: 100%; position: absolute"></div>
+    <script>
+        var sigleWorkspace;
+        var url_base64 = {};
+        var url_base64ing = 0;
+        initLocal();
+
+
+        function getBase64(imgUrl, imgi) {
+            window.URL = window.URL || window.webkitURL;
+            var xhr = new XMLHttpRequest();
+            xhr.open("get", imgUrl, true);
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                if ((this.status == 200) || (this.status == 0)) {
+                    var blob = this.response;
+                    let oFileReader = new FileReader();
+                    oFileReader.onloadend = function (e) {
+                        let base64 = e.target.result;
+                        // var image = new Image();
+                        // image.onload = function () {
+                        //     url_base64[imgUrl] = { 'data': base64, 'width': image.naturalWidth, 'height': image.naturalHeight, 'refid': 'base64img' + imgi };
+                        // }
+                        //image.src = base64;
+                        url_base64[imgUrl] = base64;
+                        url_base64ing--;
+                    };
+                    oFileReader.readAsDataURL(blob);
+
+                }
+            }
+            xhr.send();
+        }
+
+
+        function createWorkspace(dom) {
+            sigleWorkspace = Blockly.inject(document.getElementById("blockly_div"),
+                {
+                    comments: true,
+                    disable: false,
+                    collapse: false,
+                    media: "scratch-blocks/media/",
+                    readOnly: true,
+                    scrollbars: false,
+                    sounds: "false",
+                });
+            Blockly.Xml.domToWorkspace(dom, sigleWorkspace);
+            sigleWorkspace.setScale(1);
+
+            var b = document.getElementsByClassName('blocklyBlockCanvas')[0];
+            var d = document.getElementById('blockly_div');
+            var box = b.getBBox();
+            d.style.width = box.width + 'px';
+            d.style.height = box.height + 'px';
+            Blockly.svgResize(sigleWorkspace);
+            b.setAttribute('transform', 'translate(' + (-box.x) + ',' + (-box.y) + ') scale(1)');
+            var sty = document.getElementsByTagName('style');
+            var svgroot = document.getElementsByClassName('blocklySvg')[0].cloneNode(true);
+            var csstext = '<style>';
+            for (var i = 0, s; s = sty[i]; i++) {
+                csstext += s.innerHTML;
+            }
+            csstext += '</style>';
+            svgroot.children[0].insertAdjacentHTML('afterBegin', csstext);
+
+            var imgs = svgroot.getElementsByTagName('image');
+            var imgs_url = [];
+            for (var i = 0, img; img = imgs[i]; i++) {
+                var url = img.href.baseVal;
+                if (imgs_url.indexOf(url) >= 0) continue;
+                imgs_url.push(url);
+                url_base64ing++;
+                getBase64(url, i);
+            }
+            function downsvg() {
+                if (url_base64ing > 0) {
+                    setTimeout(() => { downsvg(); }, 10);
+                    return;
+                }
+                for (var imgi = 0, imgel; imgel = imgs[imgi]; imgi++) {
+                    imgel.href.baseVal = url_base64[imgel.href.baseVal];
+                }
+
+                var text = Blockly.Xml.domToText(svgroot);
+                var data = new Blob([text], { type: "text/xml" });
+                var clickEvent = new MouseEvent("click", {
+                    "view": window,
+                    "bubbles": true,
+                    "cancelable": false
+                });
+
+                var a = document.createElement("a");
+                a.href = window.URL.createObjectURL(data);
+                a.download = 'block.svg';
+                a.textContent = "Download file!";
+                a.dispatchEvent(clickEvent);
+            }
+            setTimeout(() => { downsvg(); }, 10);
+        }
+
+        createWorkspace(document.getElementById('blockDom'));
+    </script>
+</body>
+
+</html>
