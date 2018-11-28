@@ -236,7 +236,6 @@ function setLocale(locale) {
     setLocaleUI();
 }
 
-
 function initLocal() {
     var match = location.search.match(/locale=([^&]+)/);
     if (match) {
@@ -302,39 +301,6 @@ function updateCode() {
     codeChanged = false;
 }
 
-var uploadClick = function () {
-    function lockUI() {
-        addClass("upload", "svg_acting");
-        //addClass("connect", "svg_hide");
-    }
-    function unlockUI() {
-        delClass("upload", "svg_acting");
-        //delClass("connect", "svg_hide");
-    }
-    lockUI();
-    try {
-        getArduinoPath();//check arduino path
-        document.getElementById("msgTextArea").innerText = "";
-        document.getElementById("serial_upload_msg").setAttribute("class", "serial_upload_msg_open");
-        serial_upload(getCode(), function (state, msg) {
-            if (msg) {
-                var el = document.getElementById("msgTextArea");
-                var chile = document.createElement("span");
-                chile.innerText = msg + "\n";
-                el.appendChild(chile);
-                el.scrollTop = el.scrollHeight;
-            }
-            if (state == "done") {
-                unlockUI();
-            }
-        });
-    } catch (e) {
-        unlockUI();
-    }
-};
-
-
-
 function initWorkspace() {
     initLocal();
     resizeWorkspaceDiv();
@@ -354,14 +320,6 @@ function initWorkspace() {
     }
     document.getElementById("redo").onclick = function () {
         Blockly.getMainWorkspace().undo(1);
-    }
-    try {
-        if (initSerialUI !== undefined) {
-            initSerialUI();
-            resizeWorkspaceDiv();
-        }
-    } catch (e) {
-        console.log(e);
     }
 
     document.ondragover = function (e) {
@@ -475,3 +433,5 @@ var takeScreen = function () {
     }, 500);
     return fname;
 }
+
+$(document).ready(initWorkspace);

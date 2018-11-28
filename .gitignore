@@ -54,3 +54,4 @@ app/build.py
 oseppBlock-*-*/*
 app.zip
 .vscode/
+package-lock.json

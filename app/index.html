@@ -9,7 +9,15 @@
     <meta http-equiv="expires" content="0">
     <title>oseppBlock</title>
     <link rel="icon" href="media/osepp.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="prettify/arduino.css">
+    <link rel="stylesheet" href="prettify/arduino.css" />
+
+    <link rel="stylesheet" href="jQuery/jquery-ui.css" />
+
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+    <script src="jQuery/jquery-3.3.1.js"></script>
+    <script src="jQuery/jquery-ui.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
     <script src="prettify/prettify.js"></script>
     <!--free 
     <script src="scratch-blocks/blockly_compressed_vertical.js"></script>
@@ -41,6 +49,7 @@
     <script src="scratch-blocks/msg/messages.js"></script>
     <script src="scratch-blocks/msg/scratch_msgs.js"></script>
     <script src="blocklytoolbox.js"></script>
+    <script src="HWAgent.js"></script>
     <script src="serial.js"></script>
     <script src="display.js"></script>
 
@@ -162,20 +171,13 @@
             position: absolute;
             width: 100%;
             bottom: 0;
+            height: 40px;
             background-color: cadetblue;
             z-index: 100;
             transition: height 0.5s;
             -moz-transition: height 0.5s;
             -webkit-transition: height 0.5s;
             -o-transition: height 0.5s;
-        }
-
-        .serial_upload_msg_open {
-            height: 300px;
-        }
-
-        .serial_upload_msg_close {
-            height: 40px;
         }
 
         #msgBar * {
@@ -224,41 +226,6 @@
             fill-opacity: 1;
         }
 
-
-        .select-editable {
-            position: relative;
-            width: 120px;
-            height: 19px;
-        }
-
-        .select-editable * {
-            position: absolute;
-            top: 5px;
-            left: 0px;
-        }
-
-        .select-editable select {
-            font-size: 14px;
-            border: none;
-            width: 120px;
-            margin: 0;
-            vertical-align: middle;
-            white-space: pre;
-        }
-
-        .select-editable input {
-            width: 100px;
-            padding: 1px;
-            font-size: 12px;
-            border: none;
-            vertical-align: middle;
-        }
-
-        .select-editable select:focus,
-        .select-editable input:focus {
-            outline: none;
-        }
-
         /*------Effect-----*/
 
         @keyframes acting {
@@ -288,10 +255,6 @@
             fill-opacity: 1 !important;
         }
 
-        .svg_hide {
-            display: none !important;
-        }
-
         .svg_acting {
             animation: acting 2s infinite !important;
         }
@@ -304,7 +267,7 @@
     </style>
 </head>
 
-<body onload="initWorkspace()">
+<body>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none">
         <symbol id="svg_arraw" viewBox="0 0 25 20">
             <path d="M0 10 v5 h15 v5 l10 -10 l-10 -10 v5 h-15z"></path>
@@ -410,7 +373,7 @@
     <div class="foot" id="footView" style="display: none">
     </div>
     <div id="blockly_div" style="position: absolute"></div>
-    <div id="serial_upload_msg" class="serial_upload_msg_close" style="display: none;">
+    <div id="serial_upload_msg" style="display: none;">
         <div id="msgBar" style="width: 100%">
             <ul style="float: left">
                 <li id="toggle_serial_box" title="toggle serial message box open/close" localeID="ButtonToogleSerial">
@@ -423,35 +386,10 @@
                     <span localeID="LabelArduinoUnoOn">Arduino Uno on</span>
                 </li>
                 <li>
-                    <span class="select-editable">
-                        <select id="ComPortList">
-                            <option>select com port</option>
-                        </select>
-                        <input id="SelectComPort" type="text" />
-                    </span>
+                    <input id="SelectComPort" type="text" placeholder="select com port" />
                 </li>
                 <li>
-                    <span class="select-editable">
-                        <select id="BandrateList">
-                            <option>300</option>
-                            <option>1200</option>
-                            <option>2400</option>
-                            <option>4800</option>
-                            <option>9600</option>
-                            <option>14400</option>
-                            <option>19200</option>
-                            <option>28800</option>
-                            <option>38400</option>
-                            <option>57600</option>
-                            <option>74880</option>
-                            <option selected="selected">115200</option>
-                            <option>128000</option>
-                            <option>230400</option>
-                            <option>250000</option>
-                            <option>1000000</option>
-                            <option>2000000</option>
-                        </select>
-                        <input id="SelectBandrate" type="text" />
+                    <input id="SelectBandrate" type="text" />
                     </span>
                 </li>
                 <li title="connect serial port" localeID="ButtonConnectSerial">
@@ -460,14 +398,14 @@
                     </svg>
                 </li>
                 <li title="reset uno" localeID="ButtonResetUno">
-                    <svg class="svg_icon svg_hide" id="reset">
+                    <svg class="svg_icon" id="reset" style="display:none">
                         <use xlink:href="#svg_resetuno" width="26px" height="26px" transform="translate(0,7)"></use>
                     </svg>
                 </li>
             </ul>
             <ul style="float: right;">
                 <li>
-                    <select id="line_ending" class="svg_hide">
+                    <select id="line_ending" style="display:none">
                         <option localeID="LabelNoLineEnding" value="no">No line ending</option>
                         <option localeID="LabelNewline" value="n">Newline</option>
                         <option localeID="LabelCarriageReturn" value="r">Carriage return</option>
@@ -475,14 +413,14 @@
                     </select>
                 </li>
                 <li title="send text to uno" localeID="ButtonSendMsg">
-                    <svg id="send" class="svg_icon svg_hide">
+                    <svg id="send" class="svg_icon" style="display:none">
                         <use xlink:href="#svg_sendtext" width="30px" height="30px" transform="translate(0,5)"></use>
                     </svg>
                 </li>
             </ul>
             <ul style="overflow: hidden;padding-right: 20px;">
                 <li>
-                    <input id="sendtext" type="text" class="svg_hide" style="width: 100%" />
+                    <input id="sendtext" type="text" style="width: 100%;display: none" />
                 </li>
             </ul>
         </div>
