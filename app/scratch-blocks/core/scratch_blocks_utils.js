@@ -133,7 +133,7 @@ Blockly.scratchBlocksUtils.blockIsRecyclable = function(block) {
     for (var j = 0; j < input.fieldRow.length; j++) {
       var field = input.fieldRow[j];
       // No variables.
-      if (field instanceof Blockly.FieldVariable ||
+      if (field instanceof Blockly.FieldInstanceDropdown || field instanceof Blockly.FieldInstanceGetter || field instanceof Blockly.FieldInstanceInput || field instanceof Blockly.FieldVariable ||
           field instanceof Blockly.FieldVariableGetter) {
         return false;
       }
