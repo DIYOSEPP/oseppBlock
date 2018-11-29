@@ -427,6 +427,23 @@
         <div id="msgTextArea" style="background-color: ghostwhite; width: 100%; height: auto; color: black; overflow: auto; position: absolute; top: 40px; bottom: 0;">
         </div>
     </div>
+
+    <div id="setArduinoPath" title="Invalid Arduino Path" style="display:none;">
+        <p>You have not set the path to Arduino IDE, <a href="#" onclick="opendialog()">click here</a> to set it up!'</p>
+        <p>For Windows systems,should select arduino.exe</p>
+        <p>For MacOS systems,should select arduino.app</p>
+        <br>
+        <div id='setArduinoPathFeedback' style="display:none">
+            <p>You have set the path to Arduino:</p>
+            <p id="ArduinoPath"></p>
+            <p>Try upload again!</p>
+        </div>
+    </div>
+
+    <div id="msgUpload" title="upload" style="display:none;white-space: pre-line">
+
+    </div>
+
 </body>
 
 </html>

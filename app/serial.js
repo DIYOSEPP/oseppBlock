@@ -23,44 +23,45 @@ function lockUI() {
 function unlockUI() {
     $('#upload').removeClass("svg_acting");
 }
-var msgcache = "";
-var timeFlag = null;
-function logmsg(msg) {
+
+var logmsg = function (msg) {
     if (msg) {
-        msgcache += msg;
-        if (timeFlag) return;
-        timeFlag = true;
-        setTimeout(() => {
-            if (!msgcache) return;
-            var el = document.getElementById("msgTextArea");
-            var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
-            var chile = document.createElement("span");
-            chile.innerText = msgcache;
-            msgcache = "";
-            el.appendChild(chile);
-            if (scroll < chile.offsetHeight * 1.5) {
-                if (el.childNodes.length > 600) {
-                    for (var i = 0; i < el.childNodes.length - 500; i++)el.removeChild(el.firstChild);
-                } else if (el.innerHTML.length > 20 * 1024) {
-                    var len = el.innerHTML.length - 16 * 1024;
-                    while (len > 0) {
-                        if (el.firstChild.innerHTML) len -= el.firstChild.innerHTML.length;
-                        el.removeChild(el.firstChild);
-                    }
+        var el = document.getElementById("msgTextArea");
+        var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+        var chile = document.createElement("span");
+        chile.innerText = msg;
+        el.appendChild(chile);
+        if (scroll < chile.offsetHeight * 1.5) {
+            if (el.childNodes.length > 600) {
+                for (var i = 0; i < el.childNodes.length - 500; i++)el.removeChild(el.firstChild);
+            } else if (el.innerHTML.length > 20 * 1024) {
+                var len = el.innerHTML.length - 16 * 1024;
+                while (len > 0) {
+                    if (el.firstChild.innerHTML) len -= el.firstChild.innerHTML.length;
+                    el.removeChild(el.firstChild);
                 }
-                el.scrollTop = el.scrollHeight;
-            };
-            timeFlag = false;
-        }, 25);
+            }
+            el.scrollTop = el.scrollHeight;
+        }
     }
 }
 var serial = null;
-var generotor = null;
+
 var msgTextAreaHeight = 300;
+var msgcache = "";
+var timeFlag = null;
 var onSerialEvent = function (event, data) {
     switch (event) {
         case 'data'://on serial data in
-            logmsg(data);
+            if (!data) break;
+            msgcache += data;
+            if (timeFlag) break;
+            timeFlag = true;
+            setTimeout(() => {
+                timeFlag = false;
+                logmsg(msgcache);
+                msgcache = '';
+            }, 25);
             break;
         case 'open'://when serial open
             $("#connect").removeClass("svg_disable");
@@ -70,16 +71,6 @@ var onSerialEvent = function (event, data) {
         case 'close'://when serial close
             $('#connect').addClass("svg_disable");
             $("#send,#reset,#sendtext,#line_ending").hide();
-            serial = null;
-            break;
-        case 'paused'://serial pause(for uploadcode)
-            if (generotor && generotor.hex) {
-                serial.upload(generotor.hex);
-            } else {
-                unlockUI();
-            }
-            break;
-        case 'resume'://after upload done
             break;
         case 'error'://serial PORT error
             break;
@@ -88,60 +79,22 @@ var onSerialEvent = function (event, data) {
         case 'option'://option changed(baudrate)
             break;
         case 'uploading'://uploading msg|err
-            logmsg(data);
+            if (data) $('#msgUpload').append($('<span>' + data + '</span>'));
             break;
         case 'uploaded'://upload done|err
-            logmsg(data);
+            if (data) $('#msgUpload').append($('<span>' + data + '</span><br/>'));
             unlockUI();
-            if (serial && serial.isPaused()) serial.pause(false);
-            break;
-        case 'compiling'://compiling msg|err
-            logmsg(data);
-            break;
-        case 'compiled'://compiling done|err
-            logmsg(data);
-            //When the compilation is successful
-            //If the serial port is already open, pause it and call the download in the pause event.
-            //If there is no serial port, get the serial port according to the selection and start the download process.
-            if (generotor && generotor.hex) {
-                if (serial) {
-                    if (serial.isOpened()) {
-                        serial.pause(true);
-                    } else {
-                        serial.upload(generotor.hex);
-                    }
-                } else {
-                    var port = $('#SelectComPort').val();
-                    HWAgent.Serial.list(
-                        function () {
-                            var agent = HWAgent.Serial.findAgent(port);
-                            if (agent == null) return;
-                            serial = new agent(
-                                port,
-                                115200,
-                                onSerialEvent
-                            );
-                            serial.upload(generotor.hex);
-                        }
-                    );
-                }
-            } else {
-                unlockUI();
-            }
             break;
         default: break;
     }
 }
 
 function opendialog() {
-
     const remote = require("electron").remote;
     const dialog = remote.dialog;
-
-    var file = dialog.showOpenDialog({ title: "Select arduino path", properties: ["openFile"] });
+    var file = dialog.showOpenDialog({ title: "set arduino path", properties: ["openFile"] });
     if (file) {
         file = file[0];
-
         const path = require("path");
         var extName = path.extname(file);
         if (extName == ".app") {
@@ -149,8 +102,8 @@ function opendialog() {
         } else {
             window.localStorage.arduinoPath = path.dirname(file);
         }
-        document.getElementById("msgTextArea").innerHTML += "<br>You have set the path to Arduino:" + file;
-        document.getElementById("msgTextArea").innerHTML += "<br>Try upload again!<br>";
+        $('#ArduinoPath').text(file);
+        $('#setArduinoPathFeedback').show();
     }
 }
 
@@ -211,17 +164,8 @@ function getArduinoPath() {
     }
 
     if (!arduinoPath) {
-        var setArduinoPathMsg = function () {
-            //show up msg div
-            document.getElementById("serial_upload_msg").setAttribute("class", "serial_upload_msg_open");
-            document.getElementById("msgTextArea").innerHTML = "You have not set the path to Arduino IDE, <a href=\"#\" onclick=\"opendialog()\">click here</a>  to set it up!";
-            document.getElementById("msgTextArea").innerHTML += "<br>For Windows systems,should select arduino.exe<br>For MacOS systems,should select arduino.app";
-        };
-        if (serial) {
-            serial.close(setArduinoPathMsg);
-        } else {
-            setArduinoPathMsg();
-        }
+        $('#setArduinoPath').dialog({ closeOnEscape: true, width: 500 });
+        $('#setArduinoPathFeedback').hide();
         throw "noarduinopath";
     }
     return arduinoPath;
@@ -256,19 +200,96 @@ function code2ArduinoIDE() {
             } else {
                 throw "Invalid Arduino Path";
             }
-            var $el = $('#msgTextArea').append($('<span>Arduino IDE is starting, please wait a moment!\n</span>'));
-            $el.scrollTop($el[0].scrollHeight);
+            $('#msgUpload').empty()
+                .append('<span>Arduino IDE is starting, please wait a moment!</span>')
+                .dialog({ width: 640, height: 400, title: "coding in arduino IDE" });
+            // setTimeout(() => {
+            //     $('#msgUpload').dialog('close');
+            // }, 3000);
         } catch (e) {
-            var el = document.getElementById("msgTextArea");
-            var chile = document.createElement("span");
-            chile.innerText = "Failed to send code to arduino IDE\n";
-            el.appendChild(chile);
-            el.scrollTop = el.scrollHeight;
+            $('#msgUpload').empty()
+                .append('<span>Failed to start arduino IDE!</span>')
+                .dialog({ width: 640, height: 400, title: "coding in arduino IDE" });
+            // setTimeout(() => {
+            //     $('#msgUpload').dialog('close');
+            // }, 3000);
         }
     } catch (e) {
         console.log(e);
     }
 }
+
+function doVerify() {
+    var verifyEvent = function (event, data) {
+        if (data) {
+            $('#msgUpload').append('<span>' + data + '</span>');
+        }
+        if (event == 'compiled') {
+            // setTimeout(() => {
+            //     $('#msgUpload').dialog('close');
+            // }, 3000);
+        }
+    };
+    $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Verify code" });
+    try {
+        getArduinoPath();//check arduino path
+        if (HWAgent.Generator.regAgents.length > 0) {
+            var agent = HWAgent.Generator.regAgents[0];
+            new agent(getCode(), verifyEvent);
+        } else {
+            unlockUI();
+        }
+        //will trig upload on evemt callback when it done
+    } catch (err) {
+        unlockUI();
+    }
+}
+
+function doUpload() {
+    var generotor = null;
+    var generotorEvent = function (event, data) {
+        if (event == 'compiling') {//compiling msg|err
+            if (data) $('#msgUpload').append('<span>' + data + '</span>');
+        } else if (event == 'compiled') {//compiling done|err
+            if (data) $('#msgUpload').append('<span>' + data + '</span><br/>');
+            if (generotor && generotor.hex) {
+                if (serial && serial.isOpened()) {
+                    serial.upload(generotor.hex);
+                } else {
+                    var port = $('#SelectComPort').val();
+                    HWAgent.Serial.list(function () {
+                        var agent = HWAgent.Serial.findAgent(port);
+                        if (agent == null) return;
+                        serial = new agent(
+                            port,
+                            115200,
+                            onSerialEvent
+                        );
+                        serial.upload(generotor.hex);
+                    });
+                }
+            } else {
+                unlockUI();
+            }
+        }
+    };
+
+    lockUI();
+    try {
+        getArduinoPath();//check arduino path
+        if (HWAgent.Generator.regAgents.length > 0) {
+            var agent = HWAgent.Generator.regAgents[0];
+            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Uploading" });
+            generotor = new agent(getCode(), generotorEvent);
+        } else {
+            unlockUI();
+        }
+        //will trig upload on evemt callback when it done
+    } catch (err) {
+        unlockUI();
+    }
+}
+
 
 var initSerialUI = function () {
     try {
@@ -371,7 +392,7 @@ var initSerialUI = function () {
         });
 
         $('#reset').click(function () {
-            if (serial && serial.isOpened()) if ('resetHW' in serial) serial.resetHW();
+            if (serial && ('resetHW' in serial)) serial.resetHW();
         });
 
         $('#send').click(function () {
@@ -415,50 +436,11 @@ var initSerialUI = function () {
 
         });
 
-        $("#verify").click(function () {
-            $("#serial_upload_msg").height(msgTextAreaHeight);
-            try {
-                getArduinoPath();//check arduino path
-                $('#msgTextArea').html('');
-                if (HWAgent.Generator.regAgents.length > 0) {
-                    var agent = HWAgent.Generator.regAgents[0];
-                    var verifyEvent = function (event, data) {
-                        if (data) logmsg(data);
-                    }
-                    new agent(getCode(), verifyEvent)
-                } else {
-                    unlockUI();
-                }
-                //will trig upload on evemt callback when it done
-            } catch (err) {
-                unlockUI();
-            }
-        });
+        $("#verify").click(doVerify);
 
-        $('#upload').click(function () {
-            $("#serial_upload_msg").height(msgTextAreaHeight);
-            lockUI();
-            try {
-                getArduinoPath();//check arduino path
-                $('#msgTextArea').html('');
-                if (HWAgent.Generator.regAgents.length > 0) {
-                    var agent = HWAgent.Generator.regAgents[0];
-                    generotor = new agent(getCode(), onSerialEvent)
-                } else {
-                    unlockUI();
-                }
-                //will trig upload on evemt callback when it done
-            } catch (err) {
-                unlockUI();
-            }
-            return;
-        });
+        $('#upload').click(doUpload);
 
-        $('#send_to_arduino_ide').click(function () {
-            $("#serial_upload_msg").height(msgTextAreaHeight);
-            $('#msgTextArea').html('');
-            code2ArduinoIDE();
-        });
+        $('#send_to_arduino_ide').click(code2ArduinoIDE);
 
         $('#serial_upload_msg,#code_menu,#footView').show();
 

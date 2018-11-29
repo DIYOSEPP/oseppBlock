@@ -50,63 +50,63 @@ HWAgent.Serial.Debugging = true;
 
 HWAgent.Serial.prototype.port = null;
 HWAgent.Serial.prototype.baudRate = 115200;
-HWAgent.Serial.prototype.opened_ = false;
-HWAgent.Serial.prototype.paused_ = false;
 
 HWAgent.Serial.prototype.isOpened = function () {
-    return this.opened_;
-};
-HWAgent.Serial.prototype.isPaused = function () {
-    return this.paused_;
+    return false;
 };
 
 HWAgent.Serial.prototype.open = function () {
     this.log('open serial', arguments);
 };
+
 HWAgent.Serial.prototype.close = function () {
     this.log('close serial', arguments);
 };
+
 HWAgent.Serial.prototype.write = function (data) {
     this.log('write serial', arguments);
-}
+};
+
 HWAgent.Serial.prototype.updateOption = function (option) {
     this.log('option serial', arguments);
 };
 
-HWAgent.Serial.prototype.resetHW = null;
-
 HWAgent.Serial.prototype.onEvent = function (event, data) {
     this.log('on event', Array.from(arguments));
-}
+};
 
 HWAgent.Serial.prototype.log = function () {
     if (HWAgent.Serial.Debugging) console.log(arguments);
-}
+};
 
 HWAgent.Serial.prototype.onOpen_ = function () {
     this.onEvent('open');
-}
+};
+
 HWAgent.Serial.prototype.onClose_ = function () {
     this.onEvent('close');
 };
+
 HWAgent.Serial.prototype.onError_ = function (error) {
     this.onEvent('error', error);
 };
+
 HWAgent.Serial.prototype.onDone_ = function (msg) {
     this.onEvent('uploaded', msg);//upload done|err
 };
+
 HWAgent.Serial.prototype.onUpload_ = function (msg) {
     this.onEvent('uploading', msg);//upload msg|err
-}
+};
+
 HWAgent.Serial.prototype.onData_ = function (data) {
-    if (!this.paused_) this.onEvent('data', data);
+    this.onEvent('data', data);
 };
-HWAgent.Serial.prototype.onPause_ = function () {
-    this.onEvent(this.isPaused() ? 'paused' : 'resume');
-};
+
 HWAgent.Serial.prototype.onHWReset_ = function () {
     this.onEvent('hwreset');
 };
+
 HWAgent.Serial.prototype.onOption_ = function (newOption) {
     this.onEvent('option', newOption);
 };
@@ -151,7 +151,7 @@ HWAgent.nodeSerial.hit = function (portName) {
 goog.inherits(HWAgent.nodeSerial, HWAgent.Serial);
 
 HWAgent.nodeSerial.prototype.serial_ = null;
-
+HWAgent.nodeSerial.prototype.reOpenFlag = false;
 HWAgent.nodeSerial.prototype.open = function () {
     if (this.serial_) {
         if (this.isOpened()) return;
@@ -160,28 +160,16 @@ HWAgent.nodeSerial.prototype.open = function () {
     this.serial_ = new SerialPort(this.port, { baudRate: this.baudRate, autoOpen: false });
     var aSerial = this;
     var onOpen = function () {
-        this.opened_ = true;
-        if (aSerial.isPaused()) {
-            aSerial.paused_ = false;
-            aSerial.onPause_();
-        } else {
-            aSerial.onOpen_();
-        }
-    }
+        aSerial.onOpen_();
+    };
     var onClose = function () {
         aSerial.serial_ = null;
-        this.opened_ = false;
-        if (aSerial.isPaused()) {
-            aSerial.onPause_();
-        } else {
-            aSerial.onClose_();
-        }
+        aSerial.onClose_();
     };
     var onError = function (error) {
         aSerial.onError_(error);
         if (aSerial.serial_ && (!aSerial.serial_.isOpen)) {
             aSerial.serial_ = null;
-            aSerial.opened_ = false;
             aSerial.onClose_();
         }
     };
@@ -200,28 +188,18 @@ HWAgent.nodeSerial.prototype.open = function () {
 HWAgent.nodeSerial.prototype.close = function () {
     if (this.serial_) {
         this.serial_.close();
-    } else if (this.isPaused()) {
-        this.onClose_();
-        this.isPaused = false;
     }
-}
+};
+
 HWAgent.nodeSerial.prototype.write = function (data) {
     this.serial_.write(data);
-}
-HWAgent.nodeSerial.prototype.pause = function (option) {
-    if (option) {
-        if (!this.serial_) return;
-        this.paused_ = true;
-        this.close();
-    } else {
-        if (this.serial_) return;
-        this.open();
-    }
-}
+};
+
 HWAgent.nodeSerial.prototype.isOpened = function () {
     if (this.serial_) return this.serial_.isOpen;
     return false;
 };
+
 HWAgent.nodeSerial.prototype.upload = function (hex) {
     var hexfile = hex.filename;
     var arduinoPath = window.localStorage.arduinoPath;
@@ -230,33 +208,48 @@ HWAgent.nodeSerial.prototype.upload = function (hex) {
         return;
     }
     var aSerial = this;
-    try {
-        var app = "\"" + arduinoPath + "/hardware/tools/avr/bin/avrdude\"";
-        var argConf = "-C\"" + arduinoPath + "/hardware/tools/avr/etc/avrdude.conf\"";
 
-        var argCpu = "-patmega328p -carduino -D";
+    var runUploadCmd = function () {
+        try {
+            var app = "\"" + arduinoPath + "/hardware/tools/avr/bin/avrdude\"";
+            var argConf = "-C\"" + arduinoPath + "/hardware/tools/avr/etc/avrdude.conf\"";
 
-        var argPort = "-P\"" + this.port + "\"";
-        var argBaud = "-b115200";
+            var argCpu = "-patmega328p -carduino -D";
 
-        var argFile = "-Uflash:w:\"" + hexfile + "\":i";
+            var argPort = "-P\"" + aSerial.port + "\"";
+            var argBaud = "-b115200";
 
-        const spawn = require("child_process").spawn;
-        const upload = spawn(app, [argConf, argCpu, argFile, argPort, argBaud, " -q"], { shell: true });
+            var argFile = "-Uflash:w:\"" + hexfile + "\":i";
 
-        upload.stdout.on("data", (data) => {
-            aSerial.onUpload_(data);
-        });
-        upload.stderr.on("data", (data) => {
-            aSerial.onUpload_(data);
-        });
-        upload.on("close", (exitcode) => {
-            aSerial.onDone_();
-        });
+            const spawn = require("child_process").spawn;
+            const upload = spawn(app, [argConf, argCpu, argFile, argPort, argBaud, " -q"], { shell: true });
+
+            upload.stdout.on("data", (data) => {
+                aSerial.onUpload_(data);
+            });
+            upload.stderr.on("data", (data) => {
+                aSerial.onUpload_(data);
+            });
+            upload.on("close", (exitcode) => {
+                aSerial.onDone_();
+                if (aSerial.reOpenFlag) {
+                    aSerial.reOpenFlag = false;
+                    aSerial.open();
+                }
+            });
+        }
+        catch (e) {
+            aSerial.onDone_("unknow error:uploading");
+        }
+    };
+
+    if (aSerial.serial_ && aSerial.serial_.isOpen) {
+        aSerial.reOpenFlag = true;
+        aSerial.serial_.close(runUploadCmd);
+    } else {
+        runUploadCmd();
     }
-    catch (e) {
-        aSerial.onDone_("unknow error:uploading");
-    }
+
 };
 
 HWAgent.nodeSerial.prototype.updateOption = function (option) {
@@ -435,20 +428,13 @@ HWAgent.Esp8266Serial.prototype.upload = function (hex) {
     catch (e) {
         aSerial.onDone_("unknow error:uploading");
     }
-}
+};
 
-HWAgent.Esp8266Serial.prototype.pause = function (option) {
-    if (!this.sock_) return;
-    if (option) {
-        this.sock_.pause();
-    } else {
-        this.sock_.resume();
-    }
-}
 HWAgent.Esp8266Serial.prototype.isOpened = function () {
     if (this.sock_) return this.sock_.readyState == 'open';
     return false;
 };
+
 HWAgent.Esp8266Serial.prototype.updateOption = function (option) {
     if (!this.sock_) return;
     const { net } = require("electron").remote;
