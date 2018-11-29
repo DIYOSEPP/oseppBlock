@@ -6,17 +6,17 @@
   "main": "main.js",
   "name": "oseppBlock",
   "devDependencies": {
-    "asar": "^0.14.3",
-    "electron": "^2.0.2",
-    "electron-packager": "^12.1.0",
-    "electron-rebuild": "^1.7.3"
+    "asar": ">=0.14.5",
+    "electron": ">=3.0.10",
+    "electron-packager": ">=12.2.0",
+    "electron-rebuild": ">=1.8.2"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/DIYOSEPP/oseppBlock.git"
   },
   "dependencies": {
-    "mdns": "^2.4.0",
-    "serialport": "^6.2.0"
+    "mdns": ">=2.4.0",
+    "serialport": ">=7.0.2"
   }
 }
