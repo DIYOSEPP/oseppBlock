@@ -1,22 +1,5 @@
 "use strict";
 
-
-/* Interprets an ArrayBuffer as UTF-8 encoded string data. */
-var ab2str = function (buf) {
-    var bufView = new Uint8Array(buf);
-    var encodedString = String.fromCharCode.apply(null, bufView);
-    return decodeURIComponent(escape(encodedString));
-}
-/* Converts a string to UTF-8 encoding in a Uint8Array; returns the array buffer. */
-var str2ab = function (str) {
-    var encodedString = unescape(encodeURIComponent(str));
-    var bytes = new Uint8Array(encodedString.length);
-    for (var i = 0; i < encodedString.length; ++i) {
-        bytes[i] = encodedString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-
 function lockUI() {
     $('#upload').addClass("svg_acting");
 }
@@ -24,44 +7,75 @@ function unlockUI() {
     $('#upload').removeClass("svg_acting");
 }
 
-var logmsg = function (msg) {
+var msgcache = new Uint8Array(1024 * 16);
+var msgcache_index = 0;
+var timeFlag = null;
+
+var logmsg1 = function (msg) {
     if (msg) {
-        var el = document.getElementById("msgTextArea");
-        var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
-        var chile = document.createElement("span");
-        chile.innerText = msg;
-        el.appendChild(chile);
-        if (scroll < chile.offsetHeight * 1.5) {
-            if (el.childNodes.length > 600) {
-                for (var i = 0; i < el.childNodes.length - 500; i++)el.removeChild(el.firstChild);
-            } else if (el.innerHTML.length > 20 * 1024) {
-                var len = el.innerHTML.length - 16 * 1024;
-                while (len > 0) {
-                    if (el.firstChild.innerHTML) len -= el.firstChild.innerHTML.length;
-                    el.removeChild(el.firstChild);
-                }
-            }
-            el.scrollTop = el.scrollHeight;
+        msg = new Uint8Array(msg);
+        if (msg.length >= msgcache.length) {
+            msg = new Uint8Array(msg.buffer, msg.length - msgcache.length);
+            msgcache.set(msg);
+            msgcache_index = msgcache.length;
+        } else {
+            var toTail = Math.min(msg.length, msgcache.length - (msgcache_index % msgcache.length));
+            msgcache.set(new Uint8Array(msg.buffer, 0, toTail), msgcache_index % msgcache.length);
+            msgcache.set(new Uint8Array(msg.buffer, toTail), 0);
+            msgcache_index += msg.length;
         }
+        if (timeFlag) return;
+        timeFlag = true;
+        setTimeout(() => {
+            timeFlag = false;
+            var el = document.getElementById("msgTextArea");
+            var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+            if (scroll < el.offsetHeight * 1.5) {
+                if (msgcache_index < msgcache.length) {
+                    var txt = new Uint8Array(msgcache.buffer, 0, msgcache_index);
+                } else {
+                    var txt = new Uint8Array(msgcache.length);
+                    var pi = msgcache_index % msgcache.length;
+                    txt.set(new Uint8Array(msgcache.buffer, pi));
+                    txt.set(new Uint8Array(msgcache.buffer, 0, pi), txt.length - pi);
+                }
+                el.innerText = new TextDecoder("utf-8").decode(txt);
+                el.scrollTop = el.scrollHeight;
+            }
+        }, 25);
     }
 }
-var serial = null;
 
+var logmsg = function (msg) {
+    if (msg) {
+        msg = new Uint8Array(msg);
+        if (msg.length >= msgcache.length) {
+            msgcache.set(new Uint8Array(msg.buffer, msg.length - msgcache.length));
+        } else {
+            msgcache.set(msgcache.slice(msg.length), 0);
+            msgcache.set(msg, msgcache.length - msg.length);
+        }
+        if (timeFlag) return;
+        timeFlag = true;
+        setTimeout(() => {
+            timeFlag = false;
+            var el = document.getElementById("msgTextArea");
+            var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+            if (scroll < el.offsetHeight * 1.5) {
+                el.innerText = new TextDecoder("utf-8").decode(msgcache);
+                el.scrollTop = el.scrollHeight;
+            }
+        }, 25);
+    }
+}
+
+var serial = null;
 var msgTextAreaHeight = 300;
-var msgcache = "";
-var timeFlag = null;
+
 var onSerialEvent = function (event, data) {
     switch (event) {
         case 'data'://on serial data in
-            if (!data) break;
-            msgcache += data;
-            if (timeFlag) break;
-            timeFlag = true;
-            setTimeout(() => {
-                timeFlag = false;
-                logmsg(msgcache);
-                msgcache = '';
-            }, 25);
+            logmsg(data);
             break;
         case 'open'://when serial open
             $("#connect").removeClass("svg_disable");
@@ -164,7 +178,7 @@ function getArduinoPath() {
     }
 
     if (!arduinoPath) {
-        $('#setArduinoPath').dialog({ closeOnEscape: true, width: 500 });
+        $('#setArduinoPath').dialog({ closeOnEscape: true, width: 500, title: "Set arduino IDE path" });
         $('#setArduinoPathFeedback').hide();
         throw "noarduinopath";
     }
@@ -202,14 +216,14 @@ function code2ArduinoIDE() {
             }
             $('#msgUpload').empty()
                 .append('<span>Arduino IDE is starting, please wait a moment!</span>')
-                .dialog({ width: 640, height: 400, title: "coding in arduino IDE" });
+                .dialog({ width: 640, height: 400, title: "coding in arduino IDE", closeOnEscape: true });
             // setTimeout(() => {
             //     $('#msgUpload').dialog('close');
             // }, 3000);
         } catch (e) {
             $('#msgUpload').empty()
                 .append('<span>Failed to start arduino IDE!</span>')
-                .dialog({ width: 640, height: 400, title: "coding in arduino IDE" });
+                .dialog({ width: 640, height: 400, title: "coding in arduino IDE", closeOnEscape: true });
             // setTimeout(() => {
             //     $('#msgUpload').dialog('close');
             // }, 3000);
@@ -230,18 +244,16 @@ function doVerify() {
             // }, 3000);
         }
     };
-    $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Verify code" });
+
     try {
         getArduinoPath();//check arduino path
         if (HWAgent.Generator.regAgents.length > 0) {
+            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Verify code", closeOnEscape: true });
             var agent = HWAgent.Generator.regAgents[0];
             new agent(getCode(), verifyEvent);
-        } else {
-            unlockUI();
         }
-        //will trig upload on evemt callback when it done
     } catch (err) {
-        unlockUI();
+        $('#msgUpload').append('<span>' + 'error at verify' + '</span><br/>').append('<span>' + err + '</span>');
     }
 }
 
@@ -279,7 +291,7 @@ function doUpload() {
         getArduinoPath();//check arduino path
         if (HWAgent.Generator.regAgents.length > 0) {
             var agent = HWAgent.Generator.regAgents[0];
-            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Uploading" });
+            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Uploading", closeOnEscape: true });
             generotor = new agent(getCode(), generotorEvent);
         } else {
             unlockUI();
@@ -290,6 +302,39 @@ function doUpload() {
     }
 }
 
+function showORhideUI() {
+    var electron_ok = false;
+    var serial_ok = false;
+    var generotor_ok = false;
+    try {
+        require("serialport");
+        electron_ok = true;
+    } catch (e) {
+        electron_ok = false;
+    }
+    if (HWAgent.Serial.regAgents.length > 0) serial_ok = true;
+    if (HWAgent.Generator.regAgents.length > 0) generotor_ok = true;
+    if (electron_ok) {
+        //send2ard
+        $('#send_to_arduino_ide').show();
+    } else {
+        $('#send_to_arduino_ide').hide();
+    }
+    if (serial_ok) {
+        $('#serial_upload_msg,#code_menu,#footView').show();
+        $('#blocklyarea').css('bottom', '');//remove bottom:0
+        if (generotor_ok) $('#upload').show();
+    } else {
+        $('#serial_upload_msg,#code_menu,#footView').hide();
+        $('#blocklyarea').css('bottom', '0');//remove bottom:0
+        $('#upload').hide();
+    }
+    if (generotor_ok) {
+        $("#verify").show();
+    } else {
+        $("#verify").hide();
+    }
+}
 
 var initSerialUI = function () {
     try {
@@ -441,35 +486,10 @@ var initSerialUI = function () {
         $('#upload').click(doUpload);
 
         $('#send_to_arduino_ide').click(code2ArduinoIDE);
-
-        $('#serial_upload_msg,#code_menu,#footView').show();
-
-        $('#blocklyarea').removeAttr('style');
+        showORhideUI();
     } catch (e) {
         console.log(e);
     }
-};
-
-
-var getOnlineVersionNumber = function (callback) {
-    const { net } = require("electron").remote;
-    const request = net.request("http://www.osepp.com/block/package.json?d=" + Date());
-    request.on("response", (response) => {
-        if (response.statusCode == 200) {
-            response.on("data", (chunk) => {
-                var json = JSON.parse(chunk);
-                if (json.version) {
-                    if (callback) {
-                        callback(json.version);
-                    }
-                }
-            });
-        }
-    });
-    request.on("error", (error) => {
-        console.log(error);
-    });
-    request.end();
 };
 
 $(document).ready(initSerialUI);
