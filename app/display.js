@@ -301,6 +301,27 @@ function updateCode() {
     codeChanged = false;
 }
 
+var getOnlineVersionNumber = function (callback) {
+    const { net } = require("electron").remote;
+    const request = net.request("http://www.osepp.com/block/package.json?d=" + Date());
+    request.on("response", (response) => {
+        if (response.statusCode == 200) {
+            response.on("data", (chunk) => {
+                var json = JSON.parse(chunk);
+                if (json.version) {
+                    if (callback) {
+                        callback(json.version);
+                    }
+                }
+            });
+        }
+    });
+    request.on("error", (error) => {
+        console.log(error);
+    });
+    request.end();
+};
+
 function initWorkspace() {
     initLocal();
     resizeWorkspaceDiv();

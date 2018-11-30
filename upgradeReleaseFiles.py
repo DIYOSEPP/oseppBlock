@@ -27,14 +27,14 @@ app_dir = os.path.join(target_dir, "tempapp")
 rar_path = "\"C:\\Program Files\\WinRAR\\WinRAR.exe\""
 
 
-gentoolbox = raw_input(u'Regenerate the toolbox configuration file??:[Y]') or "Y"
+gentoolbox = raw_input(
+    u'Regenerate the toolbox configuration file??:[Y]') or "Y"
 genscratch = raw_input(u'Regenerate scratchBlock?:[Y]') or "Y"
 genapp = raw_input(u"Regenerate the oseppBlock publisher file ?[Y]") or 'Y'
 
 if gentoolbox.upper().find("Y") >= 0:
     src = open(os.path.join(cur_dir, 'getToolboxXml.py')).read()
     exec(src)
-
 
 
 if genscratch.upper().find("Y") >= 0:
@@ -98,6 +98,7 @@ if(os.path.exists(app_dir)):
 source_dir = ["blockIcon",
               "media",
               "prettify",
+              "jQuery",
               "scratch-blocks/media",
               "scratch-blocks/msg", ]
 source_file = ["scratch-blocks/arduino_compressed.js",
@@ -106,6 +107,7 @@ source_file = ["scratch-blocks/arduino_compressed.js",
                "display.js",
                "main.js",
                "serial.js",
+               "HWAgent.js",
                "package.json",
                "blocklytoolbox.js"]
 
@@ -184,6 +186,7 @@ rar_cmd += ' a -afzip -m5 -r -ep1 '
 rar_cmd += ' \"'+target_dir+os.path.sep+'app.zip\"'
 rar_cmd += ' \"'+app_dir+os.path.sep+'\"'
 os.system('\"'+rar_cmd+'\"')
+
 
 def extract_file_from_zip(zip, file, savePath):
     # delete file first

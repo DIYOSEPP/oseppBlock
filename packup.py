@@ -21,7 +21,7 @@ os.chdir(cur_dir)
 
 app_dir = os.path.join(target_dir, "tempapp")
 
-if not os.path.exists(os.path.join(cur_dir,"scratch-blocks")):
+if not os.path.exists(os.path.join(cur_dir, "scratch-blocks")):
     print("Directory is incorrect!")
     exit(0)
 
@@ -33,6 +33,7 @@ exec(src)
 os.chdir(os.path.join(cur_dir, 'scratch-blocks'))
 os.system('python build.py')
 os.chdir(cur_dir)
+
 
 def compilejs(file, saveto):
     params = [
@@ -70,6 +71,7 @@ def compilejs(file, saveto):
     else:
         return False
 
+
 pg = json.load(open("package.json"))
 cur_version = pg['version']
 v1, v2, v3 = (''+pg['version']).split('.')
@@ -84,6 +86,7 @@ os.mkdir(app_dir)
 source_dir = ["blockIcon",
               "media",
               "prettify",
+              "jQuery",
               "scratch-blocks/media",
               "scratch-blocks/msg", ]
 source_file = ["scratch-blocks/arduino_compressed.js",
@@ -92,6 +95,7 @@ source_file = ["scratch-blocks/arduino_compressed.js",
                "display.js",
                "main.js",
                "serial.js",
+               "HWAgent.js",
                "package.json",
                "blocklytoolbox.js"]
 
@@ -142,14 +146,14 @@ while True:
 index_file.close()
 # for web
 
-if(os.path.exists(os.path.join(target_dir,'web.zip'))):
-    os.remove(os.path.join(target_dir,'web.zip'))
-index_file = open(os.path.join(app_dir,"index.html"), 'w')
+if(os.path.exists(os.path.join(target_dir, 'web.zip'))):
+    os.remove(os.path.join(target_dir, 'web.zip'))
+index_file = open(os.path.join(app_dir, "index.html"), 'w')
 index_file.writelines(webindex)
 index_file.close()
 
 os.chdir(app_dir)
-os.system('zip -rq -9 \"'+os.path.join(target_dir,'web.zip')+'" ./*')
+os.system('zip -rq -9 \"'+os.path.join(target_dir, 'web.zip')+'" ./*')
 
 # index.html for app
 
@@ -159,5 +163,5 @@ index_file = open(app_dir+os.path.sep+"index.html", 'w')
 index_file.writelines(appindex)
 index_file.close()
 
-os.system('zip -rq -9 \"'+os.path.join(target_dir,'app.zip')+'" ./*')
+os.system('zip -rq -9 \"'+os.path.join(target_dir, 'app.zip')+'" ./*')
 os.system('rm -rf \"'+app_dir+'\"')
