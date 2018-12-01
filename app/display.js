@@ -297,7 +297,7 @@ function updateCode() {
     if (Blockly.getMainWorkspace().isDragging()) return;
     var allcode = getCode() || "";
     allcode = allcode.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    document.getElementById("code_area").innerHTML = prettyPrintOne(allcode, "cpp", false);
+    document.getElementById("code_area").innerHTML = PR.prettyPrintOne(allcode, "cpp", true);
     codeChanged = false;
 }
 
