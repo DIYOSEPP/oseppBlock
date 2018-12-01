@@ -11,12 +11,11 @@ var msgcache = new Uint8Array(1024 * 16);
 var msgcache_index = 0;
 var timeFlag = null;
 
-var logmsg1 = function (msg) {
+var logmsg = function (msg) {
     if (msg) {
         msg = new Uint8Array(msg);
         if (msg.length >= msgcache.length) {
-            msg = new Uint8Array(msg.buffer, msg.length - msgcache.length);
-            msgcache.set(msg);
+            msgcache.set(new Uint8Array(msg.buffer, msg.length - msgcache.length));
             msgcache_index = msgcache.length;
         } else {
             var toTail = Math.min(msg.length, msgcache.length - (msgcache_index % msgcache.length));
@@ -40,29 +39,6 @@ var logmsg1 = function (msg) {
                     txt.set(new Uint8Array(msgcache.buffer, 0, pi), txt.length - pi);
                 }
                 el.innerText = new TextDecoder("utf-8").decode(txt);
-                el.scrollTop = el.scrollHeight;
-            }
-        }, 25);
-    }
-}
-
-var logmsg = function (msg) {
-    if (msg) {
-        msg = new Uint8Array(msg);
-        if (msg.length >= msgcache.length) {
-            msgcache.set(new Uint8Array(msg.buffer, msg.length - msgcache.length));
-        } else {
-            msgcache.set(msgcache.slice(msg.length), 0);
-            msgcache.set(msg, msgcache.length - msg.length);
-        }
-        if (timeFlag) return;
-        timeFlag = true;
-        setTimeout(() => {
-            timeFlag = false;
-            var el = document.getElementById("msgTextArea");
-            var scroll = el.scrollHeight - el.clientHeight - el.scrollTop;
-            if (scroll < el.offsetHeight * 1.5) {
-                el.innerText = new TextDecoder("utf-8").decode(msgcache);
                 el.scrollTop = el.scrollHeight;
             }
         }, 25);

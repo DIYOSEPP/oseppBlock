@@ -29,6 +29,11 @@ function resizeWorkspaceDiv() {
     if (blockWorkspace) {
         Blockly.svgResize(blockWorkspace);
     }
+    try {
+        window.localStorage.codeWidth = curwidth;
+    } catch (e) {
+
+    }
 }
 var slider_drogStart = function (e) {
     var ev = e || event;
@@ -323,6 +328,11 @@ var getOnlineVersionNumber = function (callback) {
 };
 
 function initWorkspace() {
+    try {
+        curwidth = window.localStorage.codeWidth || 300;
+    } catch (e) {
+        curwidth = 300;
+    }
     initLocal();
     resizeWorkspaceDiv();
     createBlockWorkspace();
