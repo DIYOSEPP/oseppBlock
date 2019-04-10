@@ -328,10 +328,17 @@ var blockToolboxXml=
 '			</shadow>'+
 '		</value>'+
 '	</block>'+
+'	<block type="instance_linesensor">'+
+'		<value name="Pin">'+
+'			<shadow type="io_arduino_uno_pin_usable_menu">'+
+'				<data name="Pin">analog</data>'+
+'			</shadow>'+
+'		</value>'+
+'	</block>'+
 '	<block type="module_OseppRemote_Button">'+
-'    </block>'+
+'      </block>'+
 '	<block type="module_OseppRemote_Channel">'+
-'    </block>'+
+'      </block>'+
 '	<block type="module_OseppRemote_isTimeout">'+
 '		<value name="time">'+
 '			<shadow type="math_whole_number">'+
@@ -671,6 +678,8 @@ var ModuleToolboxXml=
 '<block type="module_slider_get">'+
 '    </block>'+
 '<block type="module_lightsensor_get">'+
+'    </block>'+
+'<block type="module_linesensor_get">'+
 '    </block>'+
 '<block type="module_lm35_get">'+
 '    </block>'+

@@ -110,6 +110,7 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
  it will have a smaller size and faster speed
 + keep only the following folder  
  blockIcon/  
+ jQuery/
  media/  
  prettify/  
  scratch-blocks/media/  
@@ -121,6 +122,7 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
  scratch-blocks/blocks_compressed_vertical.js  
  display.js  
  main.js  
+ HWAgent.js
  serial.js  
  package.json  
  serial.js  
@@ -135,7 +137,10 @@ If you want to add your own block, please refer to
 [Introduction to Blockly](https://developers.google.com/blockly/guides/overview)
 
 ## change log
-
++ 20190410
+  + Add Chinese support,Usually the display language is the system language,can be specified by adding `locale = [en | zh-cn]` on the command line.
+  + Add jquery ui, separate serial port message and IDE prompt information
+  + add line sensor Block
 + 20180704
   + add negative Block
   + change comment Text Font Size

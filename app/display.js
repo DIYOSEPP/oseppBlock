@@ -242,6 +242,24 @@ function setLocale(locale) {
 }
 
 function initLocal() {
+    try {
+        const remote = require("electron").remote;
+        var args = remote.process.argv.slice(1);
+        var loca_cli = '';
+        //last set from cli
+        for (var arg, i = 0; arg = args[i]; i++) {
+            match = arg.match(/locale=([^&]+)/);
+            if (match) loca_cli = match[1];
+        }
+        if (loca_cli) {
+            Blockly.ScratchMsgs.setLocale(match[1]);
+            setLocaleUI();
+            return;//nowhere to go
+        }
+    }
+    catch (e) {
+    }
+
     var match = location.search.match(/locale=([^&]+)/);
     if (match) {
         Blockly.ScratchMsgs.setLocale(match[1]);

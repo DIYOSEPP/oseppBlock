@@ -33,15 +33,12 @@ genscratch = raw_input(u'Regenerate scratchBlock?:[Y]') or "Y"
 genapp = raw_input(u"Regenerate the oseppBlock publisher file ?[Y]") or 'Y'
 
 if gentoolbox.upper().find("Y") >= 0:
-    src = open(os.path.join(cur_dir, 'getToolboxXml.py')).read()
-    exec(src)
-
+   execfile('getToolboxXml.py')
 
 if genscratch.upper().find("Y") >= 0:
     os.chdir(os.path.join(cur_dir, 'scratch-blocks'))
-    os.system('python build.py')
+    os.system(sys.executable+' build.py')
     os.chdir(cur_dir)
-
 
 def compilejs(file, saveto):
     params = [
@@ -213,7 +210,7 @@ def del_file_from_zip(zip, file):
 def extract_asar_file(asarf, tdir):
     fstr = '\"'+asarf+'\"'
     dstr = '\"'+tdir+'\"'
-    cmd = "asar e %s %s" % (fstr, dstr)
+    cmd = ".\\node_modules\\.bin\\asar e %s %s" % (fstr, dstr)
     os.system('\"'+cmd+'\"')
 
 
@@ -222,7 +219,7 @@ def package_asar(fdir, tfile):
         os.remove(tfile)  # delete first
     fstr = '\"'+fdir+'\"'
     dstr = '\"'+tfile+'\"'
-    cmd = "asar p %s %s" % (fstr, dstr)
+    cmd = ".\\node_modules\\.bin\\asar p %s %s" % (fstr, dstr)
     os.system('\"'+cmd+'\"')
 
 

@@ -818,3 +818,17 @@ Blockly.Arduino['module_OseppRemote_isTimeout'] = function (block) {
     var code ='remoteController.isTimeoutFor('+value_time+')';
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino['instance_linesensor'] = function (block) {
+    onePinInstanceDefine(block, 'INPUT');
+    return '';
+};
+
+Blockly.Arduino['module_linesensor_get'] = function (block) {
+    var dropdown_name = block.getFieldValue('NAME');
+    var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
+    if (!defineBlock) return '\n';
+    var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
+    var code = 'analogRead(' + pin + ')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};

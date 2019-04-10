@@ -1212,3 +1212,39 @@ Blockly.Blocks['module_OseppRemote_isTimeout'] = {
         this.setHelpUrl(Blockly.Msg.MODULE_OSEPPREMOTE_ISTIMEOUT_HELPURL);
     }
 };
+
+Blockly.Blocks['instance_linesensor'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage("blockIcon/linesensor.png", 40, 40, "*"))
+            .appendField(new Blockly.FieldInstanceInput('LINESENSOR', 'line1', 'line'), "NAME");
+        this.appendValueInput("Pin")
+            .setCheck("Pin")
+            .appendField(Blockly.Msg.INSTANCE_LIGHTSENSOR_PINON);
+        this.setInputsInline(true);
+        this.setColour(
+            Blockly.Colours.cInstanceDefine.primary,
+            Blockly.Colours.cInstanceDefine.secondary,
+            Blockly.Colours.cInstanceDefine.tertiary);
+        this.setTooltip(Blockly.Msg.INSTANCE_LIGHTSENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.INSTANCE_LIGHTSENSOR_HELPURL);
+    },
+    provideBlocks: ['module_linesensor_get']
+};
+
+Blockly.Blocks['module_linesensor_get'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldInstanceDropdown("LINESENSOR"), "NAME")
+            .appendField(Blockly.Msg.MODULE_LIGHTSENSOR_GET_VALUE);
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        this.setColour(
+            Blockly.Colours.cModuleInput.primary,
+            Blockly.Colours.cModuleInput.secondary,
+            Blockly.Colours.cModuleInput.tertiary);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setTooltip(Blockly.Msg.MODULE_LIGHTSENSOR_GET_TOOLTIP);
+        this.setHelpUrl(Blockly.Msg.MODULE_LIGHTSENSOR_GET_HELPURL);
+    }
+};
