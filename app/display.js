@@ -2,9 +2,10 @@
 
 var blockWorkspace = null;
 var codeChanged = false;
-
-
 var curwidth = 300;
+
+var localobpname = "";
+
 function resizeWorkspaceDiv() {
     // Compute the absolute coordinates and dimensions of blocklyArea.
     var blocklyarea = document.getElementById("blocklyarea");
@@ -93,6 +94,7 @@ function loadOBPFileFromCLI() {
             if (path.extname(fname).toLowerCase() != ".obp") continue;
             if (!fs.existsSync(fname)) continue;
             text = fs.readFileSync(fname, "utf-8");
+            localobpname = path.basename(fname);
             break;
         }
     }
@@ -155,19 +157,53 @@ var newWorkspace = function () {
     block.setDeletable(false);
     blockWorkspace.scrollCenter();
     Blockly.Events.setGroup(false);
+    localobpname = "";
+}
+
+var dateStr = function () {
+    var d = new Date();
+    var ds = "" + d.getFullYear() + d.getMonth() + d.getDate() + d.getHours() + d.getMinutes() + d.getSeconds();
+    return ds;
 }
 
 var saveWorkspace = function () {
+    var defaultName = "oseppBlocks" + dateStr() + ".obp";
+    if (localobpname) defaultName = localobpname;
     try {
-        var filename = prompt("Enter the file name under which to save your blocks ", "oseppBlocks.obp");
+        var filename = prompt(Blockly.Msg["saveBlocks"], defaultName);
     } catch (e) {
-        var filename = "oseppBlock.obp";
+        var filename = defaultName;
     }
 
     if (filename) {
         var xml = Blockly.Xml.workspaceToDom(blockWorkspace);
         var text = Blockly.Xml.domToText(xml);
-        var data = new Blob([text], { type: "text/xml" });
+        var data = new Blob([text], { type: "text/obp" });
+        var clickEvent = new MouseEvent("click", {
+            "view": window,
+            "bubbles": true,
+            "cancelable": false
+        });
+
+        var a = document.createElement("a");
+        a.href = window.URL.createObjectURL(data);
+        a.download = filename;
+        a.textContent = "Download file!";
+        a.dispatchEvent(clickEvent);
+    }
+}
+var saveINO = function () {
+    var defaultName = "sketch" + dateStr() + ".ino";
+    if (localobpname) defaultName = localobpname.replace(/obp$/, "ino");
+    try {
+        var filename = prompt(Blockly.Msg["saveINO"], defaultName);
+    } catch (e) {
+        var filename = defaultName;
+    }
+
+    if (filename) {
+        var text = getCode() || 'void setup(){\n}\n\nvoid loop(){\n}';
+        var data = new Blob([text], { type: "text/ino" });
         var clickEvent = new MouseEvent("click", {
             "view": window,
             "bubbles": true,
@@ -198,6 +234,7 @@ var loadWorkspace = function () {
                 Blockly.Xml.domToWorkspace(xml, blockWorkspace);
                 blockWorkspace.scrollCenter();
                 blockWorkspace.clearUndo();
+                localobpname = file.name;
             } catch (e) {
                 newWorkspace();
             }
@@ -364,6 +401,10 @@ function initWorkspace() {
     document.getElementById("save").onclick = saveWorkspace;
     document.getElementById("load").onclick = loadWorkspace;
 
+    $('#send_to_arduino_ide').click(saveINO);
+    $('#save2png').click(savePNG);
+
+
     document.getElementById("undo").onclick = function () {
         Blockly.getMainWorkspace().undo(0);
     }
@@ -390,6 +431,7 @@ function initWorkspace() {
                     blockWorkspace.clear();
                     Blockly.Xml.domToWorkspace(xml, blockWorkspace);
                     blockWorkspace.scrollCenter();
+                    localobpname = f.name;
                 } catch (e) {
                     newWorkspace();
                 }
@@ -428,59 +470,145 @@ function initWorkspace() {
     }
 }
 
-var takeScreen = function () {
-    var wc = require("electron").remote.getCurrentWindow();
-    const fs = require('fs');
-    var oldsize = wc.getContentSize();
+$(document).ready(initWorkspace);
 
-    var svg = document.getElementsByClassName('blocklySvg')[0];
-    var blocklyCanvas = document.getElementsByClassName('blocklyBlockCanvas')[0];
-    var blocklyBubbleCanvas = document.getElementsByClassName('blocklyBubbleCanvas')[0];
 
-    var vbox = svg.getBoundingClientRect();
-    var bbox = blocklyCanvas.getBoundingClientRect();
-    var bbbox = blocklyBubbleCanvas.getBoundingClientRect();
-    if (bbbox.height > 0 && bbbox.width > 0) {
-        var mx = bbbox.x + bbbox.width;
-        mx = Math.max(mx, bbox.x + bbox.width);
-        var my = bbbox.y + bbbox.height;
-        my = Math.max(my, bbox.y + bbox.height)
-        bbox.x = Math.max(bbbox.x, bbox.x);
-        bbox.y = Math.max(bbbox.y, bbox.y);
-        bbox.width = mx - bbox.x;
-        bbox.height = my - bbox.y;
-    }
+function block2svg() {
+    var rootsvg = blockWorkspace.svgGroup_.parentNode;
 
-    var newwidth = oldsize[0] + bbox.width - vbox.width + bbox.x;
-    var newheight = oldsize[1] + bbox.height - vbox.height + bbox.y;
+    var blockCanvas = rootsvg.getElementsByClassName('blocklyBlockCanvas')[0];
+    var bubbleCanvas = rootsvg.getElementsByClassName('blocklyBubbleCanvas')[0];
+    var box1 = blockCanvas.getBBox();
+    var box2 = bubbleCanvas.getBBox();
+    var offset1 = Blockly.utils.getRelativeXY(blockCanvas);
+    var offset2 = Blockly.utils.getRelativeXY(bubbleCanvas);
+    box1.x += offset1.x; box1.y += offset1.y;
+    box2.x += offset2.x; box2.y += offset2.y;
+    if (box2.width <= 0 && box2.height <= 0) box2 = box1;
+    var minx = Math.min(box1.x, box2.x);
+    var miny = Math.min(box1.y, box2.y);
+    var maxx = Math.max(box1.x + box1.width, box2.x + box2.width);
+    var maxy = Math.max(box1.y + box1.height, box2.y + box2.height);
 
-    var el = document.getElementById('code_area');
-    newwidth += Math.max(0, el.scrollWidth - el.clientWidth + 50);
-    newheight = Math.max(newheight, el.scrollHeight + 50);
+    rootsvg = rootsvg.cloneNode(true);
+    rootsvg.style.backgroundColor = "transparent";
+    let bg=rootsvg.getElementsByClassName('blocklyMainBackground')[0];
+    bg.parentNode.removeChild(bg);
+    blockCanvas = rootsvg.getElementsByClassName('blocklyBlockCanvas')[0];
+    bubbleCanvas = rootsvg.getElementsByClassName('blocklyBubbleCanvas')[0];
+    blockCanvas.childNodes.forEach(e => {
+        var p = Blockly.utils.getRelativeXY(e); e.setAttribute('transform',
+            'translate(' + (p.x - minx + offset1.x) + ',' + (p.y - miny + offset1.y) + ')');
+    });
+    bubbleCanvas.childNodes.forEach(e => {
+        var p = Blockly.utils.getRelativeXY(e); e.setAttribute('transform',
+            'translate(' + (p.x - minx + offset2.x) + ',' + (p.y - miny + offset2.y) + ')');
+    });
 
-    var msg = document.getElementById('serial_upload_msg');
-    newheight += msg.clientHeight;
+    [...rootsvg.getElementsByClassName('scratchCommentText')].forEach(e => {
+        if (e.tagName != 'TEXTAREA') return;
+        e.innerHTML = e.value;
+    });
 
-    newwidth = Math.ceil(newwidth + 80);
-    newheight = Math.ceil(newheight);
+    blockCanvas.removeAttribute('transform');
+    bubbleCanvas.removeAttribute('transform');
+    [...rootsvg.getElementsByClassName("blocklyScrollbarBackground")].forEach(e => e.parentNode.removeChild(e));
+    [...rootsvg.getElementsByClassName("blocklyZoom")].forEach(e => e.parentNode.removeChild(e));
+    rootsvg.setAttribute('height', Math.round(maxy - miny) + 'px');
+    rootsvg.setAttribute('width', Math.round(maxx - minx) + 'px');
 
-    wc.setContentSize(Math.max(oldsize[0], newwidth), Math.max(oldsize[1], newheight));
-    var oldcodewith = curwidth;
-    curwidth = el.scrollWidth + 50;
-    resizeWorkspaceDiv();
-    var now = new Date;
-    var fname = '' + now.getTime() + '.png';
-    setTimeout(function () {
-        wc.capturePage(function (image) {
-            fs.writeFile(fname, image.toPNG(), (err) => {
-                if (err) throw err;
+    var sty = document.getElementsByTagName('style')[0];
+    var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    styleElement.textContent = sty.innerHTML;
+    rootsvg.children[0].appendChild(styleElement);
+
+    var img2base64 = [...rootsvg.getElementsByTagName('image')].map(
+        (img) => {
+            return new Promise((resolve, reject) => {
+                var url = img.href.baseVal;
+                window.URL = window.URL || window.webkitURL;
+                var xhr = new XMLHttpRequest();
+                xhr.open("get", url, true);
+                xhr.responseType = "blob";
+                xhr.onload = function () {
+                    if ((this.status == 200) || (this.status == 0)) {
+                        var blob = this.response;
+                        let oFileReader = new FileReader();
+                        oFileReader.onloadend = function (e) {
+                            let base64 = e.target.result;
+                            img.href.baseVal = base64;
+                            resolve();
+                        };
+                        oFileReader.readAsDataURL(blob);
+                    } else {
+                        reject();
+                    }
+                };
+                xhr.onerror = reject;
+                xhr.send();
             })
-        })
-        curwidth = oldcodewith;
-        resizeWorkspaceDiv();
-        wc.setContentSize(oldsize[0], oldsize[1]);
-    }, 500);
-    return fname;
+        });
+    return new Promise((resolve, reject) => {
+        Promise.all(img2base64).then(() => {
+            resolve(rootsvg);
+        });
+    })
+
+    //return rootsvg;
 }
 
-$(document).ready(initWorkspace);
+function saveSVG() {
+    var g = block2svg();
+    g.then((svg) => {
+        var text = Blockly.Xml.domToText(svg);
+        //document.getElementById('blockly_div').innerHTML = text;
+        var data = new Blob([text], { type: "text/xml" });
+        var a = document.createElement("a");
+        a.href = window.URL.createObjectURL(data);
+        var defaultName = "sketch" + dateStr() + ".svg";
+        if (localobpname) defaultName = localobpname.replace(/obp$/, "svg");
+        a.download = defaultName;
+        a.textContent = "Download file!";
+        var clickEvent = new MouseEvent("click", {
+            "view": window,
+            "bubbles": true,
+            "cancelable": false
+        });
+        a.dispatchEvent(clickEvent);
+    });
+}
+
+
+function savePNG() {
+    var g = block2svg();
+    g.then((svg) => {
+        var text = Blockly.Xml.domToText(svg);
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext('2d');
+        var DOMURL = window.URL || window.webkitURL || window;
+        var img = new Image();
+        //img.setAttribute("crossOrigin", 'Anonymous');
+        img.onload = function () {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            var clickEvent = new MouseEvent("click", {
+                "view": window,
+                "bubbles": true,
+                "cancelable": false
+            });
+            canvas.toBlob(function (blob) {
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                var defaultName = "sketch" + dateStr() + ".png";
+                if (localobpname) defaultName = localobpname.replace(/obp$/, "png");
+                a.download = defaultName;
+                a.textContent = "Download file!";
+                a.dispatchEvent(clickEvent);
+            });
+
+        }
+        img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(text)));
+    });
+}

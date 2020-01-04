@@ -1153,8 +1153,8 @@ Blockly.Blocks['module_OseppRemote_Button'] = {
         this.appendDummyInput()
             .appendField(Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_REMOTE)
             .appendField(new Blockly.FieldDropdown([
-                ["L", "1"], ["R", "2"], ["U", "4"], ["D", "8"],
-                ["A", "16"], ["B", "32"], ["X", "64"], ["Y", "128"]
+                ["L", "button_L"], ["R", "button_R"], ["U", "button_U"], ["D", "button_D"],
+                ["A", "button_A"], ["B", "button_B"], ["X", "button_X"], ["Y", "button_Y"]
             ]),
                 "CHANNEL")
             .appendField(Blockly.Msg.MODULE_OSEPPREMOTE_BUTTON_PRESSED);
@@ -1175,13 +1175,13 @@ Blockly.Blocks['module_OseppRemote_Channel'] = {
         this.appendDummyInput()
             .appendField(Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_REMOTE)
             .appendField(new Blockly.FieldDropdown([
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['0'], '0'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['1'], '1'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['2'], '2'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['3'], '3'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['4'], '4'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['5'], '5'],
-                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['6'], '6']]),
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['0'], 'left_X'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['1'], 'left_Y'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['2'], 'right_X'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['3'], 'right_Y'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['4'], 'gravity_X'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['5'], 'gravity_Y'],
+                [Blockly.Msg.MODULE_OSEPPREMOTE_CHANNEL_OPTION['6'], 'gravity_Z']]),
                 "CHANNEL");
         this.setInputsInline(true);
         this.setOutput(true, "Number");

@@ -1,21 +1,36 @@
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 const url = require('url');
 
 let win;
 
-function createWindow () {
+function createWindow() {
+    //Menu.setApplicationMenu(Menu.buildFromTemplate([]));
     if (process.platform == 'win32') {
-        win = new BrowserWindow({show:false,enableLargerThanScreen:true,width: 1024, height: 768,icon:`${__dirname}/media/osepp.ico`});
-    }else{
-        win = new BrowserWindow({show:false,enableLargerThanScreen:true,width: 1024, height: 768});
+        win = new BrowserWindow({
+            show: false,
+            enableLargerThanScreen: true,
+            width: 1024,
+            height: 768,
+            icon: `${__dirname}/media/osepp.ico`,
+            webPreferences: { nodeIntegration: true },
+            autoHideMenuBar: true
+        });
+    } else {
+        win = new BrowserWindow({
+            show: false,
+            enableLargerThanScreen: true,
+            width: 1024,
+            height: 768,
+            webPreferences: { nodeIntegration: true },
+            autoHideMenuBar: true
+        });
     }
-    
+
     win.maximize();
 
-
     win.loadURL(`file://${__dirname}/index.html`);
-    
+
     //win.webContents.openDevTools();
     win.once('ready-to-show', () => {
         win.show();

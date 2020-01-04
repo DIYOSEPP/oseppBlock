@@ -87,7 +87,6 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
 
 ```bash
         npm install
-        npm update #option update nodejs modules to the latest version
         ./node_modules/.bin/electron-rebuild -f #rebulid nodejs modules for electron
         sudo ./node_modules/.bin/electron . #try to run oseppBlock
 ```
@@ -98,9 +97,9 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
 
 ```bash
         #linux windows
-        ./node_modules/.bin/electron-packager . --overwrite   --asar=true  --icon=media/osepp.ico --prune=true --out=../release-builds
+        ./node_modules/.bin/electron-packager . --overwrite --asar --icon=media/osepp.ico  --prune=true --out=../release-builds
         #mac os
-        ./node_modules/.bin/electron-packager . --overwrite  --asar=true --icon=media/osepp.icns --prune=true --out=../release-builds
+        ./node_modules/.bin/electron-packager . --overwrite --asar --icon=media/osepp.icns --prune=true --out=../release-builds
 ```
 
  Packaged files will be stored in ../release-builds
@@ -108,6 +107,7 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
 ## 6. enable the compressed version of *scratch-block*
 
  it will have a smaller size and faster speed
+
 + keep only the following folder  
  blockIcon/  
  jQuery/
@@ -137,16 +137,22 @@ If you want to add your own block, please refer to
 [Introduction to Blockly](https://developers.google.com/blockly/guides/overview)
 
 ## change log
+
++ 20200104
+  1. Built-in arduino-builder (because the arduino-builder included with arduino 1.8.10 IDE is not executable.)
+  2. No longer necessary to link to the arduino IDE, so `send code to the arduino` has been canceled and modified to download the INO file.
+  3. Added screenshot function to save Blocks as PNG files.
+  4. Add some blocks and modify some blocks(from directly generating code to using libraries).So the Arduino IDE needs to install the [oseppRobot](https://github.com/DIYOSEPP/oseppBlock/raw/master/oseppRobot.zip) library to compile the INO file downloaded from oseppBlock.
 + 20190410
-  + Add Chinese support,Usually the display language is the system language,can be specified by adding `locale = [en | zh-cn]` on the command line.
-  + Add jquery ui, separate serial port message and IDE prompt information
-  + add line sensor Block
+  1. Add Chinese support,Usually the display language is the system language,can be specified by adding `locale = [en | zh-cn]` on the command line.
+  2. Add jquery ui, separate serial port message and IDE prompt information
+  3. add line sensor Block
 + 20180704
-  + add negative Block
-  + change comment Text Font Size
+  1. add negative Block
+  2. change comment Text Font Size
 + 20180626
-  + Updated to the latest **scratch block** core
-  + Update to the latest **electron**
-  + add **robot** blocks and **remote** blocks
-  + add **tcp Serial Monitor**
-  + When the port is an IP address, use **arduino OTA** to upload the sketch (compatible with Arduino Uno Wifi)
+  1. Updated to the latest **scratch block** core
+  2. Update to the latest **electron**
+  3. add **robot** blocks and **remote** blocks
+  4. add **tcp Serial Monitor**
+  5. When the port is an IP address, use **arduino OTA** to upload the sketch (compatible with Arduino Uno Wifi)

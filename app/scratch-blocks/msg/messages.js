@@ -99,7 +99,7 @@ Blockly.Msg.ButtonSaveBlocksToFile = 'Save Blocks To File';
 Blockly.Msg.ButtonLoadBlocksFromFile = 'load blocks from file';
 Blockly.Msg.ButtonUndo = 'Undo';
 Blockly.Msg.ButtonRedo = 'Redo';
-Blockly.Msg.ButtonSendCodeToArduinoIde = 'Send code to arduino ide';
+Blockly.Msg.ButtonSendCodeToArduinoIde = 'save sketch to file';
 Blockly.Msg.ButtonVerify = 'Verify';
 Blockly.Msg.ButtonUpLoad = 'Upload';
 Blockly.Msg.ButtonToogleSerial = 'toggle serial message box open/close';
@@ -778,3 +778,15 @@ Blockly.Msg.INSTANCE_PROCEDURE_CALL_CALL = 'call ';
 Blockly.Msg.PROCEDURE_RETURN_TOOLTIP = 'Terminate a function and return';
 Blockly.Msg.PROCEDURE_RETURN_HELPURL = 'https://www.arduino.cc/en/Reference/Return';
 Blockly.Msg.PROCEDURE_RETURN_RETURN = 'return';
+
+Blockly.Msg.setArduinoPath = "setArduinoPath";
+Blockly.Msg.selectArduinoPath = 'select arduino path';
+Blockly.Msg.setArduinoPathFeedback = "setArduinoPathFeedback";
+
+Blockly.Msg.sendCode2ArduinoIDE_title = 'coding in arduino IDE';
+Blockly.Msg.sendCode2ArduinoIDE = 'Arduino IDE is starting, please wait a moment!';
+Blockly.Msg.verifycode = 'Verify code';
+Blockly.Msg.verifycode_error = 'error at verify';
+Blockly.Msg.upload = 'Uploading';
+Blockly.Msg.saveBlocks='Enter the file name under which to save your blocks';
+Blockly.Msg.saveINO='Enter the file name under which to save your sketch';

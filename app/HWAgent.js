@@ -121,7 +121,7 @@ HWAgent.nodeSerial.portList = [];
 HWAgent.nodeSerial.list = function (callback) {
     try {
         var serialport = require("serialport");
-        var onlist = function (err, ports) {
+        var onlist = function (callback, ports) {
             HWAgent.nodeSerial.portList = [];
             for (var i = 0; i < ports.length; i++) {
                 HWAgent.Serial.addPorts(ports[i].comName, ports[i].comName, HWAgent.nodeSerial);
@@ -129,7 +129,7 @@ HWAgent.nodeSerial.list = function (callback) {
             }
             if (callback) callback(ports.length);
         }
-        serialport.list(onlist.bind(this));
+        serialport.list().then((e) => onlist(callback, e));
     } catch (e) {
         this.log(e);
     }
@@ -202,7 +202,7 @@ HWAgent.nodeSerial.prototype.isOpened = function () {
 
 HWAgent.nodeSerial.prototype.upload = function (hex) {
     var hexfile = hex.filename;
-    var arduinoPath = window.localStorage.arduinoPath;
+    var arduinoPath = window.localStorage.buildinArduinoIDEPath || window.localStorage.arduinoIDEPath;
     if (!arduinoPath) {
         this.onDone_("Invalid Arduino Path");
         return;
@@ -211,18 +211,16 @@ HWAgent.nodeSerial.prototype.upload = function (hex) {
 
     var runUploadCmd = function () {
         try {
-            var app = "\"" + arduinoPath + "/hardware/tools/avr/bin/avrdude\"";
-            var argConf = "-C\"" + arduinoPath + "/hardware/tools/avr/etc/avrdude.conf\"";
-
+            const path = require('path');
+            var app = `"${path.join(arduinoPath, "/hardware/tools/avr/bin/avrdude")}"`;
+            var argConf = `-C "${path.join(arduinoPath, "/hardware/tools/avr/etc/avrdude.conf")}"`;
             var argCpu = "-patmega328p -carduino -D";
 
-            var argPort = "-P\"" + aSerial.port + "\"";
+            var argPort = `-P "${aSerial.port}"`;
             var argBaud = "-b115200";
-
-            var argFile = "-Uflash:w:\"" + hexfile + "\":i";
-
+            var argFile = `-Uflash:w:"${hexfile}":i`;
             const spawn = require("child_process").spawn;
-            const upload = spawn(app, [argConf, argCpu, argFile, argPort, argBaud, " -q"], { shell: true });
+            const upload = spawn(app, [argConf, argCpu, argFile, argPort, argBaud, , " -q"], { shell: true });
 
             upload.stdout.on("data", (data) => {
                 aSerial.onUpload_(data);
@@ -401,7 +399,7 @@ HWAgent.Esp8266Serial.prototype.write = function (data) {
 }
 HWAgent.Esp8266Serial.prototype.upload = function (hex) {
     var hexfile = hex.filename;
-    var arduinoPath = window.localStorage.arduinoPath;
+    var arduinoPath = window.localStorage.buildinArduinoIDEPath || window.localStorage.arduinoIDEPath;
 
     if (!arduinoPath) {
         this.onDone_("Invalid Arduino Path");
@@ -409,9 +407,10 @@ HWAgent.Esp8266Serial.prototype.upload = function (hex) {
     }
     var aSerial = this;
     try {
-        var app = "\"" + arduinoPath + "/hardware/tools/avr/bin/arduinoOTA\"";
-        var argFile = "-sketch \"" + hexfile + "\"";
-        var argAddress = "-address \"" + this.sock_.remoteAddress + "\"";
+        const path = require('path');
+        var app = `"${path.join(arduinoPath, "/hardware/tools/avr/bin/arduinoOTA")}"`;
+        var argFile = `-sketch "${hexfile}"`;
+        var argAddress = `-address "${this.sock_.remoteAddress}"`;
 
         const spawn = require("child_process").spawn;
         const upload = spawn(app, [argAddress, "-port 80", argFile, "-upload /pgm/upload", "-sync /pgm/sync", "-reset /log/reset", "-sync_exp 204:SYNC"], { shell: true });
@@ -506,7 +505,7 @@ goog.require('HWAgent.Generator');
 HWAgent.nodeGenerator = function (code, eventHandle) {
     if (eventHandle) this.onEvent = eventHandle;
     this.hex = null;
-    var arduinoPath = window.localStorage.arduinoPath;
+    var arduinoPath = window.localStorage.buildinArduinoIDEPath || window.localStorage.arduinoIDEPath;
     if (!arduinoPath) {
         this.onDone_("Invalid Arduino Path");
         return;
@@ -515,16 +514,16 @@ HWAgent.nodeGenerator = function (code, eventHandle) {
     try {
         var tmpdir = HWAgent.nodeGenerator.getTmpDir();
         const fs = require("fs");
-
-        fs.writeFileSync(tmpdir + "/sketch/sketch.ino", code);
-        var builder = "\"" + arduinoPath + "/arduino-builder\"";
-        var argHardware = "-hardware \"" + arduinoPath + "/hardware\"";
-        var argTools = "-tools \"" + arduinoPath + "/hardware/tools/avr\"";
-        var argcFlag = "-tools \"" + arduinoPath + "/tools-builder\"";
-        var argLibraries = "-libraries \"" + arduinoPath + "/libraries\"";
+        const path = require('path');
+        fs.writeFileSync(path.join(tmpdir, "/sketch/sketch.ino"), code);
+        var builder = `"${path.join(arduinoPath, "/arduino-builder")}"`;
+        var argHardware = `-hardware "${path.join(arduinoPath, "/hardware")}"`;
+        var argTools = `-tools "${path.join(arduinoPath, "/hardware/tools/avr")}"`;
+        var argcFlag = `-tools "${path.join(arduinoPath, "/tools-builder")}"`;
+        var argLibraries = `-libraries "${path.join(arduinoPath, "/libraries")}"`;
         var argFlag = "-fqbn arduino:avr:uno";
-        var argFile = "\"" + tmpdir + "/sketch/sketch.ino\"";
-        var argBuildPath = "-build-path \"" + tmpdir + "/buildpath\"";
+        var argFile = `"${path.join(tmpdir, "/sketch/sketch.ino")}"`;
+        var argBuildPath = `-build-path "${path.join(tmpdir, "/buildpath")}"`;
 
         const spawn = require("child_process").spawn;
         const genhex = spawn(builder, [argHardware, argTools, argcFlag, argLibraries, argFlag, argBuildPath, argFile], { shell: true });
@@ -560,18 +559,19 @@ HWAgent.nodeGenerator.init = function () {
 HWAgent.nodeGenerator.getTmpDir = function () {
     var tmpdir = window.localStorage.tmpdir;
     const fs = require("fs");
+    const path = require("path");
     try {
-        fs.accessSync(tmpdir + "/buildpath");
-        fs.accessSync(tmpdir + "/sketch");
+        fs.accessSync(path.join(tmpdir, "buildpath"));
+        fs.accessSync(path.join(tmpdir, "sketch"));
     } catch (e) {
         tmpdir = null;
     }
     if (!tmpdir) {
         const os = require("os");
         var t = os.tmpdir();
-        tmpdir = fs.mkdtempSync(t + "/osepp-");
-        fs.mkdirSync(tmpdir + "/buildpath");
-        fs.mkdirSync(tmpdir + "/sketch");
+        tmpdir = fs.mkdtempSync(path.join(t, "osepp-"));
+        fs.mkdirSync(path.join(tmpdir, "buildpath"));
+        fs.mkdirSync(path.join(tmpdir, "sketch"));
         window.localStorage.tmpdir = tmpdir;
     }
     return tmpdir;

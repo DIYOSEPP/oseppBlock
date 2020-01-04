@@ -465,39 +465,9 @@ Blockly.Arduino['instance_ultrasonic'] = function (block) {
     var text_name = block.getFieldValue('NAME');
     var value_trigpin = Blockly.Arduino.valueToCode(block, 'trigPin', Blockly.Arduino.ORDER_ATOMIC);
     var value_echopin = Blockly.Arduino.valueToCode(block, 'echoPin', Blockly.Arduino.ORDER_ATOMIC);
+    Blockly.Arduino.addInclude('oseppRobot', '#include <oseppRobot.h>');
     Blockly.Arduino.addDeclaration(text_name,
         'OseppUltrasonic ' + text_name + '(' + value_trigpin + ',' + value_echopin + ');');
-
-    var funcode = [];
-    funcode.push('class OseppUltrasonic{');
-    funcode.push('private:');
-    funcode.push('  uint8_t _trig_Pin, _echo_pin;');
-    funcode.push('  float _lastPing;');
-    funcode.push('  unsigned long _lastEntry;');
-    funcode.push('public:');
-    funcode.push('  OseppUltrasonic(uint8_t trig_Pin, uint8_t echo_pin){');
-    funcode.push('    _trig_Pin = trig_Pin;');
-    funcode.push('    _echo_pin = echo_pin;');
-    funcode.push('    _lastEntry = 0;');
-    funcode.push('    _lastPing = 0;');
-    funcode.push('  }');
-    funcode.push('  float ping(unsigned int max_mm = 4000){');
-    funcode.push('    if (millis() - _lastEntry < 25)return _lastPing;');
-    funcode.push('    _lastEntry = millis();');
-    funcode.push('    pinMode(_trig_Pin, OUTPUT);');
-    funcode.push('    digitalWrite(_trig_Pin, LOW);');
-    funcode.push('    pinMode(_echo_pin, INPUT);');
-    funcode.push('    digitalWrite(_echo_pin, LOW);');
-    funcode.push('    digitalWrite(_trig_Pin, HIGH);');
-    funcode.push('    delayMicroseconds(10);');
-    funcode.push('    digitalWrite(_trig_Pin, LOW);');
-    funcode.push('    unsigned long duration = pulseIn(_echo_pin, HIGH, max_mm * 5.5 + 200);');
-    funcode.push('    if (duration == 0)_lastPing = max_mm;else _lastPing = (float)duration / 5.8;');
-    funcode.push('    return _lastPing;');
-    funcode.push('  }');
-    funcode.push('};');
-    Blockly.Arduino.adduserClass('OseppUltrasonic', funcode.join("\n"));
-
     return '';
 };
 
@@ -599,36 +569,9 @@ Blockly.Arduino['instance_TB6612MotorDriver'] = function (block) {
     if (Blockly.Arduino.isDigitalPin(PWM)) {
         Blockly.Arduino.reservePin(block, PWM, 'OUTPUT', text_name + '-PWM');
     }
+    Blockly.Arduino.addInclude('oseppRobot', '#include <oseppRobot.h>');
     Blockly.Arduino.addDeclaration(text_name,
         'OseppTBMotor ' + text_name + '(' + DIR + ',' + PWM + (frb == 'f' ? '' : ',LOW') + ');');
-
-    var funcode = [];
-    funcode.push('class OseppTBMotor{');
-    funcode.push('private:');
-    funcode.push('  uint8_t _dir_pin, _pwm_pin;');
-    funcode.push('  uint8_t _forward_level;');
-    funcode.push('public:');
-    funcode.push('  OseppTBMotor(uint8_t dir_pin, uint8_t pwm_pin, uint8_t forward_level = HIGH){');
-    funcode.push('    _dir_pin = dir_pin;');
-    funcode.push('    _pwm_pin = pwm_pin;');
-    funcode.push('    _forward_level = forward_level;');
-    funcode.push('    pinMode(_dir_pin, OUTPUT);');
-    funcode.push('    digitalWrite(_pwm_pin, LOW);');
-    funcode.push('  }');
-    funcode.push('  void forward(int pwm){');
-    funcode.push('    if (pwm < 0){');
-    funcode.push('      digitalWrite(_dir_pin, !_forward_level);');
-    funcode.push('      pwm=-pwm;');
-    funcode.push('    }else{');
-    funcode.push('      digitalWrite(_dir_pin, _forward_level);');
-    funcode.push('    }');
-    funcode.push('    analogWrite(_pwm_pin, pwm > 255 ? 255 : pwm);');
-    funcode.push('  }');
-    funcode.push('  void backward(int pwm){');
-    funcode.push('    forward(-pwm);');
-    funcode.push('  }');
-    funcode.push('};');
-    Blockly.Arduino.adduserClass('OseppTBMotor', funcode.join("\n"));
     return '';
 };
 Blockly.Arduino['module_set_TB6612MotorDriver'] = function (block) {
@@ -652,38 +595,8 @@ Blockly.Arduino['module_set_TB6612MotorDriver'] = function (block) {
 Blockly.Arduino['instance_RangeFinder'] = function (block) {
     var text_name = block.getFieldValue('NAME');
     var pin = Blockly.Arduino.valueToCode(block, 'Pin', Blockly.Arduino.ORDER_ATOMIC);
-
+    Blockly.Arduino.addInclude('oseppRobot', '#include <oseppRobot.h>');
     Blockly.Arduino.addDeclaration(text_name, 'OseppRangeFinder ' + text_name + '(' + pin + ');');
-    var funcode = [];
-    funcode.push('class OseppRangeFinder{');
-    funcode.push('private:');
-    funcode.push('  uint8_t _sig_Pin;');
-    funcode.push('  float _lastPing;');
-    funcode.push('  unsigned long _lastEntry;');
-    funcode.push('public:');
-    funcode.push('  OseppRangeFinder(uint8_t sig_Pin){');
-    funcode.push('    _sig_Pin = sig_Pin;');
-    funcode.push('    _lastEntry = 0;');
-    funcode.push('    _lastPing = 0;');
-    funcode.push('  }');
-    funcode.push('  float ping(unsigned int max_mm = 4000){');
-    funcode.push('    if (millis() - _lastEntry < 25)return _lastPing;');
-    funcode.push('    _lastEntry = millis();');
-    funcode.push('    pinMode(_sig_Pin, INPUT);');
-    funcode.push('    if (digitalRead(_sig_Pin) == HIGH)return _lastPing;');
-    funcode.push('    pinMode(_sig_Pin, OUTPUT);');
-    funcode.push('    digitalWrite(_sig_Pin, HIGH);');
-    funcode.push('    delayMicroseconds(10);');
-    funcode.push('    digitalWrite(_sig_Pin, LOW);');
-    funcode.push('    pinMode(_sig_Pin, INPUT);');
-    funcode.push('    unsigned long duration = pulseIn(_sig_Pin, HIGH, max_mm * 5.5 + 200);');
-    funcode.push('    if (duration == 0)_lastPing = max_mm;else _lastPing = (float)duration / 5.8;');
-    funcode.push('    return _lastPing;');
-    funcode.push('  }');
-    funcode.push('};');
-
-    Blockly.Arduino.adduserClass('OseppRangeFinder', funcode.join("\n"));
-
     return '';
 };
 
@@ -705,87 +618,8 @@ Blockly.Arduino['module_OseppRemote_Feed'] = function (block) {
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
-
-
-
 Blockly.Arduino.addClass_instance_OseppRemote=function(){
-    var funcode = [];
-    funcode.push("class OseppRemote");
-    funcode.push("{");
-    funcode.push("private:");
-    funcode.push("  char letter;");
-    funcode.push("  int number;");
-    funcode.push("  char minusSign;");
-    funcode.push("  char tempButton;");
-    funcode.push("  char mButtonState;");
-    funcode.push("  int mChannel[7];");
-    funcode.push("  unsigned long mLast_Data_millis;");
-    funcode.push("public:");
-    funcode.push("  OseppRemote(){");
-    funcode.push("    letter = 0;");
-    funcode.push("    number = 0;");
-    funcode.push("    minusSign = 0;");
-    funcode.push("    mButtonState = 0;");
-    funcode.push("    tempButton = 0;");
-    funcode.push("    mLast_Data_millis = millis();");
-    funcode.push("  }");
-    funcode.push("  void update(){");
-    funcode.push("    while (Serial.available()){");
-    funcode.push("      char data = Serial.read();");
-    funcode.push("      mLast_Data_millis = millis();");
-    funcode.push("      if ((data >= '0') && (data <= '9')){");
-    funcode.push("        number *= 10;");
-    funcode.push("        number += data - '0';");
-    funcode.push("      }else if (data == '-'){");
-    funcode.push("        minusSign = 1;");
-    funcode.push("      }else{");
-    funcode.push("        if (minusSign)number = -number;");
-    funcode.push("        switch (letter)");
-    funcode.push("        {");
-    funcode.push("        case 'u':mChannel[0] = number;break;");
-    funcode.push("        case 'v':mChannel[1] = number;break;");
-    funcode.push("        case 'w':mChannel[2] = number;break;");
-    funcode.push("        case 'a':mChannel[3] = number;break;");
-    funcode.push("        case 'x':mChannel[4] = number;break;");
-    funcode.push("        case 'y':mChannel[5] = number;break;");
-    funcode.push("        case 'z':mChannel[6] = number;break;");
-    funcode.push("        default:break;");
-    funcode.push("        }");
-    funcode.push("        number = 0;");
-    funcode.push("        minusSign = 0;");
-    funcode.push("        switch (data)");
-    funcode.push("        {");
-    funcode.push("        case 'L':tempButton |= 1;break;");
-    funcode.push("        case 'R':tempButton |= 2;break;");
-    funcode.push("        case 'U':tempButton |= 4;break;");
-    funcode.push("        case 'D':tempButton |= 8;break;");
-    funcode.push("        case 'A':tempButton |= 16;break;");
-    funcode.push("        case 'B':tempButton |= 32;break;");
-    funcode.push("        case 'X':tempButton |= 64;break;");
-    funcode.push("        case 'Y':tempButton |= 128;break;");
-    funcode.push("        case '\\n':mButtonState = tempButton;tempButton = 0;break;");
-    funcode.push("        default:break;");
-    funcode.push("        }");
-    funcode.push("        letter = data;");
-    funcode.push("      }");
-    funcode.push("    }");
-    funcode.push("  }");
-    funcode.push("  uint8_t getButtonState(uint8_t mask){");
-    funcode.push("    update();");
-    funcode.push("    return mButtonState & mask;");
-    funcode.push("  }");
-    funcode.push("  int getChannalData(uint8_t channel){");
-    funcode.push("    update();");
-    funcode.push("    return mChannel[channel];");
-    funcode.push("  }");
-    funcode.push("  bool isTimeoutFor(unsigned long howlong){");
-    funcode.push("    update();");
-    funcode.push("    if (millis() - mLast_Data_millis > howlong)return true;");
-    funcode.push("    return false;");
-    funcode.push("  }");
-    funcode.push("};");
-
-    Blockly.Arduino.adduserClass('OseppRemote', funcode.join("\n"));
+    Blockly.Arduino.addInclude('oseppRobot', '#include <oseppRobot.h>');
     Blockly.Arduino.addDeclaration('remoteController', 'OseppRemote remoteController;');
 }
 

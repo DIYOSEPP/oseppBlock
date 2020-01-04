@@ -82,18 +82,19 @@ var onSerialEvent = function (event, data) {
 function opendialog() {
     const remote = require("electron").remote;
     const dialog = remote.dialog;
-    var file = dialog.showOpenDialog({ title: "set arduino path", properties: ["openFile"] });
+    var file = dialog.showOpenDialogSync({ title: Blockly.Msg['selectArduinoPath'], properties: ["openFile"] });
     if (file) {
         file = file[0];
         const path = require("path");
         var extName = path.extname(file);
         if (extName == ".app") {
-            window.localStorage.arduinoPath = path.join(file, "Contents", "Java");
+            window.localStorage.arduinoIDEPath = path.join(file, "Contents", "Java");
         } else {
-            window.localStorage.arduinoPath = path.dirname(file);
+            window.localStorage.arduinoIDEPath = path.dirname(file);
         }
-        $('#ArduinoPath').text(file);
-        $('#setArduinoPathFeedback').show();
+        //$('#ArduinoPath').text(file);
+        $('#' + Blockly.Msg['setArduinoPathFeedback'] + ' [mid]').text(file);
+        $('#' + Blockly.Msg['setArduinoPathFeedback']).show();
     }
 }
 
@@ -114,9 +115,7 @@ function insideArduinoPath() {
     const { app } = require("electron").remote;
     var curPath = path.resolve(app.getPath("exe"));
     curPath = path.dirname(curPath);
-    if (process.platform == "darwin") {
-        curPath = path.resolve(curPath, "..", "..", "..");
-    }
+
     var dirset = [curPath];
     while (dirset.length) {
         var dir = dirset.pop();
@@ -143,19 +142,31 @@ function insideArduinoPath() {
 function getArduinoPath() {
     const fs = require("fs");
     const path = require("path");
-    var arduinoPath = window.localStorage.arduinoPath;
-    if (!verifyArduinoPath(arduinoPath)) {
+
+    var arduinoPath = window.localStorage.buildinArduinoIDEPath || '';
+    if (verifyArduinoPath(arduinoPath)){
+        return arduinoPath;
+    }else{
         try {
             arduinoPath = insideArduinoPath();
-            if (arduinoPath) window.localStorage.arduinoPath = arduinoPath;
+            if (arduinoPath) {
+                window.localStorage.buildinArduinoIDEPath = arduinoPath;
+                return arduinoPath;
+            } else {
+                arduinoPath = "";
+                window.localStorage.buildinArduinoIDEPath = '';
+            }
         } catch (e) {
             arduinoPath = "";
+            window.localStorage.buildinArduinoIDEPath = '';
         }
     }
 
-    if (!arduinoPath) {
-        $('#setArduinoPath').dialog({ closeOnEscape: true, width: 500, title: "Set arduino IDE path" });
-        $('#setArduinoPathFeedback').hide();
+    arduinoPath = window.localStorage.arduinoIDEPath;
+
+    if (!verifyArduinoPath(arduinoPath)) {
+        $('#' + Blockly.Msg['setArduinoPath']).dialog({ closeOnEscape: true, width: 500 });
+        $('#' + Blockly.Msg['setArduinoPathFeedback']).hide();
         throw "noarduinopath";
     }
     return arduinoPath;
@@ -191,15 +202,15 @@ function code2ArduinoIDE() {
                 throw "Invalid Arduino Path";
             }
             $('#msgUpload').empty()
-                .append('<span>Arduino IDE is starting, please wait a moment!</span>')
-                .dialog({ width: 640, height: 400, title: "coding in arduino IDE", closeOnEscape: true });
+                .append('<span>' + Blockly.Msg['sendCode2ArduinoIDE'] + '</span>')
+                .dialog({ width: 640, height: 400, title: Blockly.Msg['sendCode2ArduinoIDE_title'], closeOnEscape: true });
             // setTimeout(() => {
             //     $('#msgUpload').dialog('close');
             // }, 3000);
         } catch (e) {
             $('#msgUpload').empty()
                 .append('<span>Failed to start arduino IDE!</span>')
-                .dialog({ width: 640, height: 400, title: "coding in arduino IDE", closeOnEscape: true });
+                .dialog({ width: 640, height: 400, title: Blockly.Msg['sendCode2ArduinoIDE_title'], closeOnEscape: true });
             // setTimeout(() => {
             //     $('#msgUpload').dialog('close');
             // }, 3000);
@@ -224,12 +235,12 @@ function doVerify() {
     try {
         getArduinoPath();//check arduino path
         if (HWAgent.Generator.regAgents.length > 0) {
-            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Verify code", closeOnEscape: true });
+            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: Blockly.Msg['verifycode'], closeOnEscape: true });
             var agent = HWAgent.Generator.regAgents[0];
             new agent(getCode(), verifyEvent);
         }
     } catch (err) {
-        $('#msgUpload').append('<span>' + 'error at verify' + '</span><br/>').append('<span>' + err + '</span>');
+        $('#msgUpload').append('<span>' + Blockly.Msg['verifycode_error'] + '</span><br/>').append('<span>' + err + '</span>');
     }
 }
 
@@ -267,7 +278,7 @@ function doUpload() {
         getArduinoPath();//check arduino path
         if (HWAgent.Generator.regAgents.length > 0) {
             var agent = HWAgent.Generator.regAgents[0];
-            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: "Uploading", closeOnEscape: true });
+            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: Blockly.Msg['upload'], closeOnEscape: true });
             generotor = new agent(getCode(), generotorEvent);
         } else {
             unlockUI();
@@ -290,12 +301,7 @@ function showORhideUI() {
     }
     if (HWAgent.Serial.regAgents.length > 0) serial_ok = true;
     if (HWAgent.Generator.regAgents.length > 0) generotor_ok = true;
-    if (electron_ok) {
-        //send2ard
-        $('#send_to_arduino_ide').show();
-    } else {
-        $('#send_to_arduino_ide').hide();
-    }
+
     if (serial_ok) {
         $('#serial_upload_msg,#code_menu,#footView').show();
         $('#blocklyarea').css('bottom', '');//remove bottom:0
@@ -384,7 +390,9 @@ var initSerialUI = function () {
                 console.log(e);
             }
         }).val(window.localStorage.port || "");
-
+        try {
+            HWAgent.Serial.list(() => { });
+        } catch (e) { }
         $('#connect').click(function () {
             if (serial && serial.isOpened()) {//close
                 serial.close();
@@ -461,7 +469,6 @@ var initSerialUI = function () {
 
         $('#upload').click(doUpload);
 
-        $('#send_to_arduino_ide').click(code2ArduinoIDE);
         showORhideUI();
     } catch (e) {
         console.log(e);

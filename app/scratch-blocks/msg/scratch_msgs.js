@@ -200,25 +200,25 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'CONTROLSETUPLOOP_SETUPSTACKSETUP': '开机运行',
     'CONTROLSETUPLOOP_LOOPSTACKLOOP': '重复执行',
 
-    'IO_READDIGITALPIN_TOOLTIP': '读取数字引脚的状态,结果为高电平(对应真)或者低电平(对应假)',
+    'IO_READDIGITALPIN_TOOLTIP': '读取数字端口的状态,结果为高电平(对应真)或者低电平(对应假)',
     'IO_READDIGITALPIN_HELPURL': 'https://www.arduino.cc/en/Reference/DigitalRead',
-    'IO_READDIGITALPIN_PINDIGITALREAD': '读数字引脚',
+    'IO_READDIGITALPIN_PINDIGITALREAD': '读数字端口',
 
-    'IO_READANALOGPIN_TOOLTIP': 'AD转换并读模拟引脚上的电压值,转换结果最小为0最大1023',
+    'IO_READANALOGPIN_TOOLTIP': 'AD转换并读模拟端口上的电压值,转换结果最小为0最大1023',
     'IO_READANALOGPIN_HELPURL': 'https://www.arduino.cc/en/Reference/AnalogRead',
-    'IO_READANALOGPIN_PINANALOGREAD': '读模拟引脚',
+    'IO_READANALOGPIN_PINANALOGREAD': '读模拟端口',
 
-    'IO_WRITEDIGITALPIN_TOOLTIP': '设置数字引脚的电平为高电平或者低电平',
+    'IO_WRITEDIGITALPIN_TOOLTIP': '设置数字端口的电平为高电平或者低电平',
     'IO_WRITEDIGITALPIN_HELPURL': 'https://www.arduino.cc/en/Reference/DigitalWrite',
-    'IO_WRITEDIGITALPIN_PINDIGITALWRITE': '设置数字引脚',
+    'IO_WRITEDIGITALPIN_PINDIGITALWRITE': '设置数字端口',
 
-    'IO_WRITEANALOGPIN_TOOLTIP': '设置PWM引脚的占空比,范围是0到255',
+    'IO_WRITEANALOGPIN_TOOLTIP': '设置PWM端口的占空比,范围是0到255',
     'IO_WRITEANALOGPIN_HELPURL': 'https://www.arduino.cc/en/Reference/AnalogWrite',
-    'IO_WRITEANALOGPIN_PINANALOGWRITE': '设置模拟引脚',
+    'IO_WRITEANALOGPIN_PINANALOGWRITE': '设置模拟端口',
 
-    'IO_PINMODE_TOOLTIP': '配置引脚的功能为输入或者输出',
+    'IO_PINMODE_TOOLTIP': '配置端口的功能为输入或者输出',
     'IO_PINMODE_HELPURL': 'https://www.arduino.cc/en/Reference/PinMode',
-    'IO_PINMODE_PINPINMODE': '配置引脚',
+    'IO_PINMODE_PINPINMODE': '配置端口',
     'IO_PINMODE_OPTION_OUTPUT': '输出',
     'IO_PINMODE_OPTION_INPUT': '输入',
     'IO_PINMODE_OPTION_INPUT_PULLUP': '带上拉输入',
@@ -237,7 +237,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'IO_PINSTATE_MENU_OPTION_HIGH': '高电平',
     'IO_PINSTATE_MENU_OPTION_LOW': '低电平',
 
-    'IO_TONE_TOOLTIP': '在指定引脚上产生一个固定频率的音调',
+    'IO_TONE_TOOLTIP': '在指定端口上产生一个固定频率的音调',
     'IO_TONE_HELPURL': 'https://www.arduino.cc/en/Reference/Tone',
     'IO_TONE_PINTONE': '播放',
 
@@ -249,7 +249,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'IO_NOTONE_HELPURL': 'https://www.arduino.cc/en/Reference/NoTone',
     'IO_NOTONE_PINNOTONE': '停止播放',
 
-    'IO_PULSEIN_TOOLTIP': '捕获引脚上呈现高/低电平的时间(微秒)',
+    'IO_PULSEIN_TOOLTIP': '捕获端口上呈现高/低电平的时间(微秒)',
     'IO_PULSEIN_HELPURL': 'https://www.arduino.cc/en/Reference/PulseIn',
     'IO_PULSEIN_PINPULSEIN': '脉冲长度',
     'IO_PULSEIN_TIMEOUTTIMEOUT': '超时',
@@ -647,14 +647,15 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'PROCEDURE_RETURN_TOOLTIP': '从一个过程中提前返回,只能用在子程序中',
     'PROCEDURE_RETURN_HELPURL': 'https://www.arduino.cc/en/Reference/Return',
     'PROCEDURE_RETURN_RETURN': '提前从子程序返回',
-
+    'saveBlocks': '输入保存的文件名',
+    'saveINO': '输入保存的文件名',
 
     'ButtonNewWorkspace': '清空工作区的积木',
     'ButtonSaveBlocksToFile': '保存积木到文件',
     'ButtonLoadBlocksFromFile': '从文件中导入积木',
     'ButtonUndo': '撤销',
     'ButtonRedo': '重做',
-    'ButtonSendCodeToArduinoIde': '启动arduino ide,将代码发送到arduino ide的工作区编辑',
+    'ButtonSendCodeToArduinoIde': '保存Arduino代码到文件',
     'ButtonVerify': '校验,尝试编译程序',
     'ButtonUpLoad': '编译并上传程序到UNO',
     'ButtonToogleSerial': '展开/折叠串口控制台',
@@ -667,7 +668,14 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'LabelNewline': "换行",
     'LabelCarriageReturn': "回车",
     'LabelBothNLCR': "回车+换行",
-
+    'setArduinoPath': "setArduinoPathcn",
+    'setArduinoPathFeedback': "setArduinoPathFeedbackcn",
+    'sendCode2ArduinoIDE_title': '将代码置入Arduino IDE',
+    'sendCode2ArduinoIDE': 'Arduino IDE正在启动,请稍等片刻!',
+    'selectArduinoPath': '选择Arduino IDE路径',
+    'verifycode': '校验代码',
+    'upload': '上传中',
+    'verifycode_error': '校验失败',
 
     'CATEGORY_CONTROL': '控制',
     'CATEGORY_ARDUINO': '硬件',
