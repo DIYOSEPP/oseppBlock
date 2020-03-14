@@ -11,14 +11,19 @@
 
 1. Download the corresponding version of your system and unzip it  
  run the oseppBlock program in the directory
-2. For linux system, confirm that there is serial port permission  
- or run `sudo gpasswd --add ${USER} dialout`  
- and make sure you have sufficient permissions on the folder
+2. For linux system,make sure you have sufficient permissions on the folder and confirm that there is serial port permission  
+ or run `sudo gpasswd --add ${USER} dialout`.  
+ ubuntu19.xx maybe also need to run  
+ `echo 'SUBSYSTEMS=="usb-serial", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/01-ttyusb.rules && sudo udevadm control --reload`  
+ and then Re-plug the Arduino board.
 3. For windows, do not put files on the c drive, or the system directory such as desktop
 4. If you are using network discovery(for OTA)  
  linux needs package `sudo apt-get -y install libavahi-compat-libdnssd-dev`  
  windows needs to install **Bonjour**  
  *(most systems are pre-installed)*
+5. Execute the install.sh script(included in the archive) on the Linux system to create the desktop icon and .obp file association:  
+ `chmod +x install.sh && ./install.sh`.  
+ Uninstall by `./install -u`.
 
 ---
 
