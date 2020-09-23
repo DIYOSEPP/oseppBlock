@@ -9,7 +9,7 @@ function createWindow() {
     if (process.platform == 'win32') {
         win = new BrowserWindow({
             show: false,
-            enableLargerThanScreen: true,
+            backgroundColor: '#fff',
             width: 1024,
             height: 768,
             icon: `${__dirname}/media/osepp.ico`,
@@ -19,7 +19,7 @@ function createWindow() {
     } else {
         win = new BrowserWindow({
             show: false,
-            enableLargerThanScreen: true,
+            backgroundColor: '#fff',
             width: 1024,
             height: 768,
             webPreferences: { nodeIntegration: true },

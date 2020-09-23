@@ -489,20 +489,22 @@ function block2svg() {
     var miny = Math.min(box1.y, box2.y);
     var maxx = Math.max(box1.x + box1.width, box2.x + box2.width);
     var maxy = Math.max(box1.y + box1.height, box2.y + box2.height);
-
+    var strokew = window.getComputedStyle(document.querySelector('.blocklyPath'));
+    strokew = strokew ? strokew.getPropertyValue('stroke-width') : 1;
+    strokew = parseInt(strokew) || 1;
     rootsvg = rootsvg.cloneNode(true);
     rootsvg.style.backgroundColor = "transparent";
-    let bg=rootsvg.getElementsByClassName('blocklyMainBackground')[0];
+    let bg = rootsvg.getElementsByClassName('blocklyMainBackground')[0];
     bg.parentNode.removeChild(bg);
     blockCanvas = rootsvg.getElementsByClassName('blocklyBlockCanvas')[0];
     bubbleCanvas = rootsvg.getElementsByClassName('blocklyBubbleCanvas')[0];
     blockCanvas.childNodes.forEach(e => {
         var p = Blockly.utils.getRelativeXY(e); e.setAttribute('transform',
-            'translate(' + (p.x - minx + offset1.x) + ',' + (p.y - miny + offset1.y) + ')');
+            'translate(' + (p.x - minx + offset1.x + strokew / 2) + ',' + (p.y - miny + offset1.y + strokew / 2) + ')');
     });
     bubbleCanvas.childNodes.forEach(e => {
         var p = Blockly.utils.getRelativeXY(e); e.setAttribute('transform',
-            'translate(' + (p.x - minx + offset2.x) + ',' + (p.y - miny + offset2.y) + ')');
+            'translate(' + (p.x - minx + offset2.x + strokew / 2) + ',' + (p.y - miny + offset2.y + strokew / 2) + ')');
     });
 
     [...rootsvg.getElementsByClassName('scratchCommentText')].forEach(e => {
@@ -514,8 +516,8 @@ function block2svg() {
     bubbleCanvas.removeAttribute('transform');
     [...rootsvg.getElementsByClassName("blocklyScrollbarBackground")].forEach(e => e.parentNode.removeChild(e));
     [...rootsvg.getElementsByClassName("blocklyZoom")].forEach(e => e.parentNode.removeChild(e));
-    rootsvg.setAttribute('height', Math.round(maxy - miny) + 'px');
-    rootsvg.setAttribute('width', Math.round(maxx - minx) + 'px');
+    rootsvg.setAttribute('height', Math.round(maxy - miny + strokew) + 'px');
+    rootsvg.setAttribute('width', Math.round(maxx - minx + strokew) + 'px');
 
     var sty = document.getElementsByTagName('style')[0];
     var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
@@ -588,9 +590,10 @@ function savePNG() {
         var DOMURL = window.URL || window.webkitURL || window;
         var img = new Image();
         //img.setAttribute("crossOrigin", 'Anonymous');
+        var scale = blockWorkspace.scale > 1 ? blockWorkspace.scale : 1;
         img.onload = function () {
-            canvas.width = img.width;
-            canvas.height = img.height;
+            canvas.width = Math.round(img.width * scale + 0.5);
+            canvas.height = Math.round(img.height * scale + 0.5);
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
             var clickEvent = new MouseEvent("click", {
