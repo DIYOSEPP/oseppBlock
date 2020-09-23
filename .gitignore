@@ -58,3 +58,4 @@ package-lock.json
 app/oseppblock.js
 app/oseppblockly_uncompressed.js
 app/oseppblockly.js
+release-builds

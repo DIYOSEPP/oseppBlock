@@ -1,22 +1,24 @@
 {
-  "version": "1.3.6",
-  "license": "ISC",
+  "version": "1.3.7",
+  "license": "Apache-2.0",
   "author": "",
   "description": "",
   "main": "main.js",
-  "name": "oseppBlock",
+  "name": "oseppblock",
   "devDependencies": {
-    "asar": "*",
-    "electron": "*",
-    "electron-packager": "*",
-    "electron-rebuild": "*"
+    "asar": "2.0.1",
+    "electron": "7.0.0",
+    "electron-packager": "14.1.0",
+    "electron-rebuild": "1.8.6"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/DIYOSEPP/oseppBlock.git"
   },
   "dependencies": {
-    "mdns": "*",
-    "serialport": "*"
+    "mdns": "2.5.1",
+    "serialport": "8.0.5",
+    "google-closure-compiler": "20180402.0.0",
+    "google-closure-library": "20190301.0.0"
   }
 }

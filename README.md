@@ -56,9 +56,7 @@ for linux
         rem You should see the version number instead of an error
 ```
 
-## 2. Get *oseppBlock* source code and *closure-library*
-
-Note: *closure-library* should be in the app directory
+## 2. Get *oseppBlock* source code
 
 ```bash
         sudo apt-get update&&sudo apt-get -y install git #only need on linux
@@ -69,7 +67,6 @@ Note: *closure-library* should be in the app directory
         cd oseppBlock
         git checkout master
         cd app/
-        git clone --depth 1 git://github.com/google/closure-library.git
 ```
 
 ## 3. Install Compiler Dependencies
@@ -92,6 +89,7 @@ for windows, you need to execute commands in PowerShell, otherwise you need to c
 
 ```bash
         npm install
+        node build.js
         ./node_modules/.bin/electron-rebuild -f #rebulid nodejs modules for electron
         sudo ./node_modules/.bin/electron . #try to run oseppBlock
 ```
