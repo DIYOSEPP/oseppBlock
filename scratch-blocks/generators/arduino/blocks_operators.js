@@ -1,6 +1,6 @@
 'use strict';
 
-
+goog.provide('Blockly.Arduino.operators');
 goog.require('Blockly.Arduino');
 
 

@@ -1,6 +1,6 @@
 'use strict';
 
-
+goog.provide('Blockly.Arduino.inputoutput');
 goog.require('Blockly.Arduino');
 
 

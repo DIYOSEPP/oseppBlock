@@ -313,7 +313,7 @@ function createBlockWorkspace() {
             comments: true,
             disable: false,
             collapse: false,
-            media: "scratch-blocks/media/",
+            media: "scratchmedia/",
             readOnly: false,
             scrollbars: true,
             toolbox: Blockly.Xml.textToDom(blockToolboxXml),

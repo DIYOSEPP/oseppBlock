@@ -11,7 +11,7 @@
 
 'use strict';
 
-goog.provide('Blockly.Arduino.colour');
+goog.provide('Blockly.Arduino.common');
 
 goog.require('Blockly.Arduino');
 

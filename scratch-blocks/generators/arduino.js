@@ -15,7 +15,6 @@ goog.provide('Blockly.Arduino');
 goog.require('Blockly.Generator');
 
 
-
 /**
  * Arduino code generator.
  * @type {!Blockly.Generator}

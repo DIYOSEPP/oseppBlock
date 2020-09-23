@@ -1,5 +1,6 @@
 'use strict';
 
+goog.provide('Blockly.Arduino.control');
 goog.require('Blockly.Arduino');
 
 Blockly.Arduino['control_if'] = function (block) {

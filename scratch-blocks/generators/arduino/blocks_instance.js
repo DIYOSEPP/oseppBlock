@@ -1,5 +1,6 @@
 'use strict';
 
+goog.provide('Blockly.Arduino.instance');
 goog.require('Blockly.Arduino');
 
 

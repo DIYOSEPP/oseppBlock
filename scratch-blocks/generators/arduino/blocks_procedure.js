@@ -1,5 +1,6 @@
 'use strict';
 
+goog.provide('Blockly.Arduino.procedure');
 goog.require('Blockly.Arduino');
 
 Blockly.Arduino['instance_procedure'] = function(block) {
