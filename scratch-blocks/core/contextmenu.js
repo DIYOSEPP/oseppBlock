@@ -257,18 +257,16 @@ Blockly.ContextMenu.blockHelpOption = function(block) {
 /**
  * Make a context menu option for duplicating the current block.
  * @param {!Blockly.BlockSvg} block The block where the right-click originated.
- * @param {boolean} isMouseEvent True if the event that caused the context
- *     menu to open came from a mouse.  False if touch.
+ * @param {!Event} event Event that caused the context menu to open.
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockDuplicateOption = function(block, isMouseEvent) {
+Blockly.ContextMenu.blockDuplicateOption = function(block, event) {
   var duplicateOption = {
     text: Blockly.Msg.DUPLICATE,
     enabled: true,
-    callback: function () {
-        Blockly.duplicate_(block);
-    }
+    callback:
+        Blockly.scratchBlocksUtils.duplicateAndDragCallback(block, event)
   };
   return duplicateOption;
 };
@@ -295,6 +293,7 @@ Blockly.ContextMenu.blockCommentOption = function(block) {
     commentOption.text = Blockly.Msg.ADD_COMMENT;
     commentOption.callback = function() {
       block.setCommentText('');
+      block.comment.focus();
     };
   }
   return commentOption;
@@ -470,8 +469,7 @@ Blockly.ContextMenu.workspaceCommentOption = function(ws, e) {
       disabled = true;
     }
     var comment = new Blockly.WorkspaceCommentSvg(
-        ws, Blockly.Msg.WORKSPACE_COMMENT_DEFAULT_TEXT,
-        Blockly.WorkspaceCommentSvg.DEFAULT_SIZE,
+        ws, '', Blockly.WorkspaceCommentSvg.DEFAULT_SIZE,
         Blockly.WorkspaceCommentSvg.DEFAULT_SIZE, false);
 
     var injectionDiv = ws.getInjectionDiv();

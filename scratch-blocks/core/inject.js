@@ -127,6 +127,50 @@ Blockly.createDom_ = function(container, options) {
   // Reference commit:
   // https://github.com/google/blockly/commit/144be4d49f36fdba260a26edbd170ae75bbc37a6
   var rnd = String(Math.random()).substring(2);
+  options.embossFilterId='blocklyBubleFilter'+ rnd;
+  var bubleFilter = Blockly.utils.createSvgElement('filter',
+  {
+      'id': options.embossFilterId
+  }, defs);
+    options.bubleBlur = Blockly.utils.createSvgElement('feGaussianBlur',
+        {
+            'in': 'SourceAlpha',
+            'stdDeviation': '1',
+            'result': 'blur'
+        }, bubleFilter);
+    var bubleLight = Blockly.utils.createSvgElement('feSpecularLighting',
+        {
+            'in': 'blur',
+            'surfaceScale': '1',
+            'specularConstant': '0.5',
+            'specularExponent': '10',
+            'lighting-color': 'white',
+            'result': 'specOut'
+        }, bubleFilter);
+    Blockly.utils.createSvgElement('fePointLight',
+        {
+            'x': '-5000',
+            'y': '-10000',
+            'z': '20000'
+        }, bubleLight);
+
+    Blockly.utils.createSvgElement('feComposite',
+        {
+            'in': 'specOut',
+            'in2': 'SourceAlpha',
+            'operator': 'in',
+            'result': 'specOut'
+        }, bubleFilter);
+    Blockly.utils.createSvgElement('feComposite',
+        {
+            'in': 'SourceGraphic',
+            'in2': 'specOut',
+            'operator': 'arithmetic',
+            'k1': '0',
+            'k2': '1',
+            'k3': '1',
+            'k4': '0'
+        }, bubleFilter);
 
   // Using a dilate distorts the block shape.
   // Instead use a gaussian blur, and then set all alpha to 1 with a transfer.

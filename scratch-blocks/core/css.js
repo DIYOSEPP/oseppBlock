@@ -246,7 +246,7 @@ Blockly.Css.CONTENT = [
     'box-shadow: 0px 0px 8px 1px ' + Blockly.Colours.dropDownShadow + ';',
     'padding: 4px;',
     '-webkit-user-select: none;',
-    'min-height: 26px',
+    'min-height: 15px',
   '}',
 
   '.blocklyDropDownContent {',
@@ -522,6 +522,11 @@ Blockly.Css.CONTENT = [
     'opacity: 0;',
   '}',
 
+  '.blocklyTouchTargetBackground {',
+    'fill: transparent;',
+    'cursor: pointer;',
+  '}',
+
   '.blocklyFlyoutLabelText {',
     'font-family: "Helvetica Neue", Helvetica, sans-serif;',
     'font-size: 14pt;',
@@ -650,6 +655,7 @@ Blockly.Css.CONTENT = [
 
   '.scratchCommentBody {',
     'background-color: #fef49c;',
+    'border-radius: 4px;',
   '}',
 
   '.scratchCommentRect {',
@@ -687,6 +693,11 @@ Blockly.Css.CONTENT = [
     'padding: 0;',
     'resize: none;',
     'overflow: hidden;',
+  '}',
+
+  '.scratchCommentTextarea::placeholder {',
+    'color: rgba(0,0,0,0.5);',
+    'font-style: italic;',
   '}',
 
   '.scratchCommentResizeSE {',
@@ -818,6 +829,7 @@ Blockly.Css.CONTENT = [
 
   '.blocklyContextMenu {',
     'border-radius: 4px;',
+    'max-height: 100%;',
   '}',
 
   '.blocklyDropdownMenu {',
@@ -1258,12 +1270,13 @@ Blockly.Css.CONTENT = [
     'stroke: #c8c8c8;',
   '}',
 
-  '.blocklyFlyoutCheckbox.checked {',
+  '.checked > .blocklyFlyoutCheckbox {',
     'fill: ' + Blockly.Colours.motion.primary + ';',
     'stroke: ' + Blockly.Colours.motion.tertiary + ';',
   '}',
 
   '.blocklyFlyoutCheckboxPath {',
+    'fill: transparent;',
     'stroke: white;',
     'stroke-width: 3;',
     'stroke-linecap: round;',

@@ -65,6 +65,7 @@ goog.require('Blockly.inject');
 goog.require('Blockly.utils');
 goog.require('goog.color');
 
+goog.require('Blockly.Generator');
 goog.require('Blockly.FieldInstanceGetter');
 goog.require('Blockly.FieldInstanceInput');
 goog.require('Blockly.FieldInstanceDropdown');
