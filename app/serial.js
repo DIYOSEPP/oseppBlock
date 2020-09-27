@@ -56,8 +56,17 @@ function msgpipi_on_data(data) {
 }
 
 function isIP(port) {
-    return (port.split('.').map(s => parseInt(s)).filter(n => !isNaN(n)).length === 4);
+    let ns = port.split('.').map(s => parseInt(s)).filter(n => !isNaN(n) && n >= 0 && n <= 255);
+    return ns.length === 4;
 }
+
+let querystrIP = location.search.split('&')
+    .map(s => s.match(/ip=(.+)/))
+    .filter(m => m)
+    .map(m => m[1])
+    .filter(ip => isIP(ip))
+    .map(ip => ({ type: 'ws', value: ip }));
+
 
 function websocks_msg_pipe(port, rate, onOpen, onData, onClose) {
     return new Promise((resolve, reject) => {
@@ -158,10 +167,11 @@ function initSerialUI() {
 
     $("#SelectComPort").autocomplete({
         source: function (request, response) {
-            window.electronPort.ListPorts().then(r => response(r))
-            // list_ports((ps) => {
-            //     response(ps.map(p => p.value));
-            // });
+            if (window.electronPort) {
+                window.electronPort.ListPorts().then(r => response(r.concat(querystrIP)))
+            } else {
+                response(querystrIP);
+            }
         },
         minLength: 0,
         position: {
@@ -238,7 +248,7 @@ function initSerialUI() {
 
     });
 
-    if (window.electronPort) {
+    if (window.electronPort || querystrIP.length) {
         $('#serial_upload_msg,#code_menu,#footView').show();
         $('#blocklyarea').css('bottom', '');//remove bottom:0
 

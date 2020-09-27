@@ -84,7 +84,7 @@ function createElectronPort() {
         return false;
     }
 
-    const { dialog, app } = require("electron").remote;
+    const { dialog, app, process, net } = require("electron").remote;
     let curPath = path.resolve(app.getPath("exe"));
     curPath = path.dirname(curPath);
     let dirset = [curPath];
@@ -218,12 +218,52 @@ function createElectronPort() {
         return doCompile(code, callback).then(hexfile => doUpload(hexfile, port, callback, rate));
     }
 
-    return {
+    let result = {
         SerialPort: serialport,
         ListPorts: listports,
         compiler,
         uploader
     }
+
+    let args = process.argv.slice(1);
+    let obpFromCLI = args.filter(s => path.extname(s).toLowerCase() === '.obp' && fs.existsSync(s));
+    if (obpFromCLI.length) {
+        result.obp = {
+            name: path.basename(obpFromCLI[0]),
+            xml: fs.readFileSync(obpFromCLI[0]).toString()
+        }
+    }
+
+    let locale = args.map(s => s.match(/locale=(.+)/)).filter(m => m).map(m => m[1]);
+    if (locale.length) {
+        result.locale = locale[0]
+    }
+
+    result.versionOnline = new Promise((resolve, reject) => {
+        try {
+            const request = net.request("http://www.osepp.com/block/package.json");
+            request.on("response", (response) => {
+                if (response.statusCode == 200) {
+                    response.on("data", (chunk) => {
+                        var json = JSON.parse(chunk);
+                        if (json.version) {
+                            let version = String(json.version).trim().split('.').map(s => parseInt(s));
+                            resolve(version);
+                        } else {
+                            reject('bad data');
+                        }
+                    });
+                } else {
+                    reject(response.statusCode);
+                }
+            });
+            request.on("error", reject);
+            request.end();
+        } catch (e) {
+            reject(e);
+        }
+    })
+    return result
 }
 
 window.electronPort = createElectronPort();

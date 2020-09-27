@@ -83,27 +83,6 @@ var slider_drogStart = function (e) {
     return false;
 }
 
-function loadOBPFileFromCLI() {
-    var text = null;
-    try {
-        const remote = require("electron").remote;
-        const fs = require("fs");
-        const path = require("path");
-        var args = remote.process.argv.slice(1);
-        for (var fname, i = 0; fname = args[i]; i++) {
-            if (path.extname(fname).toLowerCase() != ".obp") continue;
-            if (!fs.existsSync(fname)) continue;
-            text = fs.readFileSync(fname, "utf-8");
-            localobpname = path.basename(fname);
-            break;
-        }
-    }
-    catch (e) {
-        text = null;
-    }
-    return text;
-}
-
 function saveBlockWorkspaceToLocalStorage(workspace) {
     if (Blockly.getMainWorkspace().isDragging()) return;
     try {
@@ -117,12 +96,12 @@ function saveBlockWorkspaceToLocalStorage(workspace) {
     }
 }
 function loadBlockWorkspaceFromLocalStorage(workspace) {
+
+
     var text = null;
-    try {
-        text = loadOBPFileFromCLI();
-    }
-    catch (e) {
-        text = null;
+    if (window.electronPort && window.electronPort.obp) {
+        text = window.electronPort.obp.xml;
+        localobpname = window.electronPort.obp.name;
     }
 
     try {
@@ -130,8 +109,6 @@ function loadBlockWorkspaceFromLocalStorage(workspace) {
             text = window.localStorage.blocks;
         }
     } catch (e) {
-        // Firefox sometimes throws a SecurityError when accessing sessionStorage.
-        // Restarting Firefox fixes this, so it looks like a bug.
         text = null;
     }
     if (text) {
@@ -268,41 +245,21 @@ function setLocaleUI() {
     }
 }
 
-function setLocale(locale) {
-    blockWorkspace.getFlyout().setRecyclingEnabled(false);
-    var xml = Blockly.Xml.workspaceToDom(blockWorkspace);
-    Blockly.ScratchMsgs.setLocale(locale);
-    Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, blockWorkspace);
-    blockWorkspace.updateToolbox(Blockly.Xml.textToDom(blockToolboxXml));
-    blockWorkspace.getFlyout().setRecyclingEnabled(true);
-    setLocaleUI();
-}
-
 function initLocal() {
-    try {
-        const remote = require("electron").remote;
-        var args = remote.process.argv.slice(1);
-        var loca_cli = '';
-        //last set from cli
-        for (var arg, i = 0; arg = args[i]; i++) {
-            match = arg.match(/locale=([^&]+)/);
-            if (match) loca_cli = match[1];
-        }
-        if (loca_cli) {
-            Blockly.ScratchMsgs.setLocale(match[1]);
-            setLocaleUI();
-            return;//nowhere to go
-        }
-    }
-    catch (e) {
-    }
-
-    var match = location.search.match(/locale=([^&]+)/);
-    if (match) {
-        Blockly.ScratchMsgs.setLocale(match[1]);
+    let locale;
+    if (window.electronPort && window.electronPort.locale) {
+        locale = window.electronPort.locale;
     } else {
-        var lang = navigator.language || navigator.userLanguage;
-        Blockly.ScratchMsgs.setLocale(lang.toLowerCase());
+        var match = location.search.match(/locale=([^&]+)/);
+        if (match) {
+            locale = match[1];
+        }
+    }
+    if (!locale) {
+        locale = navigator.language || navigator.userLanguage;
+    }
+    if (locale) {
+        Blockly.ScratchMsgs.setLocale(locale.toLowerCase());
     }
     setLocaleUI();
 }
@@ -360,27 +317,6 @@ function updateCode() {
     document.getElementById("code_area").innerHTML = PR.prettyPrintOne(allcode, "cpp", true);
     codeChanged = false;
 }
-
-var getOnlineVersionNumber = function (callback) {
-    const { net } = require("electron").remote;
-    const request = net.request("http://www.osepp.com/block/package.json?d=" + Date());
-    request.on("response", (response) => {
-        if (response.statusCode == 200) {
-            response.on("data", (chunk) => {
-                var json = JSON.parse(chunk);
-                if (json.version) {
-                    if (callback) {
-                        callback(json.version);
-                    }
-                }
-            });
-        }
-    });
-    request.on("error", (error) => {
-        console.log(error);
-    });
-    request.end();
-};
 
 function initWorkspace() {
     try {
@@ -440,33 +376,25 @@ function initWorkspace() {
             break;
         }
     };
-    try {
-        getOnlineVersionNumber(function (version) {
-            var cv = document.title;
-            if (version) {
-                version = String(version).replace(/(^\s*)|(\s*$)/g, "");
-                if (version != "") {
-                    var nowv = cv.replace("oseppBlock", "").replace(/(^\s*)|(\s*$)/g, "").split(".");
-                    var webv = version.split(".");
+
+    if (window.electronPort) {
+        window.electronPort.versionOnline.then(webv => {
+            try {
+                let nowv = document.title.replace("oseppBlock", "").split(".").map(s => parseInt(s));
+                nowv = nowv.filter(v => v);
+                webv = webv.filter(v => v);
+                if (nowv.length === 3 && webv.length == 3) {
                     for (var i = 0; i < nowv.length; i++) {
-                        if (parseInt(webv[i]) == parseInt(nowv[i])) continue;
-                        if (parseInt(webv[i]) > parseInt(nowv[i])) {
+                        if (webv[i] === nowv[i]) continue;
+                        if (webv[i] > nowv[i]) {
                             document.getElementById("serial_upload_msg").setAttribute("class", "serial_upload_msg_open");
-                            document.getElementById("msgTextArea").innerHTML += "<br><a id=\"downloadoseppBlock\" href=\"#\">new version oseppBlock " + version + " available!</a><br>";
-                            const exLinksBtn = document.getElementById('downloadoseppBlock');
-                            exLinksBtn.addEventListener('click', function (event) {
-                                const shell = require('electron').shell
-                                shell.openExternal('https://osepp.com/oseppblock-ide')
-                            });
+                            document.getElementById("msgTextArea").innerHTML += "<br><a id=\"downloadoseppBlock\" href=\"#\">new version oseppBlock " + webv.join('.') + " available!</a><br>";
                         }
                         break;
                     }
-
                 }
-            }
-        });
-    } catch (e) {
-        console.log(e);
+            } catch (e) { }
+        })
     }
 }
 
