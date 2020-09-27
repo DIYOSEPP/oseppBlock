@@ -4,38 +4,15 @@ const { readFileSync, appendFile } = require('fs')
 
 
 const uncompress_file_name = 'oseppblockly_uncompressed.js';
-const compress_file_name = 'oseppblockly.js';
-const app_file_name = 'oseppblock.js'
+const compress_file_name = 'oseppblock.js';
 
 const python2 = 'c:/Python27/python.exe';
-const java = 'java';
 
-const app = spawn(
-    java,
-    [
-        '-jar "./node_modules/google-closure-compiler/compiler.jar"',
-        '--compilation_level=SIMPLE',
-        '--language_in=ECMASCRIPT_2017',
-        '--language_out=ECMASCRIPT5',
-        '--rewrite_polyfills=false',
-        '--define=goog.DEBUG=false',
-        '--charset=UTF-8',
-        `--js_output_file=${app_file_name}`,
-        'serial.js',
-        'display.js',
-        'HWAgent.js',
-        'blocklytoolbox.js',
-    ],
-    {
-        shell: true
-    }
-)
-
-app.stdout.on('data', s => console.log(s.toString()));
-app.stderr.on('data', s => console.error(s.toString()));
-app.on('exit', (code, signal) => {
-
-});
+const app_js = [
+    'serial.js',
+    'display.js',
+    'blocklytoolbox.js',
+]
 
 const uncompress = spawn(
     python2 + ' ./node_modules/google-closure-library/closure/bin/calcdeps.py',
@@ -101,7 +78,7 @@ const compress = spawn(
         '-f "../scratch-blocks/blocks_arduino"',
         '-f "../scratch-blocks/blocks_common"',
         '-f "../scratch-blocks/generators"',
-    ],
+    ].concat(app_js.map(s => `-f "${s}"`)),
     {
         shell: true
     }

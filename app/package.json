@@ -5,19 +5,21 @@
   "description": "",
   "main": "main.js",
   "name": "oseppblock",
-  "devDependencies": {
-    "asar": "2.0.1",
-    "electron": "7.0.0",
-    "electron-packager": "14.1.0",
-    "electron-rebuild": "1.8.6"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/DIYOSEPP/oseppBlock.git"
   },
   "dependencies": {
-    "mdns": "2.5.1",
-    "serialport": "8.0.5",
+    "electron-is-dev": "^1.2.0",
+    "mdns": "^2.5.1",
+    "serialport": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "asar": "^3.0.3",
+    "electron": "^10.1.2",
+    "electron-packager": "^15.1.0",
+    "electron-rebuild": "1.8.6",
     "google-closure-compiler": "20180402.0.0",
     "google-closure-library": "20190301.0.0"
   }

@@ -659,7 +659,7 @@ Blockly.ScratchMsgs.locales["zh-cn"] = {
     'ButtonVerify': '校验,尝试编译程序',
     'ButtonUpLoad': '编译并上传程序到UNO',
     'ButtonToogleSerial': '展开/折叠串口控制台',
-    'ButtonConnectSerial': '打开串口',
+    'ButtonConnectSerial': '打开/关闭串口',
     'ButtonResetUno': '复位UNO',
     'ButtonSendMsg': '从串口发送消息',
     'LabelArduinoUnoOn': 'Arduino Uno在',

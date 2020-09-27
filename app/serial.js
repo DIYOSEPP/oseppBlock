@@ -1,12 +1,5 @@
 "use strict";
 
-function lockUI() {
-    $('#upload').addClass("svg_acting");
-}
-function unlockUI() {
-    $('#upload').removeClass("svg_acting");
-}
-
 var msgcache = new Uint8Array(1024 * 16);
 var msgcache_index = 0;
 var timeFlag = null;
@@ -45,434 +38,367 @@ var logmsg = function (msg) {
     }
 }
 
-var serial = null;
 var msgTextAreaHeight = 300;
+let msgpipe = null;
 
-var onSerialEvent = function (event, data) {
-    switch (event) {
-        case 'data'://on serial data in
-            logmsg(data);
-            break;
-        case 'open'://when serial open
-            $("#connect").removeClass("svg_disable");
-            $("#send,#reset,#sendtext,#line_ending").show();
-            $("#serial_upload_msg").height(msgTextAreaHeight);
-            break;
-        case 'close'://when serial close
-            $('#connect').addClass("svg_disable");
-            $("#send,#reset,#sendtext,#line_ending").hide();
-            break;
-        case 'error'://serial PORT error
-            break;
-        case 'hwreset'://uno has reset
-            break;
-        case 'option'://option changed(baudrate)
-            break;
-        case 'uploading'://uploading msg|err
-            if (data) $('#msgUpload').append($('<span>' + data + '</span>'));
-            break;
-        case 'uploaded'://upload done|err
-            if (data) $('#msgUpload').append($('<span>' + data + '</span><br/>'));
-            unlockUI();
-            break;
-        default: break;
-    }
+function msgpipi_on_open() {
+    $("#connect").removeClass("svg_disable");
+    $("#send,#reset,#sendtext,#line_ending").show();
+    $("#serial_upload_msg").height(msgTextAreaHeight);
+}
+function msgpipi_on_close() {
+    $('#connect').addClass("svg_disable");
+    $("#send,#reset,#sendtext,#line_ending").hide();
+    msgpipe = null;
+}
+function msgpipi_on_data(data) {
+    logmsg(data);
 }
 
-function opendialog() {
-    const remote = require("electron").remote;
-    const dialog = remote.dialog;
-    var file = dialog.showOpenDialogSync({ title: Blockly.Msg['selectArduinoPath'], properties: ["openFile"] });
-    if (file) {
-        file = file[0];
-        const path = require("path");
-        var extName = path.extname(file);
-        if (extName == ".app") {
-            window.localStorage.arduinoIDEPath = path.join(file, "Contents", "Java");
-        } else {
-            window.localStorage.arduinoIDEPath = path.dirname(file);
+function isIP(port) {
+    return (port.split('.').map(s => parseInt(s)).filter(n => !isNaN(n)).length === 4);
+}
+
+function websocks_msg_pipe(port, rate, onOpen, onData, onClose) {
+    return new Promise((resolve, reject) => {
+        let closeHook = null;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://' + port + '/getbaudrate?baudrate=' + rate);
+        xhr.onload = () => {
+            let socket = new WebSocket('ws://' + port + ':81/', ['arduino']);
+            socket.onopen = () => {
+                onOpen();
+                resolve({
+                    close: () => {
+                        return new Promise((r, j) => {
+                            if (closeHook) return j();
+                            closeHook = r;
+                            socket.close();
+                        });
+                    },
+                    write: (data) => {
+                        socket.send(data);
+                    },
+                    reset: () => {
+                        return new Promise((r, j) => {
+                            var xhr1 = new XMLHttpRequest();
+                            xhr1.open('POST', 'http://' + port + '/log/reset');
+                            xhr1.onload = r;
+                            xhr1.onerror = j;
+                            xhr1.send();
+                        })
+                    }
+                });
+            };
+            socket.onmessage = (event) => {
+                var reader = new FileReader();
+                reader.onload = () => {
+                    onData(new Uint8Array(reader.result));
+                }
+                reader.readAsArrayBuffer(event.data);
+            };
+            socket.onerror = socket.onclose = (e) => {
+                onClose();
+                if (closeHook) closeHook();
+            }
+        };
+        xhr.onerror = reject;
+        xhr.send();
+    })
+}
+
+function msgpipi_open(port, rate, onOpen, onData, onClose) {
+    if (isIP(port)) {
+        return websocks_msg_pipe(port, rate, onOpen, onData, onClose);
+    }
+    return window.electronPort.SerialPort(port, rate, onOpen, onData, onClose);
+}
+
+function initSerialUI() {
+    $("#SelectBandrate").autocomplete({
+        source: [
+            "300",
+            "1200",
+            "2400",
+            "4800",
+            "9600",
+            "14400",
+            "19200",
+            "28800",
+            "38400",
+            "57600",
+            "74880",
+            "115200",
+            "128000",
+            "230400",
+            "250000",
+            "1000000",
+            "2000000",
+        ],
+        minLength: 0,
+        position: {
+            my: "center bottom",
+            at: "top"
         }
-        //$('#ArduinoPath').text(file);
-        $('#' + Blockly.Msg['setArduinoPathFeedback'] + ' [mid]').text(file);
-        $('#' + Blockly.Msg['setArduinoPathFeedback']).show();
-    }
-}
-
-
-function verifyArduinoPath(path) {
-    const fs = require("fs");
-    var existBuilder = fs.existsSync(path + "/arduino-builder") ||
-        fs.existsSync(path + "/arduino-builder.exe");
-    var existAvrdude = fs.existsSync(path + "/hardware/tools/avr/bin/avrdude") ||
-        fs.existsSync(path + "/hardware/tools/avr/bin/avrdude.exe");
-    var ok = existAvrdude && existBuilder;
-    return ok;
-}
-
-function insideArduinoPath() {
-    const fs = require("fs");
-    const path = require("path");
-    const { app } = require("electron").remote;
-    var curPath = path.resolve(app.getPath("exe"));
-    curPath = path.dirname(curPath);
-
-    var dirset = [curPath];
-    while (dirset.length) {
-        var dir = dirset.pop();
-        if (verifyArduinoPath(dir)) return dir;
-        var files = fs.readdirSync(dir);
-        for (var fn, i = 0; fn = files[i]; i++) {
-            if (fn.toLowerCase().indexOf("arduino") < 0) continue;
-            var fp = path.join(dir, fn);
-            var st = fs.statSync(fp);
-            if (st.isDirectory()) {
-                if (verifyArduinoPath(fp)) {
-                    return fp;
-                } else if (verifyArduinoPath(path.join(fp, "Contents", "Java"))) {
-                    return path.join(fp, "Contents", "Java");
-                } else {
-                    dirset.push(fp);
+    }).focus(function () {
+        $(this).autocomplete("search", "");
+    }).on("autocompletechange", function () {
+        try {
+            var baud = parseInt($(this).val());
+            if (baud != window.localStorage.baudrate) {
+                window.localStorage.baudrate = baud;
+                if (msgpipe) {
+                    msgpipe.close().then(() => $('#connect').click())
                 }
             }
+        } catch (e) {
+            console.log(e);
         }
-    }
-    return "";
-}
+    }).val(window.localStorage.baudrate || "115200");
 
-function getArduinoPath() {
-    const fs = require("fs");
-    const path = require("path");
-
-    var arduinoPath = window.localStorage.buildinArduinoIDEPath || '';
-    if (verifyArduinoPath(arduinoPath)){
-        return arduinoPath;
-    }else{
+    $("#SelectComPort").autocomplete({
+        source: function (request, response) {
+            window.electronPort.ListPorts().then(r => response(r))
+            // list_ports((ps) => {
+            //     response(ps.map(p => p.value));
+            // });
+        },
+        minLength: 0,
+        position: {
+            my: "center bottom",
+            at: "top"
+        }
+    }).focus(function () {
+        $(this).autocomplete("search", "");
+    }).on("autocompletechange", function () {
         try {
-            arduinoPath = insideArduinoPath();
-            if (arduinoPath) {
-                window.localStorage.buildinArduinoIDEPath = arduinoPath;
-                return arduinoPath;
-            } else {
-                arduinoPath = "";
-                window.localStorage.buildinArduinoIDEPath = '';
+            var port = this.value;
+            if (port != window.localStorage.port) {
+                window.localStorage.port = port;
+                if (msgpipe) {
+                    msgpipe.close().then(() => $('#connect').click())
+                }
             }
         } catch (e) {
-            arduinoPath = "";
-            window.localStorage.buildinArduinoIDEPath = '';
+            console.log(e);
         }
-    }
+    }).val(window.localStorage.port || "");
 
-    arduinoPath = window.localStorage.arduinoIDEPath;
+    $('#connect').click(function () {
+        if (msgpipe) {
+            msgpipe.close();
+        } else {
+            var port = $('#SelectComPort').val();
+            var baud = parseInt($("#SelectBandrate").val());
+            msgpipi_open(port, baud, msgpipi_on_open, msgpipi_on_data, msgpipi_on_close).then(pp => msgpipe = pp);
+        }
+    });
 
-    if (!verifyArduinoPath(arduinoPath)) {
-        $('#' + Blockly.Msg['setArduinoPath']).dialog({ closeOnEscape: true, width: 500 });
-        $('#' + Blockly.Msg['setArduinoPathFeedback']).hide();
-        throw "noarduinopath";
+    $('#reset').click(function () {
+        if (msgpipe) msgpipe.reset();
+    });
+
+    $('#send').click(function () {
+        if (!msgpipe) return;
+        var text = $('#sendtext').val();
+        if (!text) return;
+        var ending = $('#line_ending').val();
+        switch (ending) {
+            case 'n':
+                text += "\n";
+                break;
+            case 'r':
+                text += "\r";
+                break;
+            case 'nr':
+                text += "\n\r";
+        }
+        msgpipe.write(text);
+        $('#sendtext').focus().select();
+    }).keypress(function (event) {
+        if (event.keyCode == 13) {
+            $(this).click();
+        }
+    });
+
+    $('#sendtext').keypress(function (event) {
+        if (event.keyCode == 13) {
+            $('#send').click();
+        }
+    });
+
+    $('#toggle_serial_box').click(function () {
+        var $el = $('#serial_upload_msg');
+        if ($el.attr('style').indexOf('height') >= 0) {
+            $el.css('height', '');
+        } else {
+            $el.height(msgTextAreaHeight);
+        }
+        return;
+
+    });
+
+    if (window.electronPort) {
+        $('#serial_upload_msg,#code_menu,#footView').show();
+        $('#blocklyarea').css('bottom', '');//remove bottom:0
+
+    } else {
+        $('#serial_upload_msg,#code_menu,#footView').hide();
+        $('#blocklyarea').css('bottom', '0');//remove bottom:0
     }
-    return arduinoPath;
 }
 
-function code2ArduinoIDE() {
-    try {
-        var arduinoPath = getArduinoPath();
-        try {
-            const fs = require("fs");
-            const path = require("path");
-            function writeFile() {
-                var tmpDir = HWAgent.nodeGenerator.getTmpDir();
-                tmpDir = fs.mkdtempSync(tmpDir + "/unname");
-                var filename = path.basename(tmpDir);
-                filename = tmpDir + "/" + filename + ".ino";
-                fs.writeFileSync(filename, getCode());
-                return filename;
+$(document).ready(initSerialUI);
+
+
+let compile = null;
+let upload = null;
+
+function arduino_ui() {
+    if (upload) {
+        $('#upload').addClass("svg_acting");
+    } else {
+        $('#upload').removeClass("svg_acting");
+    }
+    if (compile) {
+        $('#verify').addClass("svg_acting");
+    } else {
+        $('#verify').removeClass("svg_acting");
+    }
+}
+
+function arduino_handle(state, msg) {
+    if (state === 'start') {
+        arduino_ui();
+    } else if (state === 'error' || state == 'done') {
+        arduino_ui();
+        // setTimeout(() => {
+        //     $('#msgUpload').dialog('close');
+        // }, 3000);
+    } else if (state === 'message' || state === 'stdout' || state === 'stderr') {
+        $('#msgUpload').append('<span>' + msg + '</span><br/>');
+    }
+}
+
+function ip_upload(port) {
+    return new Promise((resolve, reject) => {
+
+        upload = window.electronPort.uploader(getCode(), port, (state, msg) => {
+            arduino_handle(state, msg);
+            if (state === 'done' || state == 'error') {
+                upload = null;
+                arduino_ui();
             }
-            if (fs.existsSync(arduinoPath + "/arduino_debug.exe")) {
-                const spawn = require("child_process").spawn;
-                var f = writeFile();
-                const ide = spawn("\"" + arduinoPath + "/arduino_debug\"", ["\"" + f + "\""], { shell: true });
-            } else if (fs.existsSync(path.join(arduinoPath, "/..", "/MacOS/Arduino"))) {
-                const spawn = require("child_process").spawn;
-                var f = writeFile();
-                const ide = spawn("\"" + path.join(arduinoPath, "/..", "/MacOS/Arduino") + "\"", ["\"" + f + "\""], { shell: true });
-            } else if (fs.existsSync(arduinoPath + "/arduino")) {
-                const spawn = require("child_process").spawn;
-                var f = writeFile();
-                const ide = spawn("\"" + path.join(arduinoPath, "/arduino") + "\"", ["\"" + f + "\""], { shell: true });
+        }).finally(() => upload = null)
+
+        window.ipcRenderer.on('arduino', (event, state, msg) => {
+            if (state === 'done') {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://' + port + '/upload?baudrateisp=115200');
+                xhr.onload = () => {
+                    arduino_handle('message', xhr.responseText);
+                    arduino_handle('done');
+                    xhr.status === 200 ? resolve() : reject();
+                    window.ipcRenderer.removeAllListeners('arduino');
+                }
+                xhr.onerror = () => {
+                    arduino_handle('message', 'network error');
+                    arduino_handle('done');
+                    reject();
+                }
+                xhr.send(msg);
             } else {
-                throw "Invalid Arduino Path";
+                arduino_handle(state, msg);
+                if (state == 'error') {
+                    window.ipcRenderer.removeAllListeners('arduino');
+                    reject();
+                }
             }
-            $('#msgUpload').empty()
-                .append('<span>' + Blockly.Msg['sendCode2ArduinoIDE'] + '</span>')
-                .dialog({ width: 640, height: 400, title: Blockly.Msg['sendCode2ArduinoIDE_title'], closeOnEscape: true });
-            // setTimeout(() => {
-            //     $('#msgUpload').dialog('close');
-            // }, 3000);
-        } catch (e) {
-            $('#msgUpload').empty()
-                .append('<span>Failed to start arduino IDE!</span>')
-                .dialog({ width: 640, height: 400, title: Blockly.Msg['sendCode2ArduinoIDE_title'], closeOnEscape: true });
-            // setTimeout(() => {
-            //     $('#msgUpload').dialog('close');
-            // }, 3000);
+        });
+        window.ipcRenderer.send('arduino-compile', getCode());
+    })
+}
+
+function doUpload() {
+    if (upload || compile) return;
+    var port = $('#SelectComPort').val();
+    $('#msgUpload').empty().dialog({ width: 640, height: 600, title: Blockly.Msg['upload'], closeOnEscape: true });
+    if (isIP(port)) {
+        upload = window.electronPort.compiler(getCode(), (state, msg) => {
+            arduino_handle(state, msg);
+            if (state === 'done' || state == 'error') {
+                arduino_ui();
+            }
+        }).then(hexcode => new Promise((resolve, reject) => {
+            arduino_handle('message', 'uploading');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://' + port + '/upload?baudrateisp=115200');
+            xhr.onload = () => {
+                arduino_handle('message', xhr.responseText);
+                arduino_handle('done');
+                xhr.status === 200 ? resolve() : reject();
+            }
+            xhr.onerror = () => {
+                arduino_handle('message', 'network error');
+                reject();
+            }
+            xhr.send(hexcode);
+        })).catch(e => {
+            if (e) arduino_handle('message', e);
+        }).finally(() => {
+            upload = null;
+            arduino_ui();
+        })
+    } else {
+        let reOpen = msgpipe ? true : false;
+        let u = () => {
+            upload = window.electronPort.uploader(getCode(), port, (state, msg) => {
+                arduino_handle(state, msg);
+                if (state === 'done' || state == 'error') {
+                    if (reOpen) $('#connect').click();
+                }
+            }).catch(e => {
+                if (e) arduino_handle('message', e);
+            }).finally(() => {
+                upload = null;
+                arduino_ui();
+            })
         }
-    } catch (e) {
-        console.log(e);
+        if (msgpipe) {
+            msgpipe.close().then(u)
+        } else {
+            u();
+        }
     }
 }
 
 function doVerify() {
-    var verifyEvent = function (event, data) {
-        if (data) {
-            $('#msgUpload').append('<span>' + data + '</span>');
+    if (upload || compile) return;
+    $('#msgUpload').empty().dialog({ width: 640, height: 400, title: Blockly.Msg['verifycode'], closeOnEscape: true });
+    compile = window.electronPort.compiler(getCode(), (state, msg) => {
+        arduino_handle(state, msg);
+        if (state === 'done' || state == 'error') {
+            compile = null;
+            arduino_ui();
         }
-        if (event == 'compiled') {
-            // setTimeout(() => {
-            //     $('#msgUpload').dialog('close');
-            // }, 3000);
-        }
-    };
-
-    try {
-        getArduinoPath();//check arduino path
-        if (HWAgent.Generator.regAgents.length > 0) {
-            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: Blockly.Msg['verifycode'], closeOnEscape: true });
-            var agent = HWAgent.Generator.regAgents[0];
-            new agent(getCode(), verifyEvent);
-        }
-    } catch (err) {
-        $('#msgUpload').append('<span>' + Blockly.Msg['verifycode_error'] + '</span><br/>').append('<span>' + err + '</span>');
-    }
+    }).catch(e => {
+        if (e) arduino_handle('message', e);
+    }).finally(() => compile = null);
 }
 
-function doUpload() {
-    var generotor = null;
-    var generotorEvent = function (event, data) {
-        if (event == 'compiling') {//compiling msg|err
-            if (data) $('#msgUpload').append('<span>' + data + '</span>');
-        } else if (event == 'compiled') {//compiling done|err
-            if (data) $('#msgUpload').append('<span>' + data + '</span><br/>');
-            if (generotor && generotor.hex) {
-                if (serial && serial.isOpened()) {
-                    serial.upload(generotor.hex);
-                } else {
-                    var port = $('#SelectComPort').val();
-                    HWAgent.Serial.list(function () {
-                        var agent = HWAgent.Serial.findAgent(port);
-                        if (agent == null) return;
-                        serial = new agent(
-                            port,
-                            115200,
-                            onSerialEvent
-                        );
-                        serial.upload(generotor.hex);
-                    });
-                }
-            } else {
-                unlockUI();
-            }
-        }
-    };
+function initUploadUI() {
+    $("#verify").click(doVerify);
 
-    lockUI();
-    try {
-        getArduinoPath();//check arduino path
-        if (HWAgent.Generator.regAgents.length > 0) {
-            var agent = HWAgent.Generator.regAgents[0];
-            $('#msgUpload').empty().dialog({ width: 640, height: 400, title: Blockly.Msg['upload'], closeOnEscape: true });
-            generotor = new agent(getCode(), generotorEvent);
-        } else {
-            unlockUI();
-        }
-        //will trig upload on evemt callback when it done
-    } catch (err) {
-        unlockUI();
-    }
-}
+    $('#upload').click(doUpload);
 
-function showORhideUI() {
-    var electron_ok = false;
-    var serial_ok = false;
-    var generotor_ok = false;
-    try {
-        require("serialport");
-        electron_ok = true;
-    } catch (e) {
-        electron_ok = false;
-    }
-    if (HWAgent.Serial.regAgents.length > 0) serial_ok = true;
-    if (HWAgent.Generator.regAgents.length > 0) generotor_ok = true;
-
-    if (serial_ok) {
-        $('#serial_upload_msg,#code_menu,#footView').show();
-        $('#blocklyarea').css('bottom', '');//remove bottom:0
-        if (generotor_ok) $('#upload').show();
-    } else {
-        $('#serial_upload_msg,#code_menu,#footView').hide();
-        $('#blocklyarea').css('bottom', '0');//remove bottom:0
-        $('#upload').hide();
-    }
-    if (generotor_ok) {
+    if (window.electronPort) {
+        $('#upload').show();
         $("#verify").show();
     } else {
         $("#verify").hide();
+        $('#upload').hide();
     }
 }
 
-var initSerialUI = function () {
-    try {
-        $("#SelectBandrate").autocomplete({
-            source: [
-                "300",
-                "1200",
-                "2400",
-                "4800",
-                "9600",
-                "14400",
-                "19200",
-                "28800",
-                "38400",
-                "57600",
-                "74880",
-                "115200",
-                "128000",
-                "230400",
-                "250000",
-                "1000000",
-                "2000000",
-            ],
-            minLength: 0,
-            position: {
-                my: "center bottom",
-                at: "top"
-            }
-        }).focus(function () {
-            $(this).autocomplete("search", "");
-        }).on("autocompletechange", function () {
-            try {
-                var baud = parseInt($(this).val());
-                if (baud != window.localStorage.baudrate) {
-                    window.localStorage.baudrate = baud;
-                    if (serial && serial.isOpened()) {
-                        serial.updateOption({ baudRate: baud });
-                    }
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }).val(window.localStorage.baudrate || "115200");
+$(document).ready(initUploadUI);
 
-        $("#SelectComPort").autocomplete({
-            source: function (request, response) {
-                var fillport = function (ports) {
-                    var option = [];
-                    for (var i = 0; i < ports.length; i++) {
-                        option.push(ports[i].value);
-                    }
-                    response(option);
-                }
-                HWAgent.Serial.list(fillport);
-            },
-            minLength: 0,
-            position: {
-                my: "center bottom",
-                at: "top"
-            }
-        }).focus(function () {
-            $(this).autocomplete("search", "");
-        }).on("autocompletechange", function () {
-            try {
-                var port = this.value;
-                if (port != window.localStorage.port) {
-                    window.localStorage.port = port;
-                    if (serial && serial.isOpened()) serial.close();
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }).val(window.localStorage.port || "");
-        try {
-            HWAgent.Serial.list(() => { });
-        } catch (e) { }
-        $('#connect').click(function () {
-            if (serial && serial.isOpened()) {//close
-                serial.close();
-            } else {//open
-                var port = $('#SelectComPort').val();
-                if (port.toLowerCase() == 'debug') {
-                    try {
-                        var browser = require("electron").remote.getCurrentWindow();
-                        browser.openDevTools();
-                    } finally {
-                        return;
-                    }
-                }
-                var baud = parseInt($("#SelectBandrate").val());
-                HWAgent.Serial.list(function () {
-                    var agent = HWAgent.Serial.findAgent(port);
-                    if (agent == null) return;
-                    serial = new agent(
-                        port,
-                        baud,
-                        onSerialEvent
-                    );
-                    serial.open();
-                });
-            }
-        });
-
-        $('#reset').click(function () {
-            if (serial && ('resetHW' in serial)) serial.resetHW();
-        });
-
-        $('#send').click(function () {
-            if (!serial) return;
-            if (!serial.isOpened()) return;
-            var text = $('#sendtext').val();
-            if (!text) return;
-            var ending = $('#line_ending').val();
-            switch (ending) {
-                case 'n':
-                    text += "\n";
-                    break;
-                case 'r':
-                    text += "\r";
-                    break;
-                case 'nr':
-                    text += "\n\r";
-            }
-            serial.write(text);
-            $('#sendtext').focus().select();
-        }).keypress(function (event) {
-            if (event.keyCode == 13) {
-                $(this).click();
-            }
-        });
-
-        $('#sendtext').keypress(function (event) {
-            if (event.keyCode == 13) {
-                $('#send').click();
-            }
-        });
-
-        $('#toggle_serial_box').click(function () {
-            var $el = $('#serial_upload_msg');
-            if ($el.attr('style').indexOf('height') >= 0) {
-                $el.css('height', '');
-            } else {
-                $el.height(msgTextAreaHeight);
-            }
-            return;
-
-        });
-
-        $("#verify").click(doVerify);
-
-        $('#upload').click(doUpload);
-
-        showORhideUI();
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-$(document).ready(initSerialUI);

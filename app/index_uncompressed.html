@@ -39,7 +39,6 @@
 
 
     <script src="blocklytoolbox.js"></script>
-    <script src="HWAgent.js"></script>
     <script src="serial.js"></script>
     <script src="display.js"></script>
 
@@ -220,23 +219,17 @@
 
         @keyframes acting {
             0% {
-                fill: #006461;
-            }
-
-            25% {
-                fill: yellow;
+                fill: red;
+                transform: rotate(15deg);
             }
 
             50% {
-                fill: blue;
-            }
-
-            75% {
                 fill: green;
             }
 
             100% {
-                fill: #006461;
+                fill: blue;
+                transform: rotate(-15deg);
             }
         }
 
@@ -246,7 +239,7 @@
         }
 
         .svg_acting {
-            animation: acting 2s infinite !important;
+            animation: acting 2s infinite alternate !important;
         }
 
         @media screen and (max-width: 800px) {

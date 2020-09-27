@@ -45,7 +45,6 @@
     <script>if (window.module) module = window.module;</script>
     <script src="jQuery/jquery.ui.touch-punch.js"></script>
 
-    <script src="oseppblockly.js"></script>
     <script src="oseppblock.js"></script>
 
     <style type="text/css">
@@ -225,23 +224,17 @@
 
         @keyframes acting {
             0% {
-                fill: #006461;
-            }
-
-            25% {
-                fill: yellow;
+                fill: red;
+                transform: rotate(15deg);
             }
 
             50% {
-                fill: blue;
-            }
-
-            75% {
                 fill: green;
             }
 
             100% {
-                fill: #006461;
+                fill: blue;
+                transform: rotate(-15deg);
             }
         }
 
