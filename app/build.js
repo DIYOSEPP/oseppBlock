@@ -6,7 +6,7 @@ const { readFileSync, appendFile } = require('fs')
 const uncompress_file_name = 'oseppblockly_uncompressed.js';
 const compress_file_name = 'oseppblock.js';
 
-const python2 = 'c:/Python27/python.exe';
+const python2 = 'python';
 
 const app_js = [
     'serial.js',

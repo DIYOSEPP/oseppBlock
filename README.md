@@ -7,7 +7,7 @@
 
 ---
 
-## **Using a precompiled version**
+## Using a precompiled version
 
 1. Download the corresponding version of your system and unzip it  
  run the oseppBlock program in the directory
@@ -27,36 +27,17 @@
 
 ---
 
-## **Rebuild oseppBlock**
+## Rebuild oseppBlock
 
-## 1. First install `nodejs`
+### install Dependencies
 
-   Download nodejs from [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
++ Go to url: [https://nodejs.org](https://nodejs.org) and follow the instructions to install nodejs
++ java
++ python2
++ for windows,execute `npm install --global --production windows-build-tools`  
+  It will automatically install `msBuildTools` and `python2.7` *(if they are not installed on your system)*  
 
-for linux
-
-```bash
-        cd $HOME/Downloads #save at HOME/Downloads
-        tar -xvf node*tar* #unpack
-        cd node*-*-*-*
-        sudo ln -s $PWD/bin/node /bin/node
-        sudo ln -s $PWD/bin/npm /bin/npm
-        echo "export PATH=\$PATH:$PWD/bin"|sudo tee -a /etc/profile
-        node -v
-        npm -v
-        #You should see the version number instead of an error
-        sudo reboot
-```
-
-  for windows, just download and install it and do not need other configuration
-
-```dos
-        node -v
-        npm -v
-        rem You should see the version number instead of an error
-```
-
-## 2. Get *oseppBlock* source code
+### Get `oseppBlock` source code
 
 ```bash
         sudo apt-get update&&sudo apt-get -y install git #only need on linux
@@ -69,71 +50,33 @@ for linux
         cd app/
 ```
 
-## 3. Install Compiler Dependencies
-
-Confirm that you are still in the source directory oseppBlock/app/  
-linux
-
-+ Many linux systems already have python2.7 installed, manually install it if not
-+ execute `sudo apt-get -y install libavahi-compat-libdnssd-dev`
-
-windows
-
-+ Download and install Bonjour SDK
-+ execute `npm install --global --production windows-build-tools`  
- It will automatically install `msBuildTools` and `python2.7` *(if they are not installed on your system)*  
-
-## 4. Initialize the Node js library
-
-for windows, you need to execute commands in PowerShell, otherwise you need to change '/' to '\\'
+### build
 
 ```bash
         npm install
-        node build.js
-        ./node_modules/.bin/electron-rebuild -f #rebulid nodejs modules for electron
-        sudo ./node_modules/.bin/electron . #try to run oseppBlock
+        node build.js #rebuild scratch and copy file
+        npx electron-rebuild -f #rebulid nodejs modules for electron
+        npx electron . #try to run oseppBlock
 ```
 
  You should see oseppBlock already running
 
-## 5. Repackaged and released
+### Repackaged
 
 ```bash
         #linux windows
-        ./node_modules/.bin/electron-packager . --overwrite --asar --icon=media/osepp.ico  --prune=true --out=../release-builds
+        npx electron-packager . --overwrite --asar --icon=media/osepp.ico  --prune=true --out=../release-builds
         #mac os
-        ./node_modules/.bin/electron-packager . --overwrite --asar --icon=media/osepp.icns --prune=true --out=../release-builds
+        npx electron-packager . --overwrite --asar --icon=media/osepp.icns --prune=true --out=../release-builds
 ```
 
  Packaged files will be stored in ../release-builds
 
-## 6. enable the compressed version of *scratch-block*
+### Compile/upload to Arduino board
 
- it will have a smaller size and faster speed
+When you use oseppBlock to compile and upload the program you designed, it will ask you the path of Arduino, make sure the Arduino IDE version you choose is **1.8.9**
 
-+ keep only the following folder  
- blockIcon/  
- jQuery/
- media/  
- prettify/  
- scratch-blocks/media/  
- scratch-blocks/msg/  
-+ and these files  
- scratch-blocks/arduino_compressed.js  
- scratch-blocks/blockly_compressed_vertical.js  
- scratch-blocks/blocks_compressed.js  
- scratch-blocks/blocks_compressed_vertical.js  
- display.js  
- main.js  
- HWAgent.js
- serial.js  
- package.json  
- serial.js  
- blocklytoolbox.js
-+ then edit the `index.html` file  
- Remove the `<!--free` 和 `free-->` tags<font color=#ff0000 size=+1>*(tags only)*</font>  
- Deletes all the <font color=#ff0000 size=+1>*lines*</font> between two `<!--delete-->` tags  
-+ repack oseppBlock (follow step 5)
+### custom block
 
 If you want to add your own block, please refer to  
 [scratch-block wiki](https://github.com/LLK/scratch-blocks/wiki)  
@@ -141,6 +84,11 @@ If you want to add your own block, please refer to
 
 ## change log
 
++ 20201023
+  + Use mdns-js library instead of mdns, so that libavahi is no longer dependent.
+  + Separate scratch and app, now they are two parallel projects
+  + Update electron version
+  + Add google-closure-compiler and google-closure-library, now scratch will be compiled locally
 + 20200104
   1. Built-in arduino-builder (because the arduino-builder included with arduino 1.8.10 IDE is not executable.)
   2. No longer necessary to link to the arduino IDE, so `send code to the arduino` has been canceled and modified to download the INO file.
@@ -159,3 +107,11 @@ If you want to add your own block, please refer to
   3. add **robot** blocks and **remote** blocks
   4. add **tcp Serial Monitor**
   5. When the port is an IP address, use **arduino OTA** to upload the sketch (compatible with Arduino Uno Wifi)
+
+note: Cross build for ia32
+
+```bash
+        apt-get install gcc-multilib g++-multilib
+        npx electron-rebuild -f -a ia32
+        npx electron-packager . --overwrite --asar --icon=media/osepp.ico  --prune=true --out=../release-builds --arch=ia32
+```

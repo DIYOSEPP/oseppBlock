@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "electron-is-dev": "^1.2.0",
-    "mdns": "^2.5.1",
+    "mdns-js": "^1.0.3",
     "serialport": "^9.0.1"
   },
   "devDependencies": {

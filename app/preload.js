@@ -43,21 +43,33 @@ function createElectronPort() {
             });
         })
     }
-    const { ipcRenderer } = require('electron');
-    let listports = () => {
-        let mdns = new Promise(r => {
-            ipcRenderer.once('mdns', (event, ps) => r(ps.map(p => ({
+
+    var mdns = require('mdns-js');
+    let mdns_arduino_ips = [];
+
+    var mdns = require('mdns-js');
+    let browser = mdns.createBrowser(mdns.tcp('arduino')); browser.on('ready', function () {
+        browser.discover();
+    });
+    browser.on('update', function (data) {
+        mdns_arduino_ips = mdns_arduino_ips.concat(
+            data.addresses.map(p => ({
                 type: 'ws',
-                value: p.ip,
-                name: p.hostName
-            }))));
-            ipcRenderer.send('mdns');
-        })
-        let splist = SerialPort.list().then(ps => ps.map(p => ({
-            type: 'serial',
-            value: p.path,
-        })));
-        return Promise.all([mdns, splist]).then(([mps, sps]) => mps.concat(sps))
+                value: p,
+                name: data.host
+            }))
+        )
+    });
+
+    let listports = () => {
+        return SerialPort.list().then(ps =>
+            ps.map(p => ({
+                type: 'serial',
+                value: p.path,
+            })).concat(
+                mdns_arduino_ips
+            )
+        )
     };
 
     let arduinoPath = null;
@@ -221,6 +233,7 @@ function createElectronPort() {
     let result = {
         SerialPort: serialport,
         ListPorts: listports,
+        Cleanup: [() => browser.stop()],
         compiler,
         uploader
     }
@@ -263,6 +276,7 @@ function createElectronPort() {
             reject(e);
         }
     })
+
     return result
 }
 

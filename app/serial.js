@@ -412,3 +412,9 @@ function initUploadUI() {
 
 $(document).ready(initUploadUI);
 
+window.addEventListener('beforeunload', function () {
+    if (msgpipe) msgpipe.close();
+    if (window.electronPort) {
+        window.electronPort.Cleanup.forEach(f => f());
+    }
+});
