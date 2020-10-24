@@ -47,7 +47,6 @@ function createElectronPort() {
     var mdns = require('mdns-js');
     let mdns_arduino_ips = [];
 
-    var mdns = require('mdns-js');
     let browser = mdns.createBrowser(mdns.tcp('arduino')); browser.on('ready', function () {
         browser.discover();
     });
@@ -108,7 +107,7 @@ function createElectronPort() {
             let st = fs.statSync(fp);
             if (st.isDirectory(fp)) {
                 if (f.toLowerCase().indexOf('arduino') >= 0) {
-                    if (isArduinoPath(fp)) return;
+                    if (isArduinoPath(fp)) break;
                 }
                 dirset.push(fp);
             }
