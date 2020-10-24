@@ -1,12 +1,11 @@
 const { spawn } = require('child_process');
-const { writeFile } = require('fs');
-const { readFileSync, appendFile } = require('fs')
+const { writeFile, readFileSync, appendFile, writeFileSync } = require('fs')
+
+const python2 = 'python';
 
 
 const uncompress_file_name = 'oseppblockly_uncompressed.js';
 const compress_file_name = 'oseppblock.js';
-
-const python2 = 'python';
 
 const app_js = [
     'serial.js',
@@ -122,3 +121,17 @@ ${ftext}
 });
 
 
+function genTooboxjs() {
+    let toolbox = readFileSync('toolbox.xml').toString();
+    let blockToolboxXml = toolbox.match(/<blockToolboxXml>([\w\W]+)<\/blockToolboxXml>/)[1];
+    let ModuleToolboxXml = toolbox.match(/<ModuleToolboxXml>([\w\W]+)<\/ModuleToolboxXml>/)[1];
+    [blockToolboxXml, ModuleToolboxXml] = [blockToolboxXml, ModuleToolboxXml].map(s => {
+        s = s.split(/[\r\n]+/).map(l => l.trim()).filter(l => l).join('');
+        return "'" + '<xml id="toolbox-block" xmlns="http://www.w3.org/1999/xhtml">' + s + '</xml>' + "'"
+    })
+    let toolboxjs = ['var blockToolboxXml=' + blockToolboxXml, 'var ModuleToolboxXml=' + ModuleToolboxXml].join('\n');
+    writeFileSync('blocklytoolbox.js', toolboxjs);
+    console.log('blocklytoolbox.js')
+}
+
+genTooboxjs();

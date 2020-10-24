@@ -54,6 +54,7 @@
 
 ```bash
         npm install
+        #Specify python2 path in build.js
         node build.js #rebuild scratch and copy file
         npx electron-rebuild -f #rebulid nodejs modules for electron
         npx electron . #try to run oseppBlock
@@ -74,7 +75,14 @@
 
 ### Compile/upload to Arduino board
 
-When you use oseppBlock to compile and upload the program you designed, it will ask you the path of Arduino, make sure the Arduino IDE version you choose is **1.8.9**
+When you use oseppBlock to compile and upload the program you designed,
+it will ask you the path of Arduino,
+make sure the Arduino IDE version you choose is **1.8.9**
+
+oseppBlock requires network permissions to detect the Arduino in the LAN (via mdns protocol).
+Without this permission, oseppBlock will not automatically detect the Arduino IP address,
+but you can still manually fill in the IP address to use the OTA and serial bridge functions
+The serial bridge function depends on another project, please refer to: [https://github.com/DIYOSEPP/EspUnoWiFi](https://github.com/DIYOSEPP/EspUnoWiFi)
 
 ### custom block
 

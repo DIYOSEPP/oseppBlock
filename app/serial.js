@@ -290,45 +290,6 @@ function arduino_handle(state, msg) {
     }
 }
 
-function ip_upload(port) {
-    return new Promise((resolve, reject) => {
-
-        upload = window.electronPort.uploader(getCode(), port, (state, msg) => {
-            arduino_handle(state, msg);
-            if (state === 'done' || state == 'error') {
-                upload = null;
-                arduino_ui();
-            }
-        }).finally(() => upload = null)
-
-        window.ipcRenderer.on('arduino', (event, state, msg) => {
-            if (state === 'done') {
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://' + port + '/upload?baudrateisp=115200');
-                xhr.onload = () => {
-                    arduino_handle('message', xhr.responseText);
-                    arduino_handle('done');
-                    xhr.status === 200 ? resolve() : reject();
-                    window.ipcRenderer.removeAllListeners('arduino');
-                }
-                xhr.onerror = () => {
-                    arduino_handle('message', 'network error');
-                    arduino_handle('done');
-                    reject();
-                }
-                xhr.send(msg);
-            } else {
-                arduino_handle(state, msg);
-                if (state == 'error') {
-                    window.ipcRenderer.removeAllListeners('arduino');
-                    reject();
-                }
-            }
-        });
-        window.ipcRenderer.send('arduino-compile', getCode());
-    })
-}
-
 function doUpload() {
     if (upload || compile) return;
     var port = $('#SelectComPort').val();

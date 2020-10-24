@@ -151,12 +151,13 @@ function createElectronPort() {
                 fs.writeFileSync(path.join(sketchdir, "sketch.ino"), code);
                 callback('message', 'compiling');
                 const spawn = require("child_process").spawn;
+                let toolpath=path.dirname(arduinoPath.builder);
                 const genhex = spawn(arduinoPath.builder,
                     [
-                        `-hardware "${path.join(arduinoPath.path, "/hardware")}"`,
-                        `-tools "${path.join(arduinoPath.path, "/hardware/tools/avr")}"`,
-                        `-tools "${path.join(arduinoPath.path, "/tools-builder")}"`,
-                        `-libraries "${path.join(arduinoPath.path, "/libraries")}"`,
+                        `-hardware "${path.join(toolpath, "/hardware")}"`,
+                        `-tools "${path.join(toolpath, "/hardware/tools/avr")}"`,
+                        `-tools "${path.join(toolpath, "/tools-builder")}"`,
+                        `-libraries "${path.join(toolpath, "/libraries")}"`,
                         "-fqbn arduino:avr:uno",
                         `-build-path "${cachedir}"`,
                         `"${path.join(sketchdir, "sketch.ino")}"`
@@ -192,8 +193,9 @@ function createElectronPort() {
             try {
                 callback('message', 'uploading');
                 const spawn = require("child_process").spawn;
+                let toolpath=path.dirname(arduinoPath.builder);
                 const up = spawn(arduinoPath.uploader, [
-                    `-C "${path.join(arduinoPath.path, "/hardware/tools/avr/etc/avrdude.conf")}"`,
+                    `-C "${path.join(toolpath, "/hardware/tools/avr/etc/avrdude.conf")}"`,
                     "-patmega328p -carduino -D",
                     `-Uflash:w:"${hexfile}":i`,
                     `-P "${port}"`,
