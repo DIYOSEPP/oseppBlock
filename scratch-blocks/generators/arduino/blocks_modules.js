@@ -552,8 +552,8 @@ Blockly.Arduino['module_read_irdetector'] = function (block) {
     var defineBlock = Blockly.Arduino.requireInstance(block, dropdown_name);
     if (!defineBlock) return '\n';
     var pin = Blockly.Arduino.valueToCode(defineBlock, 'Pin', Blockly.Arduino.ORDER_NONE);
-    var code = 'digitalRead(' + pin + ')';
-    return [code, Blockly.Arduino.ORDER_ATOMIC];
+    var code = 'digitalRead(' + pin + ')==LOW';
+    return [code, Blockly.Arduino.ORDER_EQUALITY];
 };
 
 
